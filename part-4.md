@@ -86,3 +86,18 @@ check:
 docker container exec app_signup-db_1 powershell `
  "Invoke-SqlCmd -Query 'SELECT * FROM Prospects' -Database SignUp"
 ```
+
+## <a name="2"></a>2. Set application services to restart when Docker starts
+
+```
+docker container ls 
+```
+
+right click.. quit Docker
+
+start again
+
+```
+docker container ls 
+```
+ 

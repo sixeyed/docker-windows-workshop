@@ -34,9 +34,10 @@ if ((Test-Path $mdfPath) -eq $true) {
 else {
     # create database using the volume location:
     $sqlcmd = 
-    "CREATE DATABASE SignUp ON 
-      PRIMARY ( NAME = N'SignUp_Data', FILENAME = N'$mdfPath') 
-      LOG ON ( NAME = N'SignUp_Log', FILENAME = N'$ldfPath' )"    
+    "IF NOT EXISTS(SELECT 1 FROM sys.databases WHERE Name = 'SignUp') 
+      CREATE DATABASE SignUp ON 
+       PRIMARY ( NAME = N'SignUp_Data', FILENAME = N'$mdfPath') 
+       LOG ON ( NAME = N'SignUp_Log', FILENAME = N'$ldfPath' )"    
     Write-Verbose 'Data files do not exist - will create new database'
 }
 
