@@ -6,7 +6,7 @@ In this part we'll see how to use Docker Compose to scale our app and make the c
 
 * [1. Add persistent storage to SQL Server](#1)
 * [2. Set application services to restart when Docker starts](#2)
-* [3. Scale messgae handlers up to increase throughput](#3)
+* [3. Scale message handlers up to increase throughput](#3)
 
 
 ## <a name="1"></a>Step 1. Add persistent storage to SQL Server
@@ -53,4 +53,36 @@ etc
 cd "$env:workshopRoot\app"
 
 docker-compose -f docker-compose-1.6.yml up -d
+```
+
+enter
+
+```
+$ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_signup-web_1
+start "http://$ip"
+```
+
+check 
+
+```
+docker container exec app_signup-db_1 powershell `
+ "Invoke-SqlCmd -Query 'SELECT * FROM Prospects' -Database SignUp"
+```
+
+delete, recreate:
+
+```
+
+cd "$env:workshopRoot\app"
+
+docker-compose -f docker-compose-1.6.yml down
+
+docker-compose -f docker-compose-1.6.yml up -d
+```
+
+check:
+
+```
+docker container exec app_signup-db_1 powershell `
+ "Invoke-SqlCmd -Query 'SELECT * FROM Prospects' -Database SignUp"
 ```

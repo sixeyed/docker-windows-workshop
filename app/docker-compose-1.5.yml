@@ -4,6 +4,8 @@ services:
   
   signup-db:
     image: microsoft/mssql-server-windows-express
+    ports:
+      - "1433"
     environment: 
       - ACCEPT_EULA=Y
     env_file:
@@ -28,6 +30,8 @@ services:
 
   message-queue:
     image: nats:nanoserver
+    ports:
+      - "4222"
     networks:
       - app-net
 
@@ -43,6 +47,8 @@ services:
 
   elasticsearch:
     image: sixeyed/elasticsearch:nanoserver
+    ports:
+      - "9200"
     environment:
       - ES_JAVA_OPTS=-Xms512m -Xmx512m
     networks:

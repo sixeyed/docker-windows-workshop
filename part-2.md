@@ -98,7 +98,7 @@ Multi-stage builds run in the same way, but only the final image is tagged:
 ```
 cd "$Env:workshoproot"
 
-docker build -t $Env:dockerId/signup-web:1.2 -f part-2\web-1.2\Dockerfile .
+docker image build --tag $Env:dockerId/signup-web:1.2 -f part-2\web-1.2\Dockerfile .
 ```
 
 > Note that this image gets built from the base directory. That's so the full `src` folder is available to the build agent.

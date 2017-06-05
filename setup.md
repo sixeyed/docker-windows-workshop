@@ -127,7 +127,7 @@ $Env:dockerId='<my-docker-Id>'
 Open a PowerShell prompt **using Run as Administrator** (or from `C:\shortcuts` on the lab VM, and run the verification script:
 
 ```
-cd C:\scm\github\sixeyed\dc-mta-workshop
+cd $env:workshopRoot
 .\verify.ps1
 ```
 
