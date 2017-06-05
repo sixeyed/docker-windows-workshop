@@ -3,9 +3,9 @@ version: '3.1'
 services:
   
   signup-db:
-    image: microsoft/mssql-server-windows-express
-    environment: 
-      - ACCEPT_EULA=Y
+    image: ${dockerId}/signup-db
+    volumes:
+      - C:\mssql:C:\data
     env_file:
       - db-credentials.env
     networks:

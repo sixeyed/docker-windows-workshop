@@ -72,10 +72,10 @@ namespace SignUp.Web
             };
 
             /* synchronous */
-            SaveProspect(prospect);           
+            // SaveProspect(prospect);           
 
             /* aynchronous */
-            // PublishProspectSignedUpEvent(Prospect prospect);
+            PublishProspectSignedUpEvent(prospect);
 
             Server.Transfer("ThankYou.aspx");
         }

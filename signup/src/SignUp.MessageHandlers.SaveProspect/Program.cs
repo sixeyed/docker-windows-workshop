@@ -1,4 +1,5 @@
 ﻿using NATS.Client;
+using SignUp.Entities;
 using SignUp.Messaging;
 using SignUp.Messaging.Messages.Events;
 using SignUp.Model;
