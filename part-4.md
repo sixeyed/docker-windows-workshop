@@ -72,7 +72,6 @@ docker container exec app_signup-db_1 powershell `
 delete, recreate:
 
 ```
-
 cd "$env:workshopRoot\app"
 
 docker-compose -f docker-compose-1.6.yml down
@@ -93,11 +92,18 @@ docker container exec app_signup-db_1 powershell `
 docker container ls 
 ```
 
-right click.. quit Docker
+remove db & web containers
 
-start again
+ETC
 
 ```
 docker container ls 
 ```
- 
+
+start with 1.7:
+
+```
+cd "$env:workshopRoot\app"
+
+docker-compose -f docker-compose-1.7.yml up -d
+```
