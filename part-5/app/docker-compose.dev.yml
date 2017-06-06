@@ -1,0 +1,9 @@
+version: '3.1'
+
+services:
+
+  signup-db:
+    volumes:
+      - C:\mssql:C:\data
+    ports:    
+      - "1433:1433"

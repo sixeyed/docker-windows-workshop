@@ -62,41 +62,98 @@ $ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddr
 start "http://$($ip):8080"
 ```
 
+get the password:
+
+```
+docker container logs jenkins
+```
+
+install
+
+- select plugins to install
+- none
+- git plugin, Credentials Binding Plugin
+- manage jenkins/manage plugins
+- available
+- powershell
+- install without restart
+
+Export:
+
+```
+docker container stop jenkins
+
+docker container commit jenkins $env:dockerId/jenkins:configured
+
+docker container rm jenkins
+```
+
+## <a name="3"></a>Step 3. Run infrastructure services
+
+## 3.1 - start infra services
+
+> TODO - confirm IP addresses for .locals
+
+```
+mkdir C:\registry
+
+mkdir C:\bonobo
+
+cd $env:workshopRoot\part-5
+
+docker-compose up -d
+```
+
+host config `notepad C:\Windows\System32\drivers\etc\hosts`
+
+```
+172.24.9.200 registry.local
+172.24.9.201 bonobo.local
+172.24.9.202 jenkins.local
+```
+
+##3.2 - setup git server
+
+bonobo:  http://bonobo.local/bonobo.git.server
+
+admin/admin
+
+create user jenkins-ci/jenkins
+
+create repo docker-windows-workshop, jenkins-ci as contrib
+
+```
+cd $env:workshopRoot
+
+git remote add bonobo.local http://bonobo.local/Bonobo.Git.Server/docker-windows-workshop.git
+
+git push bonobo.local master
+```
+
+explore C:\bonobo
+
+## 3.3 - configure jenkins job
 
 
-jenkins config:
+http://jenkins.local:8080
 
-- install git & powershell plugins
+add crddentials:
 
-- add bonobo & engine creds
+- username password, jenkins-bonobo
+- secret file, ca, cert, key
+
+create job
+
+- freestyle, signup
 
 SCM
 
-- use host IP
-
-http://192.168.2.160/Bonobo.Git.Server/presentations.git
-
-poll H/5 * * * *
+- repo url, http://bonobo/Bonobo.Git.Server/docker-windows-workshop.git
+- poll, H/5 * * * *
 
 Bindings
 
 - use secret files: DOCKER_CA, DOCKER_CERT, DOCKER_KEY
 
-```
 
-```
-
-
-```
-
-```
-
-```
-
-```
-
-```
-
- ```
-
- [registry.sixeyed -> container IP on host]
+Build steps

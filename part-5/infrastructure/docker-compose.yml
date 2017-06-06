@@ -6,32 +6,34 @@ services:
     image: sixeyed/registry:2.6.0-nanoserver
     restart: unless-stopped
     ports:
-      - 5000:5000
+      - 5000
     volumes:
-      - c:\docker\registry:c:\data
+      - c:\registry:c:\data
     networks:
       home:
-        ipv4_address: 192.168.168.129
+        ipv4_address: 172.24.9.200
 
   bonobo:
     image: sixeyed/bonobo:6.1.0-windowsservercore
     restart: unless-stopped
     ports:
-      - 80:80
+      - 80
     volumes:
       - c:\bonobo:c:\data
     networks:
-      - home
+      home:
+        ipv4_address: 172.24.9.201
 
   jenkins:
-    image: ${dockerId}/jenkins
+    image: ${dockerId}/jenkins:configured
     restart: unless-stopped
     ports:
-      - 8080:8080
+      - 8080
     volumes:
       - c:\jenkins:c:\data
     networks:
-      - home
+      home:
+        ipv4_address: 172.24.9.202
 
 networks:
   home:

@@ -1,0 +1,23 @@
+version: '3.1'
+
+services:
+
+  signup-db:
+    build:
+      context: ../../
+      dockerfile: ./part-4/db/Dockerfile
+
+  signup-web:
+    build:
+      context: ../../
+      dockerfile: ./part-3/web-1.3/Dockerfile
+
+  signup-save-handler:
+    build:
+      context: ../../
+      dockerfile: ./part-3/save-handler/Dockerfile
+
+  signup-index-handler:
+    build:
+      context: ../../
+      dockerfile: ./part-3/index-handler/Dockerfile

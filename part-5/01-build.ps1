@@ -1,8 +1,10 @@
 Write-Output '*** App Build: '
 
-cd source\ch10\ch10-newsletter
+cd part-5
 
-$config = '--host', 'tcp://192.168.160.1:2376', '--tlsverify', `
+$gatewayAddress = Get-NetRoute -DestinationPrefix '0.0.0.0/0' | Select NextHop
+
+$config = '--host', "tcp://$($gatewayAddress):2376", '--tlsverify', `
           '--tlscacert', $env:DOCKER_CA,'--tlscert', $env:DOCKER_CERT, '--tlskey', $env:DOCKER_KEY
 
 & docker-compose $config `

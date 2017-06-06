@@ -1,0 +1,20 @@
+version: '3.1'
+
+services:
+
+  signup-db:
+    ports:    
+      - "1433"
+
+  signup-web:
+    ports:
+      - "80"
+
+  kibana:
+    ports:
+      - "5601"
+
+networks:
+  app-net:
+    external:
+      name: nat
