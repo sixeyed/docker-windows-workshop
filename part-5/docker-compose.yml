@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+
+  registry:
+    image: sixeyed/registry:2.6.0-nanoserver
+    restart: unless-stopped
+    ports:
+      - 5000:5000
+    volumes:
+      - c:\docker\registry:c:\data
+    networks:
+      home:
+        ipv4_address: 192.168.168.129
+
+  bonobo:
+    image: sixeyed/bonobo:6.1.0-windowsservercore
+    restart: unless-stopped
+    ports:
+      - 80:80
+    volumes:
+      - c:\bonobo:c:\data
+    networks:
+      - home
+
+  jenkins:
+    image: ${dockerId}/jenkins
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    volumes:
+      - c:\jenkins:c:\data
+    networks:
+      - home
+
+networks:
+  home:
+    external:
+      name: nat

@@ -88,22 +88,55 @@ docker container exec app_signup-db_1 powershell `
 
 ## <a name="2"></a>2. Set application services to restart when Docker starts
 
+restart based on exit condition, not external commands.
+
+sample:
+
 ```
+docker container run -d -P --name iis `
+ --restart always `
+ microsoft/iis:windowsservercore
+```
+
+get ip & test
+
+kill w3svc:
+
+```
+docker container ls 
+
+docker exec iis powershell Stop-Service w3svc
+
 docker container ls 
 ```
 
-remove db & web containers
+check out 1.7 yaml. Upgrade to 1.7:
 
-ETC
-
-```
-docker container ls 
-```
-
-start with 1.7:
 
 ```
 cd "$env:workshopRoot\app"
 
 docker-compose -f docker-compose-1.7.yml up -d
+```
+
+## <a name="3"></a>3. Scale message handlers up to increase throughput
+
+```
+cd "$env:workshopRoot\app"
+
+docker-compose -f docker-compose-1.7.yml scale signup-save-handler=3
+
+docker container ls
+```
+
+enter some data
+
+```
+$ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_signup-web_1
+start "http://$ip"
+```
+
+check logs
+```
+docker container logs app_signup-save-handler_1
 ```

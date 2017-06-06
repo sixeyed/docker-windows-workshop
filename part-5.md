@@ -1,3 +1,68 @@
+# Part 5 - The Outer Loop - containerized CI
+
+
+
+## Steps
+
+* [1. Configure Docker for remote access](#1)
+* [2. Prepare Jenkins](#2)
+* [3. Run infrastructure services](#3)
+* [4. Configure CI job](#4)
+
+
+## <a name="1"></a>Step 1. Configure Docker for remote access
+
+- get IP addresses:
+
+```
+ipconfig 
+
+$ipAddress='10.211.55.3'
+$gatewayAddress='172.24.0.1'
+```
+> change owner of daemon.json to admin & grant access to everyone (temp)
+
+enable TLS:
+
+```
+mkdir -p C:\certs\vm\client
+
+docker container run --rm `
+ -e SERVER_NAME=$(hostname) `
+ -e IP_ADDRESSES=127.0.0.1,$ipAddress,$gatewayAddress `
+ -v 'C:\ProgramData\docker:C:\ProgramData\docker' `
+ -v 'C:\certs\vm\client:C:\Users\ContainerAdministrator\.docker' `
+ stefanscherer/dockertls-windows
+```
+
+clear down containers!!!
+
+quit docker & launch again
+
+
+## <a name="2"></a>Step 2. Prepare Jenkins
+
+```
+cd $env:workshopRoot\part-5\jenkins
+
+docker image build --tag $env:dockerId/jenkins:prep .
+```
+
+start:
+
+```
+mkdir C:\jenkins
+
+docker run -d -P -v C:\jenkins:C:\data --name jenkins $env:dockerId/jenkins:prep
+```
+
+```
+$ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' jenkins
+
+start "http://$($ip):8080"
+```
+
+
 
 jenkins config:
 
@@ -18,82 +83,20 @@ Bindings
 - use secret files: DOCKER_CA, DOCKER_CERT, DOCKER_KEY
 
 ```
-Write-Output '*** App Build: '
 
-cd  source\ch10\ch10-newsletter
-
-$config = '--host', 'tcp://192.168.160.1:2376', '--tlsverify', `
-          '--tlscacert', $env:DOCKER_CA,'--tlscert', $env:DOCKER_CERT, '--tlskey', $env:DOCKER_KEY
-
-& docker-compose $config `
- -f .\app\docker-compose.yml -f .\app\docker-compose.build.yml build
 ```
 
 
 ```
-Write-Output '*** Start App: '
 
-cd  source\ch10\ch10-newsletter
+```
 
-$config = '--host', 'tcp://192.168.160.1:2376', '--tlsverify', `
-          '--tlscacert', $env:DOCKER_CA,'--tlscert', $env:DOCKER_CERT, '--tlskey', $env:DOCKER_KEY
-
-& docker-compose $config `
- -f .\app\docker-compose.yml -f .\app\docker-compose.local.yml up -d
-
-Write-Output '*** Containers: '
-
-& docker $config container ls
-
-Write-Output '*** Sleeping'
-
-Start-Sleep -Seconds 20
-
-$ip = & docker $config inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_signup-app_1
-
-Write-Output '*** Checking website'
-
-iwr -UseBasicParsing "http://$ip/SignUp"
 ```
 
 ```
-Write-Output '*** E2E tests'
-
-cd  source\ch10\ch10-newsletter
-
-$config = '--host', 'tcp://192.168.160.1:2376', '--tlsverify', `
-          '--tlscacert', $env:DOCKER_CA,'--tlscert', $env:DOCKER_CERT, '--tlskey', $env:DOCKER_KEY
-
-& docker $config build -t dockeronwindows/ch10-newsletter-e2e-tests -f docker\e2e-tests\Dockerfile .
-
-& docker $config run --env-file app\db-credentials.env dockeronwindows/ch10-newsletter-e2e-tests
-
-& docker-compose $config -f .\app\docker-compose.yml -f .\app\docker-compose.local.yml down
-```
 
 ```
-Write-Output '*** Tagging and pushing images'
 
-$config = '--host', 'tcp://192.168.160.1:2376', '--tlsverify', `
-          '--tlscacert', $env:DOCKER_CA,'--tlscert', $env:DOCKER_CERT, '--tlskey', $env:DOCKER_KEY
-
-& docker $config `
- tag dockeronwindows/ch10-newsletter-web "registry.sixeyed:5000/dockeronwindows/ch10-newsletter-web:$($env:BUILD_TAG)"
-
-& docker $config `
- push "registry.sixeyed:5000/dockeronwindows/ch10-newsletter-web:$($env:BUILD_TAG)"
-
-& docker $config `
- tag dockeronwindows/ch10-newsletter-save-handler "registry.sixeyed:5000/dockeronwindows/ch10-newsletter-save-handler:$($env:BUILD_TAG)"
-
-& docker $config `
- push "registry.sixeyed:5000/dockeronwindows/ch10-newsletter-save-handler:$($env:BUILD_TAG)"
-
-& docker $config `
- tag dockeronwindows/ch10-newsletter-index-handler registry.sixeyed:5000/dockeronwindows/ch10-newsletter-index-handler:$env:BUILD_TAG
-
-& docker $config `
- push "registry.sixeyed:5000/dockeronwindows/ch10-newsletter-index-handler:$($env:BUILD_TAG)"
  ```
 
  [registry.sixeyed -> container IP on host]
