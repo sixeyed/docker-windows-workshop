@@ -53,7 +53,7 @@ start:
 ```
 mkdir C:\jenkins
 
-docker run -d -P -v C:\jenkins:C:\data --name jenkins $env:dockerId/jenkins:prep
+docker container run -d -P -v C:\jenkins:C:\data --name jenkins $env:dockerId/jenkins:prep
 ```
 
 ```
@@ -99,7 +99,7 @@ mkdir C:\registry
 
 mkdir C:\bonobo
 
-cd $env:workshopRoot\part-5
+cd $env:workshopRoot\part-5\infrastructure
 
 docker-compose up -d
 ```
@@ -141,6 +141,10 @@ add crddentials:
 
 - username password, jenkins-bonobo
 - secret file, ca, cert, key
+
+manage - config - global props
+
+- env, dockerId=<docekerId>
 
 create job
 

@@ -4,8 +4,8 @@ services:
 
   signup-db:
     build:
-      context: ../../
-      dockerfile: ./part-4/db/Dockerfile
+      context: ../../part-4/db
+      dockerfile: ./Dockerfile
 
   signup-web:
     build:
