@@ -7,16 +7,8 @@ If you've previously used Docker, it's still worth following along. This worksho
 ## Steps
 
 * [1. Run some simple Windows Docker containers](#1)
- * [1.1. Run a task in a Nano Server container](#1.1)
- * [1.2. Run an interactive Windows Server Core container](#1.2)
- * [1.3. Run a background IIS web server container](#1.3)
- * [1.4. Explore the filesystem and users in Windows containers](#1.4)
-
-* [2. Package and run a custom app using Docker](#2)
- * [2.1: Build a simple website image](#2.1)
- * [2.2: Run multiple instances of your website in containers](#2.2)
- * [2.3: Build and run a more complex website image](#2.3)
- * [2.4: Push your images to Docker Hub](#2.4)
+* [2. Explore the filesystem and users in Windows containers](#2)
+* [3. Package and run a custom app using Docker](#3)
 
 ## <a name="1"></a>Step 1. Run some simple Windows Docker containers
 
@@ -28,7 +20,7 @@ There are different ways to use containers:
 
 In this section you'll try each of those options and see how Docker manages the workload.
 
-## <a name="1.1"></a>Step 1.1: Run a task in a Nano Server container
+## Run a task in a Nano Server container
 
 This is the simplest kind of container to start with. In PowerShell run:
 
@@ -55,7 +47,7 @@ Containers which do one task and then exit can be very useful. You could build a
 I use a task container to create all the VMs for this workshop, using my [azure-vm-provisioner](https://github.com/sixeyed/dockerfiles-windows/tree/master/azure-vm-provisioner) image. That image packages up a set of Terraform scripts in an image with Terraform installed, so anyone can use it to provision VMs, using their own Azure subscription details.
 
 
-## <a name="1.2"></a>Step 1.2: Run an interactive Windows Server Core container
+## Run an interactive Windows Server Core container
 
 The [microsoft/windowsservercore](https://hub.docker.com/r/microsoft/windowsservercore) image is effectively a full Windows Server 2016 OS, without the UI. You can explore an image by running an interactive container. 
 
@@ -79,7 +71,7 @@ Interactive containers are useful when you are putting together your own image. 
 
 > You *can* [commit](https://docs.docker.com/engine/reference/commandline/commit/) a container to make an image from it - but you should avoid that wherever possible. It's much better to use a repeatable [Dockerfile](https://docs.docker.com/engine/reference/builder/) to build your image. You'll see that shortly.
 
-## <a name="1.3"></a>Run a background SQL Server container
+## Run a background SQL Server container
 
 Background containers are how you'll run most applications. Here's a simple example using another image from Microsoft - [microsoft/mssql-server-windows-express](https://hub.docker.com/r/microsoft/mssql-server-windows-express/) which builds on top of the Windows Server Core image and comes with SQL Server Express installed.
 
@@ -112,7 +104,7 @@ docker container exec sql `
  powershell "Invoke-SqlCmd -Query 'SELECT GETDATE()' -Database Master"
 ```
 
-## <a name="1.4"></a>Explore the filesystem and users in Windows containers
+## <a name="2"></a>Step 2. Explore the filesystem and users in Windows containers
 
 The SQL Server container is stil running in the background. You can connect an interactive PowerShell session to the container by running `exec`:
 
@@ -155,17 +147,13 @@ You'll see the container processes, with the same process IDs, but with a blank 
 - Windows Server container processes run natively on the host, which is why they are so efficient
 - container processes run as an unknown user on the host, so a rogue container process wouldn't be able to access host files or other processes.
 
+Close the second PowerShell window, and tyope `exit` in the first to exit the interactive Docker session. 
+
 Now clean up, by removing all containers:
 
 ```
 docker container rm --force $(docker container ls --quiet --all)
 ```
-
-
- 
- * [2.3: Build and run a more complex website image](#2.3)
- * [2.4: Push your images to Docker Hub](#2.4)
-
 
 ## <a name="2"></a>Step 2: Package and run a custom app using Docker
 
@@ -174,7 +162,7 @@ Next you'll learn how to package your own Windows apps as Docker images, using a
 The Dockerfile syntax is simple. In this task you'll walk through two Dockerfiles which package websites to run in Windows Docker containers. The first example is very simple, and the second is more involved. By the end of this task you'll have a good understanding of the main Dockerfile instructions.
 
 
-## <a name="2.1"></a>Step 2.1: Build a simple website image
+## Build a simple website image
 
 Have a look at the [Dockerfile for this app](part-1/hostname-app/Dockerfile), which builds a simple ASP.NET website running that displays the host name of the server. There are only two instructions:
 
@@ -211,7 +199,7 @@ start "http://$ip"
 > You need to use the container IP address locally because Windows doesn't have a full loopback networking stack. You can read more about that [on my blog](https://blog.sixeyed.com/published-ports-on-windows-containers-dont-do-loopback/).
 
 
-## <a name="2.2"></a>Step 2.2: Run multiple instances of your website in containers
+## Run multiple instances of your website in containers
 
 Let's see how lightweight the containerized application is. This PowerShell loop starts ten containers from the same website image:
 
@@ -248,7 +236,7 @@ docker logs app-0
 The other issue is that it took a few seconds for each website to show. That's because the IIS service doesn't start a wroker process until the first HTTP request come in. The first website user takes the hit of starting the worker process. We can use a more advanced Dockerfile to address those issues.
 
 
-## <a name="2.3"></a>Step 2.3: Build and run a more complex website image
+## Build and run a more complex website image
 
 For the next example, the [Dockerfile](part-1/tweet-app/Dockerfile) is a better representation of a real-world script. These are the main features:
 
@@ -287,7 +275,7 @@ start "http://$ip"
 Feel free to hit the Tweet button, sign in and share your workshop progress :)
 
 
-## <a name="2"></a>Task 2.2: Push your image to Docker Hub
+## Push your images to Docker Hub
 
 Now if you list the images and filter on your Docker ID, you'll see the images you've built today, with the newest at the top:
 

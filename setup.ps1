@@ -26,8 +26,18 @@ New-ItemProperty -Path HKCU:\Software\Microsoft\ServerManager -Name DoNotOpenSer
 
 # pull lab images
 docker pull microsoft/iis:windowsservercore
+docker pull microsoft/iis:nanoserver
 docker pull microsoft/aspnet:windowsservercore
-docker pull sixeyed/msbuild:4.5.2-webdeploy
 docker pull microsoft/mssql-server-windows-express
 docker pull microsoft/aspnet:windowsservercore-10.0.14393.1198
 docker pull microsoft/aspnet:windowsservercore-10.0.14393.1066
+
+docker pull nats:nanoserver
+docker pull sixeyed/elasticsearch:nanoserver
+docker pull sixeyed/kibana:nanoserver
+
+docker pull sixeyed/msbuild:4.5.2-netfx
+docker pull sixeyed/msbuild:4.5.2-netfx-webdeploy
+docker pull sixeyed/nunit:3.6.1
+docker pull sixeyed/git:2.13.0
+docker pull sixeyed/docker-ce:17.05.0

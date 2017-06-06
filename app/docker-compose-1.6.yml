@@ -4,8 +4,6 @@ services:
   
   signup-db:
     image: ${dockerId}/signup-db
-    ports:
-      - "1433"
     volumes:
       - C:\mssql:C:\data
     env_file:
@@ -27,8 +25,6 @@ services:
 
   message-queue:
     image: nats:nanoserver
-    ports:
-      - "4222"
     networks:
       - app-net
 
@@ -44,8 +40,6 @@ services:
 
   elasticsearch:
     image: sixeyed/elasticsearch:nanoserver
-    ports:
-      - "9200"
     environment:
       - ES_JAVA_OPTS=-Xms512m -Xmx512m
     networks:
