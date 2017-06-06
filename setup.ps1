@@ -24,6 +24,10 @@ choco install -y firefox
 # configure Server Manager 
 New-ItemProperty -Path HKCU:\Software\Microsoft\ServerManager -Name DoNotOpenServerManagerAtLogon -PropertyType DWORD -Value "1" -Force
 
+# turn off firewall and Defender *this is meant for short-lived lab VMs*
+
+
+
 # pull lab images
 docker pull microsoft/iis:windowsservercore
 docker pull microsoft/iis:nanoserver
@@ -35,9 +39,16 @@ docker pull microsoft/aspnet:windowsservercore-10.0.14393.1066
 docker pull nats:nanoserver
 docker pull sixeyed/elasticsearch:nanoserver
 docker pull sixeyed/kibana:nanoserver
+docker pull stefanscherer/dockertls-windows
 
 docker pull sixeyed/msbuild:4.5.2-netfx
 docker pull sixeyed/msbuild:4.5.2-netfx-webdeploy
 docker pull sixeyed/nunit:3.6.1
+
 docker pull sixeyed/git:2.13.0
 docker pull sixeyed/docker-ce:17.05.0
+docker pull sixeyed/jenkins:2.46.2
+
+docker pull sixeyed/registry:2.6.0-nanoserver
+docker pull sixeyed/bonobo:6.1.0-windowsservercore
+

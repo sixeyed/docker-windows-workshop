@@ -22,4 +22,4 @@ $ip = & docker $config inspect --format '{{ .NetworkSettings.Networks.nat.IPAddr
 
 Write-Output '*** Checking website'
 
-iwr -UseBasicParsing "http://$ip/SignUp"
+iwr -UseBasicParsing "http://$ip"

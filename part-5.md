@@ -92,8 +92,6 @@ docker container rm jenkins
 
 ## 3.1 - start infra services
 
-> TODO - confirm IP addresses for .locals
-
 ```
 mkdir C:\registry
 
@@ -107,9 +105,9 @@ docker-compose up -d
 host config `notepad C:\Windows\System32\drivers\etc\hosts`
 
 ```
-172.24.9.200 registry.local
-172.24.9.201 bonobo.local
-172.24.9.202 jenkins.local
+172.19.240.200 registry.local
+172.19.240.201 bonobo.local
+172.19.240.202 jenkins.local
 ```
 
 ##3.2 - setup git server
@@ -137,7 +135,7 @@ explore C:\bonobo
 
 http://jenkins.local:8080
 
-add crddentials:
+credentials, global, add crddentials:
 
 - username password, jenkins-bonobo
 - secret file, ca, cert, key
@@ -153,16 +151,26 @@ create job
 SCM
 
 - repo url, http://bonobo/Bonobo.Git.Server/docker-windows-workshop.git
-- poll, H/5 * * * *
 
 Bindings
 
 - use secret files: DOCKER_CA, DOCKER_CERT, DOCKER_KEY
 
 
-Build steps
+Build steps - PowerShell
 
-- 01-build.ps1
-- 02-run
-- 03-test
-- 04-push
+```
+.\part-5\01-build.ps1
+```
+
+```
+.\part-5\02-run.ps1
+```
+
+```
+.\part-5\03-test.ps1
+```
+
+```
+.\part-5\04-push.ps1
+```
