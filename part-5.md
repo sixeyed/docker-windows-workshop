@@ -17,8 +17,8 @@
 ```
 ipconfig 
 
-$ipAddress='10.211.55.3'
-$gatewayAddress='172.24.0.1'
+$ipAddress='10.0.0.4'
+$gatewayAddress='172.19.240.1'
 ```
 > change owner of daemon.json to admin & grant access to everyone (temp)
 

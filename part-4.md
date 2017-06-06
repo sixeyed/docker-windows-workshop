@@ -73,12 +73,12 @@ docker container exec app_signup-db_1 powershell `
  "Invoke-SqlCmd -Query 'SELECT * FROM Prospects' -Database SignUp"
 ```
 
-Also look at the contents of `C:\mssql` on the host, and you'll see the `.mdf` and `.ldf` SQL files there. The data is now persisted outside of the SQL container. Bring the app down and then up again, to create a new set of containers:
+Also look at the contents of `C:\mssql` on the host, and you'll see the `.mdf` and `.ldf` SQL files there. The data is now persisted outside of the SQL container. Remove all running containers, and then bring the appup again, to create a new set of containers:
 
 ```
 cd "$env:workshopRoot\app"
 
-docker-compose -f docker-compose-1.6.yml down
+docker container rm -f $(docker container ls --quiet --all)
 
 docker-compose -f docker-compose-1.6.yml up -d
 ```
@@ -105,7 +105,13 @@ docker container run -d -P --name iis `
  microsoft/iis:windowsservercore
 ```
 
-get ip & test
+get ip & test:
+
+```
+$ip = docker inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' iis
+
+iwr -useb http://$ip
+```
 
 kill w3svc:
 
@@ -146,4 +152,10 @@ start "http://$ip"
 check logs
 ```
 docker container logs app_signup-save-handler_1
+docker container logs app_signup-save-handler_2
+docker container logs app_signup-save-handler_3
 ```
+
+compose client only - list containers, not logically grouped.
+
+[Part 5](part-5.md)
