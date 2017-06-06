@@ -18,7 +18,7 @@ Write-Output '*** Sleeping'
 
 Start-Sleep -Seconds 20
 
-$ip = & docker $config inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_signup-app_1
+$ip = & docker $config inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_signup-web_1
 
 Write-Output '*** Checking website'
 
