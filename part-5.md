@@ -1,4 +1,4 @@
-# Part 5 - The Outer Loop - containerized CI
+# Part 5 - The Outer Loop - Containerized CI with Docker
 
 
 
@@ -161,3 +161,8 @@ Bindings
 
 
 Build steps
+
+- 01-build.ps1
+- 02-run
+- 03-test
+- 04-push

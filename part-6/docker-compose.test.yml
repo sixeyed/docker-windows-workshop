@@ -1,0 +1,42 @@
+version: '3.2'
+
+services:
+
+  signup-db:
+    deploy:
+      endpoint_mode: dnsrr
+
+  signup-web:
+    ports:
+      - mode: host
+        target: 80
+        published: 80
+    deploy:
+      endpoint_mode: dnsrr  
+
+  message-queue:
+    deploy:
+      endpoint_mode: dnsrr
+
+  signup-save-handler:
+    deploy:
+      endpoint_mode: dnsrr
+
+  elasticsearch:
+    deploy:
+      endpoint_mode: dnsrr
+
+  kibana:
+    ports:
+      - mode: host
+        target: 5601
+        published: 5601
+    deploy:
+      endpoint_mode: dnsrr  
+
+  signup-index-handler:
+    deploy:
+      endpoint_mode: dnsrr
+
+networks:
+  app-net:

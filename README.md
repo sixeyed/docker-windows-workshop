@@ -23,5 +23,5 @@ Then we'll follow along with these. For a morning workshop, we'll do Parts 1-3. 
 - [Part 3](part-3.md) - modernizing the application architecture
 
 - [Part 4](part-5.md) - resilience and scalability with Docker Compose
-- [Part 5](part-5.md) - ci
+- [Part 5](part-5.md) - The Outer Loop - Containerized CI with Docker
 - [Part 6](part-6.md) - swarm mode

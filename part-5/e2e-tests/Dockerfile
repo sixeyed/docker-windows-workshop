@@ -2,10 +2,10 @@
 FROM sixeyed/msbuild:netfx-4.5.2-10.0.14393.1198 AS builder
 
 WORKDIR C:\src\SignUp.EndToEndTests
-COPY src\SignUp\SignUp.EndToEndTests\packages.config .
+COPY signup\src\SignUp.EndToEndTests\packages.config .
 RUN nuget restore packages.config -PackagesDirectory ..\packages
 
-COPY src\SignUp C:\src
+COPY signup\src C:\src
 RUN msbuild SignUp.EndToEndTests.csproj /p:OutputPath=C:\out\tests\EndToEndTests
 
 # test runner
