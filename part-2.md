@@ -12,7 +12,7 @@ In this section we have an existing app, already packaged as an MSI. We'll Docke
 
 It's easy to package an MSI into a Docker image - use `COPY` to copy the MSI into the image, and `RUN` to install the application using `msiexec`, which is already bundled in the Windows base image.
 
-Version 1.0 of our demo app is ready to go - check out the [Dockerfile](part-2/v1.0/Dockerfile). 
+Version 1.0 of our demo app is ready to go - check out the [Dockerfile](part-2/web-1.0/Dockerfile). 
 
 Packaging the app with Docker is the same `build` command - you'll use an image tag to identify the version:
 
@@ -48,7 +48,7 @@ Version 1.0 has a pretty basic UI. Next you'll upgrade to a new app release.
 
 ## <a name="2"></a>Step 2. Update the ASP.NET site with a new image version
 
-For the new app version there's a new MSI. The [Dockerfile](part-2/v1.1/Dockerfile) is exactly the same as v1.0, just using a different MSI. This scenario is where you have a new application release but you want to keep the same underlying Windows version.
+For the new app version there's a new MSI. The [Dockerfile](part-2/web-1.1/Dockerfile) is exactly the same as v1.0, just using a different MSI. This scenario is where you have a new application release but you want to keep the same underlying Windows version.
 
 Build the new app version:
 

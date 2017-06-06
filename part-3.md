@@ -1,6 +1,6 @@
 # Part 3 - Modernizing .NET apps - the architecture
 
-In this section we have an existing app, already packaged as an MSI. We'll Dockerize a few versions of the app, seeing how to do service updates and the benefits of Dockerfiles over MSIs.
+In this section we'll take the ASP.NET app and modernize it using Docker. We'll take a feature-driven approach to breaking up the monolithic application, splitting the functionality across multiple containers and using Docker for the plumbing. 
 
 ## Steps
 
@@ -24,7 +24,7 @@ First you need to change some code. Open`.\signup\src\SignUp.Web\SignUp.aspx.cs`
 PublishProspectSignedUpEvent(prospect);
 ```
 
-That replaces the synchronous SQL insert with message publishing. You can see the code for the message handler which subscribes to the message in [Program.cs](src/ProductLaunch/ProductLaunch.MessageHandlers.SaveProspect/Program.cs) - it uses the exact same `SaveProspect` code lifted from the web app. The message handler will be packaged into a new image with this [Dockerfile](part-3/v1.3/save-handler/Dockerfile).
+That replaces the synchronous SQL insert with message publishing. You can see the code for the message handler which subscribes to the message in [Program.cs](src/ProductLaunch/ProductLaunch.MessageHandlers.SaveProspect/Program.cs) - it uses the exact same `SaveProspect` code lifted from the web app. The message handler will be packaged into a new image with this [Dockerfile](part-3/web-1.3/save-handler/Dockerfile).
 
 You need to build a new version of the web image, and a new message handler image:
 
@@ -142,4 +142,4 @@ Now you'll see the awesome new site design. You can still click through to the o
 
 ## Wrap Up
 
-That's it for Part 3. In [Part 4](part-4.md) we'll look at resilience and scale.
+That's it for Part 3. In [Part 4](part-4.md) we'll look at resilience and scale (and we'll go back to the previous homepage).

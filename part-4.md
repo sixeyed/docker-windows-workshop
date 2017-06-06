@@ -8,7 +8,6 @@ In this part we'll see how to use Docker Compose to scale our app and make the c
 * [2. Set application services to restart when Docker starts](#2)
 * [3. Scale message handlers up to increase throughput](#3)
 
-
 ## <a name="1"></a>Step 1. Add persistent storage to SQL Server
 
 Every time we restart the SQL Server container, any data stored in the database is lost. Docker images are read-only so they can be shared - writing data in a container doesn' affect the image. Each container adds a writeable layer on top of the image layers for its own data. When you remove the container you lose the data.
@@ -90,14 +89,11 @@ docker container exec app_signup-db_1 powershell `
  "Invoke-SqlCmd -Query 'SELECT * FROM Prospects' -Database SignUp"
 ```
 
-
->>> TO HERE
-
 ## <a name="2"></a>2. Set application services to restart when Docker starts
 
-restart based on exit condition, not external commands.
+Docker volumes allow data to persist outside of the container lifecycle. Containers stop when the process inside them stops - but you can set up containers to automatically restart if the application ends.
 
-sample:
+We'll run a simple example with IIS:
 
 ```
 docker container run -d -P --name iis `
@@ -105,7 +101,7 @@ docker container run -d -P --name iis `
  microsoft/iis:windowsservercore
 ```
 
-get ip & test:
+The `restart` option means that if the IIS Windows Service stops and the container exits, it will be autimatically restarted. Check the site by grabbing the container's IP address:
 
 ```
 $ip = docker inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' iis
@@ -113,7 +109,7 @@ $ip = docker inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' ii
 iwr -useb http://$ip
 ```
 
-kill w3svc:
+Now kill the IIS Windows Service:
 
 ```
 docker container ls 
@@ -123,8 +119,9 @@ docker exec iis powershell Stop-Service w3svc
 docker container ls 
 ```
 
-check out 1.7 yaml. Upgrade to 1.7:
+If you compare the two container listings, you'll see the container has been restarted, it has only been running for a few seconds in the second list. It's the same container. but Docker executed the startup command again when the container exited.
 
+In [docker-compose-1.7.yaml](app/docker-compose-1.7.yaml) I've added the `restart` option to the application services. It works in the same way with Docker Compose:
 
 ```
 cd "$env:workshopRoot\app"
@@ -134,6 +131,10 @@ docker-compose -f docker-compose-1.7.yml up -d
 
 ## <a name="3"></a>3. Scale message handlers up to increase throughput
 
+Compose is a management tool for multiple containers running on a single Docker node. You define services rather than individual containers, so that you can run multiple instances of the same workload.
+
+The message handlers are good candidates for scaling up - multiple containers will share the workload. Scale up the SQL Server handler to 3 instances:
+
 ```
 cd "$env:workshopRoot\app"
 
@@ -142,20 +143,23 @@ docker-compose -f docker-compose-1.7.yml scale signup-save-handler=3
 docker container ls
 ```
 
-enter some data
+Now browse to the site and enter some prospects:
 
 ```
 $ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_signup-web_1
 start "http://$ip"
 ```
 
-check logs
+Check the container logs, and you'll see the prospect signup messages have been distributed among the three containers:
+
 ```
 docker container logs app_signup-save-handler_1
 docker container logs app_signup-save-handler_2
 docker container logs app_signup-save-handler_3
 ```
 
-compose client only - list containers, not logically grouped.
+Compose is a useful tool for verifying distributed solutions on a single machine. It's a client-side tool; when it creates services Docker only sees them as a set of unrelated containers.
 
-[Part 5](part-5.md)
+## Next Up
+
+We'll make use of another feature of compose in [Part 5](part-5.md), when we build out a full CI pipeline, with all the parts running in Docker containers on Windows.

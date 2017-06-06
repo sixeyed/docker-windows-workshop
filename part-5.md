@@ -1,6 +1,6 @@
-# Part 5 - The Outer Loop - Containerized CI with Docker
+# Part 5 - Containerized CI (and CD) with Docker
 
-
+It's very simple to configure a full CI system using Docker - where the source control, automation server and build agents all run in containers. 
 
 ## Steps
 
