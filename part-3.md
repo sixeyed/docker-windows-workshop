@@ -142,4 +142,4 @@ Now you'll see the awesome new site design. You can still click through to the o
 
 ## Wrap Up
 
-That's it for Part 3. In [Part 4](part-4.md) we'll look at storing state in Docker, using volumes.
+That's it for Part 3. In [Part 4](part-4.md) we'll look at resilience and scale.
