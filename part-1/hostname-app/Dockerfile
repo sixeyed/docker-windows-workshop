@@ -1,2 +1,2 @@
 FROM microsoft/aspnet
-COPY default.aspx C:\inetpub\wwwroot
+COPY default.aspx C:/inetpub/wwwroot

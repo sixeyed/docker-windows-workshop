@@ -27,10 +27,6 @@ HEALTHCHECK --interval=5s `
      else {return 1}; `
     } catch { return 1 }
 
-ENV MESSAGE_QUEUE_URL="nats://message-queue:4222" `
-    DB_MAX_RETRY_COUNT="5" `
-    DB_MAX_DELAY_SECONDS="10"
-
 ENTRYPOINT ["powershell", "C:\\bootstrap.ps1"]
 
 COPY .\signup\docker\bootstrap.ps1 C:\
