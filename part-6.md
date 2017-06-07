@@ -13,7 +13,7 @@
 ## <a name="1"></a>Step 1. Switch to Swarm Mode
 
 ```
-docker swarm init --listen-adder 127.0.0.1 --advertise-addr 127.0.0.1
+docker swarm init --listen-addr 127.0.0.1 --advertise-addr 127.0.0.1
 ```
 
 create service:
