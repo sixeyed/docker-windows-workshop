@@ -91,7 +91,7 @@ deploy the stack:
 ```
 cd $Env:workshopRoot\part-6
 
-docker stack deploy docker-stack.yml signup
+docker stack deploy -c docker-stack.yml signup
 ```
 
 check

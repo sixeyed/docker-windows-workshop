@@ -1,10 +1,6 @@
 
 docker network create --driver overlay signup-net
 
-docker volume create signup-mssql
-
-docker volume create signup-es
-
 docker service create `
  --network signup-net --endpoint-mode dnsrr `
  --env-file db-credentials.env `
