@@ -127,7 +127,7 @@ Now check the processes running in the container:
 Get-Process
 ```
 
-You'll see one of the processes is `sqlservr`, which is the database engine. There are also two `powershell` processes, one is the contaienr startup process and the other is this PowerShell session. Compare the user accounts for those processes:
+You'll see one of the processes is `sqlservr`, which is the database engine. There are also two `powershell` processes, one is the container startup process and the other is this PowerShell session. Compare the user accounts for those processes:
 
 ```
 Get-Process -Name sqlservr -IncludeUserName
@@ -147,7 +147,7 @@ You'll see the container processes, with the same process IDs, but with a blank 
 - Windows Server container processes run natively on the host, which is why they are so efficient
 - container processes run as an unknown user on the host, so a rogue container process wouldn't be able to access host files or other processes.
 
-Close the second PowerShell window, and tyope `exit` in the first to exit the interactive Docker session. 
+Close the second PowerShell window, and type `exit` in the first to exit the interactive Docker session. 
 
 Now clean up, by removing all containers:
 
