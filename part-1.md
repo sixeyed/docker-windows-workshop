@@ -225,7 +225,7 @@ When the browsers have finished loading, you'll see that each site displays a di
 Get-Process -Name w3wp | select Id, Name, WorkingSet
 ```
 
-On my Azure VM, the wroker processes average 50MB of RAM and 5 seconds of CPU time.
+On my Azure VM, the worker processes average 50MB of RAM and 5 seconds of CPU time.
 
 This is a simple ASP.NET website running in Docker, with just two lines of Dockerfile. But it has some drawbacks. First, there are no logs - IIS stores request logs in the container filesystem, but Docker is only listening for logs on the standard output from the startup program. There's no automatic relay from the log files to the console output, so there are no log entries in the containers:
 
@@ -233,7 +233,7 @@ This is a simple ASP.NET website running in Docker, with just two lines of Docke
 docker logs app-0
 ```
 
-The other issue is that it took a few seconds for each website to show. That's because the IIS service doesn't start a wroker process until the first HTTP request come in. The first website user takes the hit of starting the worker process. We can use a more advanced Dockerfile to address those issues.
+The other issue is that it took a few seconds for each website to show. That's because the IIS service doesn't start a worker process until the first HTTP request come in. The first website user takes the hit of starting the worker process. We can use a more advanced Dockerfile to address those issues.
 
 
 ## Build and run a more complex website image
@@ -244,7 +244,7 @@ For the next example, the [Dockerfile](part-1/tweet-app/Dockerfile) is a better 
 - it uses the [SHELL](https://docs.docker.com/engine/reference/builder/#shell) instruction to switch to PowerShell when building the Dockerfile, so the commands to run are all in PowerShell
 - it adds the IIS Windows feature and exposes port 80, setting up the web server and allowing traffic into containers on port 80
 - it configures IIS to write all log output to a single file, using the `Set-WebConfigurationProperty` cmdlet
-- it copies the [start.ps1](tweet-app/start.ps1) startup script and [index.html](tweet-app/index.html) files from the host into the image
+- it copies the [start.ps1](part-1/tweet-app/start.ps1) startup script and [index.html](part-1/tweet-app/index.html) files from the host into the image
 - it specifies `start.ps1` as the [ENTRYPOINT](https://docs.docker.com/engine/reference/builder/#entrypoint) to run when containers start. The script starts the IIS Windows Service and relays the log file entries to the console
 - it adds a [HEALTHCHECK](https://docs.docker.com/engine/reference/builder/#healthcheck) which makes an HTTP GET request to the site and returns whether it got a 200 response code
 
