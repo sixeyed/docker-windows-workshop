@@ -20,9 +20,9 @@ namespace SignUp.MessageHandlers.IndexProspect
 
         static void Main(string[] args)
         {
-            var server = new MetricServer(50505, new IOnDemandCollector[] { new DotNetStatsCollector() });
-            server.Start();
-            Console.WriteLine($"Metrics server listening on port 50505");
+            //var server = new MetricServer(50505, new IOnDemandCollector[] { new DotNetStatsCollector() });
+            //server.Start();
+            //Console.WriteLine($"Metrics server listening on port 50505");
 
             Console.WriteLine($"Initializing Elasticsearch. url: {Config.ElasticsearchUrl}");
             Index.Setup();
