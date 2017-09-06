@@ -1,5 +1,5 @@
 # escape=`
-FROM microsoft/aspnet:windowsservercore-10.0.14393.1066
+FROM microsoft/aspnet:windowsservercore-10.0.14393.1480
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
 RUN Set-ItemProperty -path 'HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters' -Name ServerPriorityTimeLimit -Value 0 -Type DWord

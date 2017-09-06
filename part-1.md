@@ -303,3 +303,9 @@ You can browse to *https://hub.docker.com/r/_my-docker-Id_/* and see your newly-
 ## Next Up
 
 That's it for Part 1. Next in [Part 2](part-2.md).we'll get stuck into modernizing an old ASP.NET app, by bringing it to a modern application platform.
+
+Before we move on, let's clear up all the running containers:
+
+```
+docker container rm --force $(docker container ls --quiet --all)
+```
