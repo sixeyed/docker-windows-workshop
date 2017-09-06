@@ -1,5 +1,5 @@
 # escape=`
-FROM sixeyed/msbuild:netfx-4.5.2-10.0.14393.1198 AS builder
+FROM sixeyed/msbuild:netfx-4.5.2 AS builder
 
 WORKDIR C:\src\SignUp.MessageHandlers.SaveProspect
 COPY signup\src\SignUp.MessageHandlers.SaveProspect\packages.config .
@@ -9,7 +9,7 @@ COPY signup\src C:\src
 RUN msbuild SignUp.MessageHandlers.SaveProspect.csproj /p:OutputPath=c:\out\save-prospect\SaveProspectHandler
 
 # app image
-FROM microsoft/windowsservercore:10.0.14393.1198
+FROM microsoft/windowsservercore:10.0.14393.1593
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
 RUN Set-ItemProperty -path 'HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters' -Name ServerPriorityTimeLimit -Value 0 -Type DWord
