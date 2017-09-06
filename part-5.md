@@ -48,14 +48,14 @@ cd "$env:workshop\part-5\db"
 docker image build --tag "$env:dockerId/signup-db" .
 ```
 
-I've added a volume mount to the database service definition in [docker-compose-1.6.yml](app/docker-compose-1.6.yml). Create a directory on the host for the SQL Server data, and bring up the application: 
+I've added a volume mount to the database service definition in [docker-compose-1.7.yml](app/docker-compose-1.7.yml). Create a directory on the host for the SQL Server data, and bring up the application: 
 
 ```
 mkdir C:\mssql
 
 cd "$env:workshop\app"
 
-docker-compose -f docker-compose-1.6.yml up -d
+docker-compose -f docker-compose-1.7.yml up -d
 ```
 
 The database container is replaced, as the definition has changed. The app container is replace too, because the database dependency has been updated. Browse to the app:
@@ -79,7 +79,7 @@ cd "$env:workshop\app"
 
 docker container rm -f $(docker container ls --quiet --all)
 
-docker-compose -f docker-compose-1.6.yml up -d
+docker-compose -f docker-compose-1.7.yml up -d
 ```
 
 The new SQL container attaches the database files on the host, so the existing data is intact. Repeat the SQL query and you'll see your prospect data is still there:
@@ -121,12 +121,12 @@ docker container ls
 
 If you compare the two container listings, you'll see the container has been restarted, it has only been running for a few seconds in the second list. It's the same container. but Docker executed the startup command again when the container exited.
 
-In [docker-compose-1.7.yaml](app/docker-compose-1.7.yaml) I've added the `restart` option to the application services. It works in the same way with Docker Compose:
+In [docker-compose-1.8.yaml](app/docker-compose-1.8.yaml) I've added the `restart` option to the application services. It works in the same way with Docker Compose:
 
 ```
 cd "$env:workshop\app"
 
-docker-compose -f docker-compose-1.7.yml up -d
+docker-compose -f docker-compose-1.8.yml up -d
 ```
 
 ## <a name="3"></a>3. Scale message handlers up to increase throughput
@@ -138,7 +138,7 @@ The message handlers are good candidates for scaling up - multiple containers wi
 ```
 cd "$env:workshop\app"
 
-docker-compose -f docker-compose-1.7.yml scale signup-save-handler=3
+docker-compose -f docker-compose-1.8.yml scale signup-save-handler=3
 
 docker container ls
 ```

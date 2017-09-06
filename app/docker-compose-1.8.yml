@@ -8,6 +8,7 @@ services:
       - C:\mssql:C:\data
     env_file:
       - db-credentials.env
+    restart: always
     networks:
       - app-net
 
@@ -20,11 +21,13 @@ services:
     depends_on:
       - signup-db
       - message-queue
+    restart: always
     networks:
       - app-net
 
   message-queue:
     image: nats:nanoserver
+    restart: always
     networks:
       - app-net
 
@@ -35,6 +38,7 @@ services:
     depends_on:
       - signup-db
       - message-queue
+    restart: always
     networks:
       - app-net
 
@@ -42,6 +46,7 @@ services:
     image: sixeyed/elasticsearch:nanoserver
     environment:
       - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    restart: always
     networks:
       - app-net
 
@@ -51,6 +56,7 @@ services:
       - "5601"
     depends_on:
       - elasticsearch
+    restart: unless-stopped
     networks:
       - app-net
 
@@ -59,6 +65,7 @@ services:
     depends_on:
       - elasticsearch
       - message-queue
+    restart: always
     networks:
       - app-net
 

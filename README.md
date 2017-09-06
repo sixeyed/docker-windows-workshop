@@ -33,7 +33,7 @@ For a morning workshop, we'll do Parts 1-4:
 - [Part 1](part-1.md) - running Docker on Windows
 - [Part 2](part-2.md) - packaging an existing ASP.NET app in Docker
 - [Part 3](part-3.md) - modernizing the ASP.NET app with Docker
-- [Part 4](part-4.md) - adding monitoring with Prometheus
+- [Part 4](part-4.md) - preparing for production with instrumentation
 
 For a full day workshop, we continue in the afternoon with parts 5-7.
 
