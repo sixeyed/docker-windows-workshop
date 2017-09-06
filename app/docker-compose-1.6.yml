@@ -1,0 +1,87 @@
+version: '3.1'
+
+services:
+  
+  signup-db:
+    image: microsoft/mssql-server-windows-express
+    environment: 
+      - ACCEPT_EULA=Y
+    env_file:
+      - db-credentials.env
+    networks:
+      - app-net
+
+  signup-web:
+    image: ${dockerId}/signup-web:1.4
+    ports:
+      - "80:80"
+    env_file:
+      - db-credentials.env
+    depends_on:
+      - signup-db
+      - message-queue
+      - homepage
+    networks:
+      - app-net
+
+  message-queue:
+    image: nats:nanoserver
+    networks:
+      - app-net
+
+  signup-save-handler:
+    image: ${dockerId}/signup-save-handler
+    env_file:
+      - db-credentials.env
+    depends_on:
+      - signup-db
+      - message-queue
+    networks:
+      - app-net
+
+  elasticsearch:
+    image: sixeyed/elasticsearch:nanoserver
+    environment:
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    networks:
+      - app-net
+
+  kibana:
+    image: sixeyed/kibana:nanoserver
+    ports:
+      - "5601"
+    depends_on:
+      - elasticsearch
+    networks:
+      - app-net
+
+  signup-index-handler:
+    image: ${dockerid}/signup-index-handler
+    depends_on:
+      - elasticsearch
+      - message-queue
+    networks:
+      - app-net
+
+  prometheus:
+    image: ${dockerid}/signup-prometheus
+    depends_on:
+      - signup-web
+      - signup-index-handler
+      - signup-save-handler
+    networks:
+      - app-net
+
+  grafana:
+    image: ${dockerid}/signup-grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - app-net
+
+networks:
+  app-net:
+    external:
+      name: nat

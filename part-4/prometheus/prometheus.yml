@@ -1,0 +1,15 @@
+global:
+  scrape_interval: 5s
+  external_labels:
+    monitor: 'local-monitor'
+
+scrape_configs:
+  - job_name: 'web'
+    static_configs:
+      - targets: ['signup-web:50505']
+  - job_name: 'index-handler'
+    static_configs:
+      - targets: ['signup-index-handler:50505']
+  - job_name: 'save-handler'
+    static_configs:
+      - targets: ['signup-save-handler:50505']
