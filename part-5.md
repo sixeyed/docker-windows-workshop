@@ -38,12 +38,12 @@ IIS running inside the container has created a log file in the `LogFiles` direct
 
 > It's slightly more complicated with SQL Server because you can't mount a directory from the host if the directory on the image already contains data. You can't override the existing SQL Server data directory, so instead we'll make a custom SQL Server image.
 
-The [Dockerfile](part-4/db/Dockerfile) for the database image is based from Microsoft' SQL Server image. It adds an [initialization script](part-4/db/Initialize-Database.ps1) as the entrypoint. That script creates the SignUp database a known file location.
+The [Dockerfile](part-5/db/Dockerfile) for the database image is based from Microsoft' SQL Server image. It adds an [initialization script](part-5/db/Initialize-Database.ps1) as the entrypoint. That script creates the SignUp database a known file location.
 
 Build the image, which is now suited to using data volumes:
 
 ```
-cd "$env:workshopRoot\part-4\db"
+cd "$env:workshop\part-5\db"
 
 docker image build --tag "$env:dockerId/signup-db" .
 ```
@@ -53,7 +53,7 @@ I've added a volume mount to the database service definition in [docker-compose-
 ```
 mkdir C:\mssql
 
-cd "$env:workshopRoot\app"
+cd "$env:workshop\app"
 
 docker-compose -f docker-compose-1.6.yml up -d
 ```
@@ -75,7 +75,7 @@ docker container exec app_signup-db_1 powershell `
 Also look at the contents of `C:\mssql` on the host, and you'll see the `.mdf` and `.ldf` SQL files there. The data is now persisted outside of the SQL container. Remove all running containers, and then bring the appup again, to create a new set of containers:
 
 ```
-cd "$env:workshopRoot\app"
+cd "$env:workshop\app"
 
 docker container rm -f $(docker container ls --quiet --all)
 
@@ -124,7 +124,7 @@ If you compare the two container listings, you'll see the container has been res
 In [docker-compose-1.7.yaml](app/docker-compose-1.7.yaml) I've added the `restart` option to the application services. It works in the same way with Docker Compose:
 
 ```
-cd "$env:workshopRoot\app"
+cd "$env:workshop\app"
 
 docker-compose -f docker-compose-1.7.yml up -d
 ```
@@ -136,7 +136,7 @@ Compose is a management tool for multiple containers running on a single Docker 
 The message handlers are good candidates for scaling up - multiple containers will share the workload. Scale up the SQL Server handler to 3 instances:
 
 ```
-cd "$env:workshopRoot\app"
+cd "$env:workshop\app"
 
 docker-compose -f docker-compose-1.7.yml scale signup-save-handler=3
 

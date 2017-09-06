@@ -172,7 +172,7 @@ Have a look at the [Dockerfile for this app](part-1/hostname-app/Dockerfile), wh
 The Dockerfile copies a sinple `.aspx` file into the content directory for the default IIS website. Run `docker image build` to execute the steps in the Dockerfile and package the app:
 
 ```
-cd "$Env:workshoproot\part-1\hostname-app"
+cd "$env:workshop\part-1\hostname-app"
 docker image build --tag "$Env:dockerId/hostname-app" .
 ```
 
@@ -251,7 +251,7 @@ For the next example, the [Dockerfile](part-1/tweet-app/Dockerfile) is a better 
 To build the Dockerfile, change to the `tweet-app` directory and run the `build` command:
 
 ```
-cd "$Env:workshoproot\part-1\tweet-app"
+cd "$env:workshop\part-1\tweet-app"
 docker image build --tag "$Env:dockerId/tweet-app" .
 ```
 

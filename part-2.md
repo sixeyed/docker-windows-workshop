@@ -17,14 +17,14 @@ Version 1.0 of our demo app is ready to go - check out the [Dockerfile](part-2/w
 Packaging the app with Docker is the same `build` command - you'll use an image tag to identify the version:
 
 ```
-cd "$Env:workshoproot\part-2\web-1.0"
+cd "$env:workshop\part-2\web-1.0"
 docker image build --tag $Env:dockerID/signup-web:1.0 .
 ```
 
 The app uses SQL Server, but rather than start individual containers, you'll use [Docker Compose](https://docs.docker.com/compose/) to organize all the parts of the solution.
 
 ```
-cd "$Env:workshoproot\app"
+cd "$env:workshop\app"
 docker-compose -f docker-compose-1.0.yml up -d
 ```
 
@@ -53,7 +53,7 @@ For the new app version there's a new MSI. The [Dockerfile](part-2/web-1.1/Docke
 Build the new app version:
 
 ```
-cd "$Env:workshoproot\part-2\web-1.1"
+cd "$env:workshop\part-2\web-1.1"
 
 docker image build --tag $Env:dockerId/signup-web:1.1 .
 ```
@@ -61,7 +61,7 @@ docker image build --tag $Env:dockerId/signup-web:1.1 .
 And use Docker Compose to upgrade the solution:
 
 ```
-cd "$Env:workshoproot\app"
+cd "$env:workshop\app"
 docker-compose -f docker-compose-1.1.yml up -d
 ```
 
@@ -96,7 +96,7 @@ It's also clear from the Dockerfile exactly how the app is built and installed, 
 Multi-stage builds run in the same way, but only the final image is tagged:
 
 ```
-cd "$Env:workshoproot"
+cd "$env:workshop"
 
 docker image build --tag $Env:dockerId/signup-web:1.2 -f part-2\web-1.2\Dockerfile .
 ```
@@ -107,7 +107,7 @@ docker image build --tag $Env:dockerId/signup-web:1.2 -f part-2\web-1.2\Dockerfi
 As before, upgrade the running application using Docker Compose:
 
 ```
-cd "$Env:workshoproot\app"
+cd "$env:workshop\app"
 
 docker-compose -f docker-compose-1.2.yml up -d
 ```

@@ -64,7 +64,7 @@ docker service rm pinger
 ## <a name="2"></a>Step 2. Deploy App Services
 
 ```
-cd $env:workshopRoot\part-6
+cd $env:workshop\part-7
 
 .\create-services.ps1
 ```
@@ -81,7 +81,7 @@ docker service rm $(docker service ls -q)
 build the stack file:
 
 ```
-cd $Env:workshopRoot\part-6
+cd $env:workshop\part-7
 
 docker-compose -f docker-compose.yml -f docker-compose.test.yml config > docker-stack.yml
 ```
@@ -89,7 +89,7 @@ docker-compose -f docker-compose.yml -f docker-compose.test.yml config > docker-
 deploy the stack:
 
 ```
-cd $Env:workshopRoot\part-6
+cd $env:workshop\part-7
 
 docker stack deploy -c docker-stack.yml signup
 ```

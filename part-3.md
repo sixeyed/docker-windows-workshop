@@ -29,7 +29,7 @@ That replaces the synchronous SQL insert with message publishing. You can see th
 You need to build a new version of the web image, and a new message handler image:
 
 ```
-cd "$Env:workshopRoot"
+cd "$env:workshop"
 
 docker image build --tag $Env:dockerId/signup-web:1.3 -f part-3\web-1.3\Dockerfile .
 
@@ -40,7 +40,7 @@ docker image build --tag $Env:dockerId/signup-save-handler -f part-3\save-handle
 Then upgrade the application in the same way. This will replace the web app container and create new containers for the message queue and the handler. In the [v1.3 Docker Compose file](app/docker-compose-1.3.yml) you'll see we're using the [official image](https://hub.docker.com/_/nats/) for the [NATS](https://nats.io/) message queue:
 
 ```
-cd "$Env:workshopRoot\app"
+cd "$env:workshop\app"
 
 docker-compose -f .\docker-compose-1.3.yml up -d
 ```
@@ -72,7 +72,7 @@ We'll be running [Elasticsearch](https://www.elastic.co/products/elasticsearch) 
 The code for that is in another [Program.cs](src/ProductLaunch/ProductLaunch.MessageHandlers.IndexProspect/Program.cs). You'll build it in the same way, using this [Dockerfile](part-3/v1.4/index-handler/Dockerfile):
 
 ```
-cd $Env:workshopRoot
+cd $env:workshop
 
 docker image build --tag $Env:dockerId/signup-index-handler -f part-3\index-handler\Dockerfile .
 
@@ -81,7 +81,7 @@ docker image build --tag $Env:dockerId/signup-index-handler -f part-3\index-hand
 And now when you ugrade the application to the [v1.4 Docker Compose file](app/docker-compose-1.4.yml), none of the existing containers get replaced - their configuration hasn't changed. Only the new containers get created:
 
 ```
-cd "$Env:workshopRoot\app"
+cd "$env:workshop\app"
 
 docker-compose -f .\docker-compose-1.4.yml up -d
 ```
@@ -116,7 +116,7 @@ The last update we'll do is to replace the design of landing page, rendering it 
 There's a new image to build for the homepage component, which is just a static HTML site built with this [Dockerfile](part-3/v1.5/homepage/Dockerfile):
 
 ```
-cd "$Env:workshopRoot\part-3\homepage"
+cd "$env:workshop\part-3\homepage"
 
 docker image build --tag $Env:dockerId/signup-homepage .
 ```
@@ -126,7 +126,7 @@ In the [v1.5 Docker Compose file](app/docker-compose-1.5.yml) there's a new envi
 Upgrade the application with compose again:
 
 ```
-cd "$Env:workshopRoot\app"
+cd "$env:workshop\app"
 
 docker-compose -f .\docker-compose-1.5.yml up -d
 ```

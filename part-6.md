@@ -59,7 +59,7 @@ We'll use the [Jenkins] automation server to run the CI job to build the Docker 
 Start by building a basic Jenkins Docker image, which contains Git and Docker clients, from this [Dockerfile]. That image will be used to prepare the full Jenkins setup:
 
 ```
-cd $env:workshopRoot\part-5\jenkins
+cd $env:workshop\part-6\jenkins
 
 docker image build --tag $env:dockerId/jenkins:prep .
 ```
@@ -124,7 +124,7 @@ mkdir C:\registry
 
 mkdir C:\bonobo
 
-cd $env:workshopRoot\part-5\infrastructure
+cd $env:workshop\part-6\infrastructure
 
 docker-compose up -d
 ```
@@ -152,7 +152,7 @@ Then create a new repository for the source code - call it `docker-windows-works
 Now push the local source code on your machine to the Git server running in Docker:
 
 ```
-cd $env:workshopRoot
+cd $env:workshop
 
 git remote add bonobo.local http://bonobo.local/Bonobo.Git.Server/docker-windows-workshop.git
 
@@ -192,17 +192,17 @@ Bindings
 Build steps - PowerShell
 
 ```
-.\part-5\01-build.ps1
+.\part-6\01-build.ps1
 ```
 
 ```
-.\part-5\02-run.ps1
+.\part-6\02-run.ps1
 ```
 
 ```
-.\part-5\03-test.ps1
+.\part-6\03-test.ps1
 ```
 
 ```
-.\part-5\04-push.ps1
+.\part-6\04-push.ps1
 ```
