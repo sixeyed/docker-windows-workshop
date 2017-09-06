@@ -48,7 +48,13 @@ In the same PowerShell prompt, save your Docker ID into an environment variable:
 $env:dockerId='my-docker-id'
 ```
 
-> Be sure to use **your** Docker ID - mine is `sixeyed`, so I run `$Env:dockerId='sixeyed'`
+> Be sure to use **your** Docker ID - mine is `sixeyed`, so I run `$env:dockerId='sixeyed'`
+
+Now login with you Docker credentials:
+
+```
+docker login --username $env:dockerId
+```
 
 Then check the Docker setup by running:
 

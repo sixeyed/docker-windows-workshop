@@ -65,7 +65,7 @@ Run some commands to see how the Windows Server Core image is built:
 - `Get-Process` - shows all running processes in the container. There are a number of Windows Services, and the PowerShell exe
 - `Get-WindowsFeature` - shows the Windows feature which are available or already installed
 
-Now run `exit` to leave the PowerShell session, which stops the container process. Using the `--rm` flag means Docker now removes that container.
+Now run `exit` to leave the PowerShell session, which stops the container process. Using the `--rm` flag means Docker now removes that container (if you run `docker container ls --all` again, you won't see the Windows Server Core container).
 
 Interactive containers are useful when you are putting together your own image. You can run a container and verify all the steps you need to deploy your app, and capture them in a Dockerfile. 
 
@@ -80,11 +80,11 @@ Run it in the background as a detached container:
 ```
 docker container run --detach --name sql `
  --env ACCEPT_EULA=Y `
- --env sa_password=ImAtEltonsDockerWindowsWorkshop!!! `
+ --env sa_password=DockerCon!!! `
  microsoft/mssql-server-windows-express
 ```
 
-> If you don't have this image, Docker will pull it when you first run a container. 
+> The workshop VM pre-loads a set of Docker images. If you don't have a local copy of an image, Docker will pull it when you first run a container. 
 
 As long as the SQL Server process keeps running, Docker will keep the container running in the background.
 
@@ -95,9 +95,9 @@ docker container logs sql
 docker container top sql
 ```
 
-The SQL Server instance is isolated in the container, because no ports have been made available to the host. Traffic can't get into Docker containers from the host, unkless ports are explicitly published. You can't connect an external client - like SQL Server Management Studio - to this container (we'll see how to do that later on). Other containers can access the SQL Server container, and you can run commands inside the container through Docker.
+The SQL Server instance is isolated in the container, because no ports have been made available to the host. Traffic can't get into Docker containers from the host, unless ports are explicitly published. You can't connect an external client - like SQL Server Management Studio - to this container (we'll see how to do that later on). Other containers in the same Docker network can access the SQL Server container, and you can run commands inside the container through Docker.
 
-Check what the time is in the database container:
+Check what the time is inside the database container:
 
 ```
 docker container exec sql `
@@ -119,7 +119,7 @@ ls 'C:\Program Files'
 ls 'C:\Program Files\Microsoft SQL Server\MSSQL13.SQLEXPRESS\MSSQL\data'
 ```
 
-The `.mdf` and `.ldf` files are stored inside the container. You can run DDL and DML statements to store data, but when you remove the container, the data is lost. For stateful services like database, you'll want to run them with the data physically stored outside of the container, so you can replace the container but retain the data. I'll cover that later in the day.
+The `.mdf` and `.ldf` files are stored inside the container. You can run SQL statements to store data, but when you remove the container, the data is lost. For stateful services like database, you'll want to run them with the data physically stored outside of the container, so you can replace the container but retain the data. I'll cover that later in the workshop.
 
 Now check the processes running in the container:
 
@@ -136,13 +136,13 @@ Get-Process -Name powershell -IncludeUserName
 
 The SQL Server process runs under the normal `NT AUTHORITY\SYSTEM` account. All the default user groups and accounts are present in the Windows Server Core Docker image, with all the usual access permissions. The PowerShell processes are running as `User Manager\ContainerAdministrator`. That's the default account for processes running in Windows Docker containers, and it has admin privileges.
 
-On Windows Server 2016, those processes are actually running in isolated environments on the host. Open another PowerShell terminal, and repeat the `Get-Process` cmdlet, but this time you#re listing all the PowerShell processes running on the server:
+On Windows Server 2016, those processes are actually running in isolated environments on the host. Open another PowerShell terminal, and repeat the `Get-Process` cmdlet, but this time you're listing all the PowerShell processes running on the server:
 
 ```
 Get-Process -Name powershell -IncludeUserName
 ```
 
-You'll see the container processes, with the same process IDs, but with a blank username. There are two important takeaways from this:
+You'll see your PowerShell sessions and the two container processes - with the same process IDs listed in the container -but with a blank username. There are two important takeaways from this:
 
 - Windows Server container processes run natively on the host, which is why they are so efficient
 - container processes run as an unknown user on the host, so a rogue container process wouldn't be able to access host files or other processes.
@@ -159,7 +159,7 @@ docker container rm --force $(docker container ls --quiet --all)
 
 Next you'll learn how to package your own Windows apps as Docker images, using a [Dockerfile](https://docs.docker.com/engine/reference/builder/). 
 
-The Dockerfile syntax is simple. In this task you'll walk through two Dockerfiles which package websites to run in Windows Docker containers. The first example is very simple, and the second is more involved. By the end of this task you'll have a good understanding of the main Dockerfile instructions.
+The Dockerfile syntax is straightforward. In this task you'll walk through two Dockerfiles which package websites to run in Windows Docker containers. The first example is very simple, and the second is more involved. By the end of this task you'll have a good understanding of the main Dockerfile instructions.
 
 
 ## Build a simple website image
@@ -173,7 +173,7 @@ The Dockerfile copies a sinple `.aspx` file into the content directory for the d
 
 ```
 cd "$env:workshop\part-1\hostname-app"
-docker image build --tag "$Env:dockerId/hostname-app" .
+docker image build --tag "$env:dockerId/hostname-app" .
 ```
 
 The output shows Docker executing each instruction in the Dockerfile, and tagging the final image with your Docker ID.
@@ -181,19 +181,19 @@ The output shows Docker executing each instruction in the Dockerfile, and taggin
 Run your website using a detached container, just like you did with SQL Server, but this time publishing the HTTP port so traffic can be passed from the host into the container:
 
 ```
-docker container run --detach --publish 80:80 --name app "$Env:dockerId/hostname-app"
+docker container run --detach --publish 80:80 --name app "$env:dockerId/hostname-app"
 ```
 
-Any external traffic coming into the server on port 80 will noe be directed into the container. When you're connected to the host, to browse the website you need to fetch the IP address of the container:
+Any external traffic coming into the server on port 80 will now be directed into the container. When you're connected to the host, to browse the website you need to fetch the IP address of the container:
 
 ```
-$ip = docker inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app
+$ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app
 ```
 
 Now you can open the browser at the container's IP address and see the ASP.NET site:
 
 ```
-start "http://$ip"
+firefox "http://$ip"
 ```
 
 > You need to use the container IP address locally because Windows doesn't have a full loopback networking stack. You can read more about that [on my blog](https://blog.sixeyed.com/published-ports-on-windows-containers-dont-do-loopback/).
@@ -201,11 +201,11 @@ start "http://$ip"
 
 ## Run multiple instances of your website in containers
 
-Let's see how lightweight the containerized application is. This PowerShell loop starts ten containers from the same website image:
+Let's see how lightweight the containerized application is. This PowerShell loop starts five containers from the same website image:
 
 ```
-for ($i=0; $i -lt 10; $i++) {
-    & docker run --detach --publish-all --name "app-$i" "$Env:dockerId/hostname-app"
+for ($i=0; $i -lt 5; $i++) {
+    & docker container run --detach --publish-all --name "app-$i" "$Env:dockerId/hostname-app"
 }
 ```
 > The `publish-all` flag publishes all the ports from the container to random ports on the host. Only one process can listen on a port, and we're already using port 80 in the previous container. Using random host ports means we can start multiple containers, and access them using port 80 on the container.
@@ -213,36 +213,35 @@ for ($i=0; $i -lt 10; $i++) {
 You can see all the containers running with `docker container ls`. And then run this script to fetch the IP address of each container and open a browser:
 
 ```
-for ($i=0; $i -lt 10; $i++) {
-    $ip = & docker inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' "app-$i"
-    start "http://$ip"
+for ($i=0; $i -lt 5; $i++) {
+    $ip = & docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' "app-$i"
+    firefox "http://$ip"
 }
 ```
 
-When the browsers have finished loading, you'll see that each site displays a different hostname, which is the generated ID for each container. On the host you have ten `w3wp` processes running, and you can see the memory and CPU usage with `Get-Process`:
+When the browsers have finished loading, you'll see that each site displays a different hostname, which is the same as the container ID Docker generates in each case. On the host you have six `w3wp` processes running, and you can see the memory and CPU usage with `Get-Process`:
 
 ```
 Get-Process -Name w3wp | select Id, Name, WorkingSet
 ```
 
-On my Azure VM, the wroker processes average 50MB of RAM and 5 seconds of CPU time.
+On my Azure VM, the wroker processes average around 50MB of RAM and 5 seconds of CPU time.
 
-This is a simple ASP.NET website running in Docker, with just two lines of Dockerfile. But it has some drawbacks. First, there are no logs - IIS stores request logs in the container filesystem, but Docker is only listening for logs on the standard output from the startup program. There's no automatic relay from the log files to the console output, so there are no log entries in the containers:
+This is a simple ASP.NET website running in Docker, with just two lines in a Dockerfile. But it has some drawbacks. First, there are no logs - IIS stores request logs in the container filesystem, but Docker is only listening for logs on the standard output from the startup program. There's no automatic relay from the log files to the console output, so there are no log entries in the containers:
 
 ```
 docker logs app-0
 ```
 
-The other issue is that it took a few seconds for each website to show. That's because the IIS service doesn't start a wroker process until the first HTTP request come in. The first website user takes the hit of starting the worker process. We can use a more advanced Dockerfile to address those issues.
+The other issue is that it took a few seconds for each website to show. That's because the IIS service doesn't start a worker process until the first HTTP request comes in. The first website user takes the hit of starting the worker process. We can use a more advanced Dockerfile to address those issues.
 
 
 ## Build and run a more complex website image
 
 For the next example, the [Dockerfile](part-1/tweet-app/Dockerfile) is a better representation of a real-world script. These are the main features:
 
-- it is based [FROM](https://docs.docker.com/engine/reference/builder/#from) `microsoft/windowsservercore`, so the image will start with a clean Windows Server 2016 deployment
+- it is based [FROM](https://docs.docker.com/engine/reference/builder/#from) `microsoft/iis:windowsservercore`, so the image will start with a clean Windows Server 2016 deployment, with IIS already installed
 - it uses the [SHELL](https://docs.docker.com/engine/reference/builder/#shell) instruction to switch to PowerShell when building the Dockerfile, so the commands to run are all in PowerShell
-- it adds the IIS Windows feature and exposes port 80, setting up the web server and allowing traffic into containers on port 80
 - it configures IIS to write all log output to a single file, using the `Set-WebConfigurationProperty` cmdlet
 - it copies the [start.ps1](tweet-app/start.ps1) startup script and [index.html](tweet-app/index.html) files from the host into the image
 - it specifies `start.ps1` as the [ENTRYPOINT](https://docs.docker.com/engine/reference/builder/#entrypoint) to run when containers start. The script starts the IIS Windows Service and relays the log file entries to the console
@@ -252,24 +251,22 @@ To build the Dockerfile, change to the `tweet-app` directory and run the `build`
 
 ```
 cd "$env:workshop\part-1\tweet-app"
-docker image build --tag "$Env:dockerId/tweet-app" .
+docker image build --tag "$env:dockerId/tweet-app" .
 ```
 
-You'll see output on the screen as Docker runs each instruction in the Dockerfile.
-
-The build command will take a little while to run, as the step to install IIS takes a couple of minutes in Windows. Once it's built you'll see a `Successfully built...` message. If you repeat the `docker build` command again, it will complete in seconds. That's because Docker caches the [image layers](https://docs.docker.com/engine/userguide/storagedriver/imagesandcontainers/) and only runs instructions if the Dockerfile has changed since the cached version.
+You'll see output on the screen as Docker runs each instruction in the Dockerfile. Once it's built you'll see a `Successfully built...` message. If you repeat the `docker image build` command again, it will complete in seconds. That's because Docker caches the [image layers](https://docs.docker.com/engine/userguide/storagedriver/imagesandcontainers/) and only runs instructions if the Dockerfile has changed since the cached version.
 
 When the build completes, run the new app in the same way:
 
 ```
-docker container run --detach --publish 8080:80 --name tweet-app "$Env:dockerId/tweet-app"
+docker container run --detach --publish 8080:80 --name tweet-app "$env:dockerId/tweet-app"
 ```
 
 Find the container IP address and browse to it:
 
 ```
-$ip = docker inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' tweet-app
-start "http://$ip"
+$ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' tweet-app
+firefox "http://$ip"
 ```
 
 Feel free to hit the Tweet button, sign in and share your workshop progress :)
@@ -280,36 +277,26 @@ Feel free to hit the Tweet button, sign in and share your workshop progress :)
 Now if you list the images and filter on your Docker ID, you'll see the images you've built today, with the newest at the top:
 
 ```
-> docker image ls -f reference="$Env:dockerId/*"
-REPOSITORY              TAG                 IMAGE ID            CREATED              SIZE
-sixeyed/ws-tweet-app   latest              d5cb82036a67        About a minute ago   10.4 GB
-sixeyed/ws-verify      latest              ff071bdc2128        17 minutes ago       9.56 GB
+> docker image ls -f reference="$env:dockerId/*"
+REPOSITORY              TAG                 IMAGE ID            CREATED             SIZE
+sixeyed/tweet-app       latest              0643d4c6116f        2 minutes ago       10.7GB
+sixeyed/hostname-app    latest              f2ae4ec014c4        28 minutes ago      11.5GB
 ```
 
 Those images are only stored in the cache on your Azure VM, and that VM will be deleted after the workshop. Next we'll push the images to a public repository so you can run them from any Windows machine with Docker.
 
-Distribution is built into the Docker platform. You can build images locally and push them to a [registry](https://docs.docker.com/registry/), making them available to other users. Anyone with access can pull that image and run a container from it. The behavior of the app in the container will be the same for everyone, because the image contains the fully-configured app - the only requirements to run it are Windows and Docker.
+Distribution is built into the Docker platform. You can build images locally and push them to a public or private [registry](https://docs.docker.com/registry/), making them available to other users. Anyone with access can pull that image and run a container from it. The behavior of the app in the container will be the same for everyone, because the image contains the fully-configured app - the only requirements to run it are Windows and Docker.
 
-[Docker Hub](https://hub.docker.com) is the public registry for Docker images. To push images, you need to log in using the command line and providing your Docker ID credentials:
-
-```
-> docker login
-Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
-Username: <my-docker-Id>
-Password:
-Login Succeeded
-```
-
-Now upload your images to the Hub:
+[Docker Hub](https://hub.docker.com) is the public registry for Docker images. You've already logged in using `docker login`, so now upload your images to the Hub:
 
 ```
-docker image push $Env:dockerId/hostname-app
-docker image push $Env:dockerId/tweet-app
+docker image push $env:dockerId/hostname-app
+docker image push $env:dockerId/tweet-app
 ```
 
-You'll see the upload progress for each layer in the Docker image. The `hostname-app` image uplads quickly as it only adds one small layer on top of Microsoft's ASP.NET image. The `tweet-app` image takes longer - the IIS layer is 260MB so that will take a few seconds, and there are other layers on top of that. 
+You'll see the upload progress for each layer in the Docker image. The `hostname-app` image uplads quickly as it only adds one small layer on top of Microsoft's ASP.NET image. The `tweet-app` image takes longer to push - there are more layers, and the configured IIS layer runs to 40MB. 
 
-The logical size of those images is over 10GB each, but the bulk of that is in the Windows Server Core base image. Those layers are already stored in Docker Hub, so they don't get uploaded - only the new parts of the image get pushed.
+The logical size of those images is over 10GB each, but the bulk of that is in the Windows Server Core base image. Those layers are already stored in Docker Hub, so they don't get uploaded - only the new parts of the image get pushed. And Docker shares layers between images, so every image that builds on Windows Server Core will share the cached layers for that image.
 
 You can browse to *https://hub.docker.com/r/_my-docker-Id_/* and see your newly-pushed Docker images. These are public repositories, so anyone can pull the image - you don't even need a Docker ID to pull public images.
 
