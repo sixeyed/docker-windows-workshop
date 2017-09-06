@@ -20,7 +20,6 @@ services:
     depends_on:
       - signup-db
       - message-queue
-      - homepage
     networks:
       - app-net
 
@@ -30,7 +29,7 @@ services:
       - app-net
 
   signup-save-handler:
-    image: ${dockerId}/signup-save-handler
+    image: ${dockerId}/signup-save-handler:2
     env_file:
       - db-credentials.env
     depends_on:
@@ -56,7 +55,7 @@ services:
       - app-net
 
   signup-index-handler:
-    image: ${dockerid}/signup-index-handler
+    image: ${dockerid}/signup-index-handler:2
     depends_on:
       - elasticsearch
       - message-queue

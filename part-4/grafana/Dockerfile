@@ -1,6 +1,8 @@
 # escape=`
 FROM microsoft/windowsservercore:10.0.14393.1593
-SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop';"]
+SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
+
+RUN Set-ItemProperty -path 'HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters' -Name ServerPriorityTimeLimit -Value 0 -Type DWord
 
 EXPOSE 3000
 ENV GRAFANA_VERSION="4.4.3"

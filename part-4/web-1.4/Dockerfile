@@ -32,13 +32,12 @@ HEALTHCHECK --interval=5s `
 
 ENV MESSAGE_QUEUE_URL="nats://message-queue:4222" `
     DB_MAX_RETRY_COUNT="5" `
-    DB_MAX_DELAY_SECONDS="10"
+    DB_MAX_DELAY_SECONDS="10" `
+    COLLECTOR_CONFIG_PATH="w3svc-collectors.json"
 
 WORKDIR C:\aspnet-exporter
-COPY --from=exporter C:\aspnet-exporter .
-ENV COLLECTOR_CONFIG_PATH="w3svc-collectors.json"
-
 ENTRYPOINT ["powershell", "C:\\bootstrap.ps1"]
 
-COPY .\signup\docker\bootstrap.ps1 C:\
+COPY .\part-4\web-1.4\bootstrap.ps1 C:\
+COPY --from=exporter C:\aspnet-exporter .
 COPY --from=builder C:\out\web\SignUpWeb\_PublishedWebsites\SignUp.Web C:\web-app
