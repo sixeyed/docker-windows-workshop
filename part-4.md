@@ -76,7 +76,7 @@ cd "$env:workshop\part-4\prometheus"
 docker image build --tag $env:dockerId/signup-prometheus .
 ```
 
-Grafana is a dashboard server. It can connect to various data sources and provide rich dashboards to show the overall health of your app. There isn't an official Windows variant of the Grafana image, but it's easy to build your own. The [Dockerfile for Grafana]() is a good example of how to package third-party apps to run in containers.
+Grafana is a dashboard server. It can connect to various data sources and provide rich dashboards to show the overall health of your app. There isn't an official Windows variant of the Grafana image, but it's easy to build your own. The [Dockerfile for Grafana](part-4/grafana/Dockerfile) is a good example of how to package third-party apps to run in containers.
 
 Build the Grafana image so we can run a dashboard showing the health of the app:
 

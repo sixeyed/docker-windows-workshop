@@ -46,4 +46,6 @@ For a full day workshop, we continue in the afternoon with parts 5-7.
 
 This workshop is a living thing. There are tags for previous versions:
 
-- [devsum-17](https://github.com/sixeyed/docker-windows-workshop/tree/devsum-17) - from the [DevSum Conference](http://www.devsum.se/)
+- [devsum-17](https://github.com/sixeyed/docker-windows-workshop/tree/devsum-17) - from the [DevSum Conference](http://www.devsum.se/), 2017
+
+- [containercamp-17](https://github.com/sixeyed/docker-windows-workshop/tree/containercamp-17) - from [Container Camp](https://2017.container.camp/uk/) London, 2017
