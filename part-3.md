@@ -151,6 +151,6 @@ firefox "http://$ip"
 
 Now you'll see the awesome new site design. You can still click through to the original sign up page, and enter details which get saved in SQL Server and Elasticsearch as before.
 
-## Wrap Up
+## Next Up
 
 That's it for Part 3. In [Part 4](part-4.md) we'll get ready for production by adding monitoring to the solution (and we'll go back to the previous homepage).

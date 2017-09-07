@@ -131,6 +131,6 @@ docker container exec app_signup-db_1 powershell `
  "Invoke-SqlCmd -Query 'SELECT * FROM Prospects' -Database SignUp"
 ```
 
-## Wrap Up
+## Next Up
 
 That's it for Part 2. In [Part 3](part-3.md) we'll modernize the app architecture, making use of the Docker platform to break features out of the monolith, and run them in lightweight containers.
