@@ -4,7 +4,7 @@ The app is ready to be promoted to production now, but we'll have problems when 
 
 In Docker all containers look the same, whether they're running ASP.NET WebForms apps in Windows or .NET Core console apps in Linux - and you can expose metrics from containers to give you a single dashboard for the performance of all your containers.
 
-In this section we'll add metrics to the solution using [Prometheus](http://prometheus.io) -a popular open-source monitoring server, and [Grafana](https://grafana.com) - a dashboard that plugs into Prometheus. We'll run those new components in Docker Windows containers too.
+In this section we'll add metrics to the solution using [Prometheus](http://prometheus.io) - a popular open-source monitoring server, and [Grafana](https://grafana.com) - a dashboard that plugs into Prometheus. We'll run those new components in Docker Windows containers too.
 
 ## Steps
 
@@ -61,7 +61,7 @@ cd $env:workshop
 docker image build --tag $env:dockerId/signup-web:1.4 -f part-4\web-1.4\Dockerfile .
 ```
 
-When the app container runs, it will also have a Prometheus-compatible endpoint listening on port 50505, which provides performance counter metrics from the IIS Windows service hosting the app.
+When the app container runs, it will also have a Prometheus-compatible endpoint listening on port `50505`, which provides performance counter metrics from the IIS Windows service hosting the app.
 
 
 ## <a name="3"></a>Step 3. Run the solution with Prometheus and Grafana
@@ -111,9 +111,13 @@ $ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddr
 firefox "http://$($ip):9090"
 ```
 
-_TODO - image_
+![Prometheus UI](img/prometheus-metrics.png)
 
-And now we'll set up Grafana for a more useful view of the application health:
+The Prometheus UI is good for sanity-checking the metrics collection. 
+
+Prometheus itself records metrics, so you can look at the `scrape_samples_scraped` metric to see how many times Prometheus has polled the container endpoints.
+
+But the Prometheus UI isn't featured enough for a dashboard - for that we'll set up Grafana. First browse to the Grafana container:
 
 ```
 $ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_grafana_1
@@ -131,15 +135,13 @@ firefox "http://$($ip):3000"
 - Url: `http://prometheus:9090`
 - Access: `proxy`
 
-Now from the main menu select _Dashboards...Import_:
+Now from the main menu select _Dashboards...Import_, load the [SignUp-dashboard.json](part-4/grafana/SignUp-dashboard.json) file and connect it to the Prometheus data source:
 
-_TODO - image_
-
-And load the [SignUp-dashboard.json](part-4/grafana/SignUp-dashboard.json) file.
+![Grafana dashboard import](img/grafana-import-dashboard.png)
 
 You'll see an overall dashboard showing the status and performance of the web application and the message handlers:
 
-_TODO - image_
+![Grafana dashboard](img/grafana-dashboard.png)
 
 The dashboard shows how many HTTP requests are coming in to the web app, and how many events the handlers have received, processed and failed.
 
@@ -151,8 +153,9 @@ For a half-day workshop, we're done! You've seen how to run Windows apps in Dock
 
 You've done what you need to move your own apps to Docker in production. Next steps:
 
-- try one of the [Docker labs on GitHub]()
-- follow [@EltonStoneman on Twitter]()
-- buy a ticket for [DockerCon]()
+- try one of the [Docker labs on GitHub](https://github.com/docker/labs)
+- follow [@EltonStoneman on Twitter](https://twitter.com/EltonStoneman)
+- buy a ticket for [DockerCon](https://europe-2017.dockercon.com)
+- read [Docker on Windows](https://www.amazon.co.uk/Docker-Windows-Elton-Stoneman/dp/1785281658), the book
 
 For a whole-day workshop, we'll continue after lunch. In [Part 5](part-5.md) you'll learn how to add resilience and scalability to your apps with Docker Compose.
