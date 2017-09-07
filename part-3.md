@@ -14,7 +14,7 @@ The current code makes a synchronous call to SQL Server to insert a row when a u
 
 We'll fix that by using a message queue instead - running in a Docker container. When you sign up the web app will publish an event message on the queue, which a message handler picks up and actions. The message handler is a .NET console app running in a container.
 
-First you need to change some code. Open`.\signup\src\SignUp.Web\SignUp.aspx.cs` in VS Code (or Notepad or whatever editor you like). Comment out the `SavePropsect` call at line 74, and uncomment the `PublishProspectSignedUpEvent` call at line 78. The section should look like this:
+First you need to change some code. Open`$env:workshop\signup\src\Signup.Web\SignUp.aspx.cs` in VS Code (or Notepad or whatever editor you like). Comment out the `SavePropsect` call at line 74, and uncomment the `PublishProspectSignedUpEvent` call at line 78. The section should look like this:
 
 ```
 /* synchronous */
@@ -80,7 +80,7 @@ The app performs better now, but all the data is stored in SQL Server which isn'
 
 We'll be running [Elasticsearch](https://www.elastic.co/products/elasticsearch) for storage and [Kibana](https://www.elastic.co/products/kibana) to provide an accessible front-end. To populate Elasticsearch with data when a user signs up, we just need to add another message handler, which will listen to the same messages published by the web app.
 
-The code for that is in another [Program.cs](src/ProductLaunch/ProductLaunch.MessageHandlers.IndexProspect/Program.cs). You'll build it in the same way, using this [Dockerfile](part-3/v1.4/index-handler/Dockerfile):
+The code for that is in another [Program.cs](signup/src/SignUp.MessageHandlers.IndexProspect/Program.cs). You'll build it in the same way, using this [Dockerfile](part-3/index-handler/Dockerfile):
 
 ```
 cd $env:workshop
@@ -124,7 +124,7 @@ Kibana has a great feature set and it's easy to pick up for power users. They ca
 
 The last update we'll do is to replace the design of landing page, rendering it from a dedicated container. That allows for rapid iteration from the design team - the homepage can be replaced without regression testing the whole of the app.
 
-There's a new image to build for the homepage component, which is just a static HTML site running on IIS in Nano Server. It's built with this [Dockerfile](part-3/v1.5/homepage/Dockerfile):
+There's a new image to build for the homepage component, which is just a static HTML site running on IIS in Nano Server. It's built with this [Dockerfile](part-3/homepage/Dockerfile):
 
 ```
 cd "$env:workshop\part-3\homepage"
