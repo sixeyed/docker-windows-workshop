@@ -227,10 +227,10 @@ Get-Process -Name w3wp | select Id, Name, WorkingSet
 
 On my Azure VM, the wroker processes average around 50MB of RAM and 5 seconds of CPU time.
 
-This is a simple ASP.NET website running in Docker, with just two lines in a Dockerfile. But it has some drawbacks. First, there are no logs - IIS stores request logs in the container filesystem, but Docker is only listening for logs on the standard output from the startup program. There's no automatic relay from the log files to the console output, so there are no log entries in the containers:
+This is a simple ASP.NET website running in Docker, with just two lines in a Dockerfile. But it has some drawbacks. First, there are no logs - IIS stores request logs in the container filesystem, but Docker is only listening for logs on the standard output from the startup program. There's no automatic relay from the log files to the console output, so there are no HTTP access log entries in the containers:
 
 ```
-docker logs app-0
+docker container logs app-0
 ```
 
 The other issue is that it took a few seconds for each website to show. That's because the IIS service doesn't start a worker process until the first HTTP request comes in. The first website user takes the hit of starting the worker process. We can use a more advanced Dockerfile to address those issues.
