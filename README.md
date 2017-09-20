@@ -4,12 +4,15 @@ Docker is a platform for running applications in lightweight units of compute ca
 
 Docker has production support for containers on Windows Server 2016, and Windows containers don't need separate licencing. Migrating your apps to Docker is a great way to increase utilization in your datacenter, or to prepare for a move to the cloud. When your app is running in Docker, it's easy to break features out and run them in separate containers, so you can deploy updates to your app without a full regression test.
 
-In this full-day workshop you'll use Docker EE on Windows Server 2016* and learn:
+In this workshop you'll use Docker EE on Windows Server 2016*. In the morning you'll learn:
 
 - how Docker containers work on Windows
 - how to package existing .NET apps using Docker
 - how to break features out from a monolith into separate containers
 - how to add monitoring to your containers
+
+For full-day workshops, in the afternoon you'll carry on and learn:
+
 - how Docker supports resilience and scale on a single server
 - how to run a full CI pipeline using Docker
 - how Docker swarm mode provides production-grade orchestration.
@@ -28,14 +31,14 @@ The workshop starts with an overview presentation. I'll talk about Docker and Wi
 
 Then we'll work together through the tasks in the workshop.
 
-For a morning workshop, we'll do Parts 1-4:
+The morning workshop covers Parts 1-4:
 
 - [Part 1](part-1.md) - running Docker on Windows
 - [Part 2](part-2.md) - packaging an existing ASP.NET app in Docker
 - [Part 3](part-3.md) - modernizing the ASP.NET app with Docker
 - [Part 4](part-4.md) - preparing for production with instrumentation
 
-For a full day workshop, we continue in the afternoon with parts 5-7.
+The full day workshop continues in the afternoon with parts 5-7.
 
 - [Part 5](part-5.md) - resilience and scalability with Docker Compose
 - [Part 6](part-6.md) - containerized CI (and CD) with Docker
