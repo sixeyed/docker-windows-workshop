@@ -15,7 +15,7 @@ You will be provided with a virtual machine which is already prepped for the lab
 
 You will build images and push them to Docker Hub during the workshop, so they are available to use later. You'll need a Docker ID to push images.
 
-- Sign up for a free Docker ID on [Docker Cloud](https://cloud.docker.com/)
+- Sign up for a free Docker ID on [Docker Hub](https://hub.docker.com)
 
 ## <a name="2"></a>Step 2. Connect to your VM
 
