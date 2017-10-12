@@ -33,9 +33,10 @@ You do not need Docker running on your laptop, but you will need a Remote Deskto
 
 Open a PowerShell prompt **using Run as Administrator** (or from `C:\shortcuts` on the lab VM). 
 
-There is an environment variable set up for the workshop path. Browse to the path and update the workshop content:
+Start by updating the workshop content on the VM:
 
 ```
+$env:workshop='C:\scm\docker-windows-workshop'
 cd $env:workshop
 git pull
 ```
