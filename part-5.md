@@ -12,7 +12,7 @@ In this part we'll see how to use Docker Compose to scale our app and make the c
 
 Every time we restart the SQL Server container, any data stored in the database is lost. Docker images are read-only so they can be shared - writing data in a container doesn' affect the image. Each container adds a writeable layer on top of the image layers for its own data. When you remove the container you lose the data.
 
-Docker provides [volumes]() for storing data outside of containers. A volume can simply be a mount, where a directory in the container is actually mapped to a directory on the host.
+Docker provides [volumes](https://docs.docker.com/engine/admin/volumes/volumes/) for storing data outside of containers. A volume can simply be a mount, where a directory in the container is actually mapped to a directory on the host.
 
 As a simple example, create a new IIS container with the log directory mapped to the host:
 
@@ -58,11 +58,12 @@ cd "$env:workshop\app"
 docker-compose -f docker-compose-1.7.yml up -d
 ```
 
-The database container is replaced, as the definition has changed. The app container is replace too, because the database dependency has been updated. Browse to the app:
+The database container is replaced, as the definition has changed. The app container is replaced too, because the database dependency has been updated. Browse to the app:
 
 ```
 $ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_signup-web_1
-start "http://$ip"
+
+firefox "http://$ip"
 ```
 
 Add a new prospect in the website, and then check the data is saved to SQL Server:
@@ -75,9 +76,9 @@ docker container exec app_signup-db_1 powershell `
 Also look at the contents of `C:\mssql` on the host, and you'll see the `.mdf` and `.ldf` SQL files there. The data is now persisted outside of the SQL container. Remove all running containers, and then bring the appup again, to create a new set of containers:
 
 ```
-cd "$env:workshop\app"
-
 docker container rm -f $(docker container ls --quiet --all)
+
+cd "$env:workshop\app"
 
 docker-compose -f docker-compose-1.7.yml up -d
 ```
@@ -101,7 +102,7 @@ docker container run -d -P --name iis `
  microsoft/iis:windowsservercore
 ```
 
-The `restart` option means that if the IIS Windows Service stops and the container exits, it will be autimatically restarted. Check the site by grabbing the container's IP address:
+The `restart` option means that if the IIS Windows Service stops and the container exits, it will be automatically restarted. Check the site by grabbing the container's IP address:
 
 ```
 $ip = docker inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' iis
@@ -119,9 +120,9 @@ docker exec iis powershell Stop-Service w3svc
 docker container ls 
 ```
 
-If you compare the two container listings, you'll see the container has been restarted, it has only been running for a few seconds in the second list. It's the same container. but Docker executed the startup command again when the container exited.
+If you compare the two container listings, you'll see the container has been restarted, it has only been running for a few seconds in the second list. It's the same container, but Docker executed the startup command again when the container exited.
 
-In [docker-compose-1.8.yaml](app/docker-compose-1.8.yaml) I've added the `restart` option to the application services. It works in the same way with Docker Compose:
+In [docker-compose-1.8.yml](app/docker-compose-1.8.yml) I've added the `restart` option to the application services. It works in the same way with Docker Compose:
 
 ```
 cd "$env:workshop\app"
@@ -162,4 +163,4 @@ Compose is a useful tool for verifying distributed solutions on a single machine
 
 ## Next Up
 
-We'll make use of another feature of compose in [Part 5](part-5.md), when we build out a full CI pipeline, with all the parts running in Docker containers on Windows.
+We'll make use of another feature of compose in [Part 6](part-6.md), when we build out a full CI pipeline, with all the parts running in Docker containers on Windows.

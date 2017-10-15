@@ -29,9 +29,11 @@ You do not need Docker running on your laptop, but you will need a Remote Deskto
 - Mac - install [Microsoft Remote Desktop](https://itunes.apple.com/us/app/microsoft-remote-desktop/id715768417?mt=12) from the app store
 - Linux - install [Remmina](http://www.remmina.org/wp/), or any RDP client you prefer.
 
-## <a name="3"></a>Step 3. Update your workshop content
+## <a name="3"></a>Step 3. Setup your VM
 
-Open a PowerShell prompt from the start menu (or from `C:\shortcuts` on the lab VM). 
+Open Windows Explorer, navigate to `C:\shortcuts` and drag the three shortcuts (PowerShell, VS Code and Firefox) to the desktop.
+
+Run PowerShell from the Desktop shortcut.
 
 > **Do not use PowerShell ISE!** It has a strange relationship with the `docker login` command, and you won't get far with it.
 
@@ -43,17 +45,17 @@ cd $env:workshop
 git pull
 ```
 
-## <a name="3"></a>Step 4. Test your setup
-
-In the same PowerShell prompt, save your Docker ID into an environment variable:
+Now save your Docker ID into an environment variable:
 
 ```
 $env:dockerId='my-docker-id'
 ```
 
-> Be sure to use **your** Docker ID - mine is `sixeyed`, so I run `$env:dockerId='sixeyed'`
+> Be sure to use **your** Docker ID - mine is `sixeyed`, so I run `$env:dockerId='sixeyed'`. You need to do this so you can push the images you build.
 
-Now login with you Docker credentials:
+## <a name="3"></a>Step 4. Test your setup
+
+Login to Docker Hub with you Docker credentials:
 
 ```
 docker login --username $env:dockerId
