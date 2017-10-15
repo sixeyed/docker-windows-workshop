@@ -48,7 +48,9 @@ To pick up the new configuration, restart the Docker Windows Service:
 Restart-Service docker
 ```
 
-On the local VM you use the `docker` commands in the same way, but on a remote machine (or through another container), you can connect to the Docker engine securely with mutual TLS.
+When the Docker service restarts, it will restart all the application containers because they were created with the `restart` option.
+
+On the local VM you use the `docker` commands in the same way, but on a remote machine (or through another container), you can now connect to the Docker engine securely with mutual TLS.
 
 
 ## <a name="2"></a>Step 2. Prepare Jenkins
@@ -87,22 +89,31 @@ For each new install, Jenkins generates a random administrator password. You can
 docker container logs jenkins
 ```
 
-Back in the Jenkins UI, configure the plugins we'll use:
+Back in the Jenkins UI, configure the plugins we'll use. Don't choose the default set, instead click *Select Plugins to Install*. Then:
 
-- Select plugins to install
-- Choose 'None'
-- Add the `Git` and `Credentials Binding` plugins
+- Choose *None*
+- Add `Git plugin` and `Credentials Binding Plugin`
 
 > Note there's no build agent here. We don't need the MSBuild plugin because the compilation is all done in Docker.
 
-Once the basic install completes, add one more plugin:
+You should see just these plugins installing:
+
+![img]()
+
+In a real environment you would set up an admin user now, rather than use the built-in admin user. But for the workshop just select *Continue as admin*:
+
+![img]
+
+Once the basic install completes, select *Managwe Jenkins* then *Manage Plugins* to     add one more plugin:
+
+![TODO - Jenkins image]()
 
 - Manage jenkins/manage plugins
-- Choose 'Available'
-- Filter on 'PowerShell'
-- Select 'Install without restart
+- Choose *Available*
+- Filter on *PowerShell*
+- Select *Install without restart*
 
-That gives us a fully configured Jenkins instance. We can export the container as an image, but we need to stop it first:
+That gives us a fully configured Jenkins instance. We can export the container as an image.  We need to stop the container first, then `commit` the container as an image, and then we can remove the container:
 
 ```
 docker container stop jenkins
@@ -112,11 +123,13 @@ docker container commit jenkins $env:dockerId/jenkins:configured
 docker container rm jenkins
 ```
 
+Now we have a configured Jenkins server in a Docker image, so wherever we run a container we will have the same Jenkins setup, with all the plugins and dependencies we need ready configured.
+
 ## <a name="3"></a>Step 3. Run infrastructure services
 
 ## Start the Infrastructure Services
 
-For our CI setup, we'll need a Git server and a local Docker registry, as well as Jenkins. The [infrastructure Docker Compose file](part-6/infrastructure/docker-compose.yml) sets those up, using host mounts for the data volumes.
+For our full CI setup, we'll need a Git server and a local Docker registry, as well as Jenkins. The [infrastructure Docker Compose file](part-6/infrastructure/docker-compose.yml) sets those up, using host mounts for the data volumes.
 
 Start all the containers with compose:
 
@@ -130,13 +143,25 @@ cd $env:workshop\part-6\infrastructure
 docker-compose up -d
 ```
 
-The containers used fixed IP addresses, so we can refer to them using hostnames. You'll see these entries in `notepad C:\Windows\System32\drivers\etc\hosts`:
+The containers use random IP addresses, but it would be better to refer to them using hostnames. Run this script to add hostname aliases for the container IP addresses:
+
+```
+cd "$env:workshop\part-6"
+
+.\write-hosts.ps1
+```
+
+You'll see entries similar to these in `notepad C:\Windows\System32\drivers\etc\hosts`:
 
 ```
 172.19.240.200 registry.local
 172.19.240.201 bonobo.local
 172.19.240.202 jenkins.local
 ```
+
+Your IP addresses will be different, because Docker uses a random IP address range on Windows, as well as random IP addresses for each container.
+
+> An alternative is to start containers with explicit IP addresses. On Windows you need to configure the Docker NAT network to specify the IP address range you want to use. This blog on [configuring NAT](https://4sysops.com/archives/windows-container-networking-part-1-configuring-nat/) shows you how to do that.
 
 ## Setup the Bonobo Git Server
 

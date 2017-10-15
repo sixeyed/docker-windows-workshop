@@ -10,8 +10,7 @@ services:
     volumes:
       - c:\registry:c:\data
     networks:
-      home:
-        ipv4_address: 172.19.240.200
+      - home
 
   bonobo:
     image: sixeyed/bonobo:6.1.0-windowsservercore
@@ -21,8 +20,7 @@ services:
     volumes:
       - c:\bonobo:c:\data
     networks:
-      home:
-        ipv4_address: 172.19.240.201
+      - home
 
   jenkins:
     image: ${dockerId}/jenkins:configured
@@ -32,8 +30,7 @@ services:
     volumes:
       - c:\jenkins:c:\data
     networks:
-      home:
-        ipv4_address: 172.19.240.202
+      - home
 
 networks:
   home:

@@ -31,6 +31,14 @@ $Shortcut.Save()
 choco upgrade -y visualstudiocode
 choco upgrade -y firefox
 
+# update images
+docker image pull stefanscherer/dockertls-windows
+docker image pull sixeyed/git:2.13.0
+docker image pull sixeyed/docker-ce:17.05.0-ce
+docker image pull sixeyed/jenkins:2.46.2
+docker image pull sixeyed/registry:2.6.0-nanoserver
+docker image pull sixeyed/bonobo:6.1.0-windowsservercore
+
 # set environment
 [Environment]::SetEnvironmentVariable('workshop', $env:workshop, [EnvironmentVariableTarget]::Machine)
 [Environment]::SetEnvironmentVariable('dockerId', $env:dockerId, [EnvironmentVariableTarget]::Machine)
