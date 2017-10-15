@@ -94,33 +94,37 @@ cd "$env:workshop\app"
 docker-compose -f .\docker-compose-1.6.yml up -d
 ```
 
-## <a name="4"></a>Step 4. Import the dashboard for the solution
-
+## <a name="4"></a>Step 4. Set up the solution dashboard
 
 Browse to the new application container, and send some load - refresh the homepage a few times, and then submit a form:
 
 ```
 $ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_signup-web_1
+
 firefox "http://$ip"
 ```
 
-You can see the metrics data collected in the basic Prometheus UI:
+The web application and the message handlers are collecting metrics now, and Prometheus is scrpaing them. You can see the metrics data collected in the basic Prometheus UI:
 
 ```
 $ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_prometheus_1
+
 firefox "http://$($ip):9090"
 ```
 
+Try looking at the `process_cpu_seconds_total` metric in Graph view:
+
 ![Prometheus UI](img/prometheus-metrics.png)
 
-The Prometheus UI is good for sanity-checking the metrics collection. 
+This shows the amount of CPU in the message handlers, which is exported from a standard .NET performance counter. 
 
-Prometheus itself records metrics, so you can look at the `scrape_samples_scraped` metric to see how many times Prometheus has polled the container endpoints.
+The Prometheus UI is good for sanity-checking the metrics collection. Prometheus itself records metrics, so you can look at the `scrape_samples_scraped` metric to see how many times Prometheus has polled the container endpoints.
 
 But the Prometheus UI isn't featured enough for a dashboard - for that we'll set up Grafana. First browse to the Grafana container:
 
 ```
 $ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_grafana_1
+
 firefox "http://$($ip):3000"
 ```
 
@@ -128,14 +132,16 @@ firefox "http://$($ip):3000"
 
 - Select _Add data source_ and configure a new Prometheus data source as follows:
 
-![Grafana data source](img/grafana-add-data-source.png)
+![Grafana data source](img/grafana-add-data-source.PNG)
 
 - Name: `Sign Up`
 - Type: `Prometheus`
 - Url: `http://prometheus:9090`
 - Access: `proxy`
 
-Now from the main menu select _Dashboards...Import_, load the [SignUp-dashboard.json](part-4/grafana/SignUp-dashboard.json) file and connect it to the Prometheus data source:
+That sets up Grafana so it can read the metrics collected by Prometheus. You can build your own dashboard to show whatever metrics you like, but I have one prepared for the workshop which you can import.
+
+From the main menu select _Dashboards...Import_, load the `SignUp-dashboard.json` file in `C:\scm\docker-windows-workshop\part-4\grafana` and connect it to the Prometheus data source:
 
 ![Grafana dashboard import](img/grafana-import-dashboard.png)
 
@@ -154,8 +160,7 @@ For a half-day workshop, we're done! You've seen how to run Windows apps in Dock
 You've done what you need to move your own apps to Docker in production. Next steps:
 
 - try one of the [Docker labs on GitHub](https://github.com/docker/labs)
-- follow [@EltonStoneman on Twitter](https://twitter.com/EltonStoneman)
-- buy a ticket for [DockerCon](https://europe-2017.dockercon.com)
+- follow [@EltonStoneman](https://twitter.com/EltonStoneman), [@stefscherer](https://twitter.com/stefscherer) and [@friism](https://twitter.com/friism) on Twitter
 - read [Docker on Windows](https://www.amazon.co.uk/Docker-Windows-Elton-Stoneman/dp/1785281658), the book
 
 For a whole-day workshop, we'll continue after lunch. In [Part 5](part-5.md) you'll learn how to add resilience and scalability to your apps with Docker Compose.
