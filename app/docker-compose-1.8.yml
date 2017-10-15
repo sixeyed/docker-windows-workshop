@@ -71,11 +71,6 @@ services:
 
   prometheus:
     image: ${dockerid}/signup-prometheus
-    depends_on:
-      - signup-web
-      - signup-index-handler
-      - signup-save-handler
-    restart: always
     networks:
       - app-net
 
@@ -85,7 +80,6 @@ services:
       - "3000:3000"
     depends_on:
       - prometheus
-    restart: always
     networks:
       - app-net
 

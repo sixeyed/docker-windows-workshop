@@ -64,10 +64,6 @@ services:
 
   prometheus:
     image: ${dockerid}/signup-prometheus
-    depends_on:
-      - signup-web
-      - signup-index-handler
-      - signup-save-handler
     networks:
       - app-net
 

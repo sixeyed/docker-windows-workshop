@@ -58,7 +58,7 @@ cd "$env:workshop\app"
 docker-compose -f docker-compose-1.7.yml up -d
 ```
 
-The database container is replaced, as the definition has changed. The app container is replaced too, because the database dependency has been updated. Browse to the app:
+The database container is replaced, as the definition has changed. The web app and save handler containers are replaced too, because the database dependency has been updated. Browse to the app:
 
 ```
 $ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_signup-web_1
@@ -73,10 +73,18 @@ docker container exec app_signup-db_1 powershell `
  "Invoke-SqlCmd -Query 'SELECT * FROM Prospects' -Database SignUp"
 ```
 
-Also look at the contents of `C:\mssql` on the host, and you'll see the `.mdf` and `.ldf` SQL files there. The data is now persisted outside of the SQL container. Remove all running containers, and then bring the appup again, to create a new set of containers:
+Also look at the contents of `C:\mssql` on the host, and you'll see the `.mdf` and `.ldf` SQL files there:
 
 ```
-docker container rm -f $(docker container ls --quiet --all)
+ls C:\mssql
+```
+
+The data is now persisted outside of the SQL container. When you replace the database container (for a Windows update or a schema update), the new container will attach the data from the old container.
+
+Remove the SQL Server container, and then bring the app up again, to create new containers for the database and its dependencies:
+
+```
+docker container rm -f app_signup-db_1
 
 cd "$env:workshop\app"
 
@@ -92,12 +100,12 @@ docker container exec app_signup-db_1 powershell `
 
 ## <a name="2"></a>2. Set application services to restart when Docker starts
 
-Docker volumes allow data to persist outside of the container lifecycle. Containers stop when the process inside them stops - but you can set up containers to automatically restart if the application ends.
+Docker volumes allow data to persist outside of the container lifecycle. That provides resilience for your data. You also need resilience for your applications. 
 
-We'll run a simple example with IIS:
+Containers stop when the process inside them stops - but you can set up containers to automatically restart if the application ends. We'll run a simple example with IIS:
 
 ```
-docker container run -d -P --name iis `
+docker container run -d -P --name iis-restart `
  --restart always `
  microsoft/iis:windowsservercore
 ```
@@ -105,24 +113,24 @@ docker container run -d -P --name iis `
 The `restart` option means that if the IIS Windows Service stops and the container exits, it will be automatically restarted. Check the site by grabbing the container's IP address:
 
 ```
-$ip = docker inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' iis
+$ip = docker inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' iis-restart
 
 iwr -useb http://$ip
 ```
 
-Now kill the IIS Windows Service:
+Now check on the state of the application container, kill the IIS Windows Service and check the container again:
 
 ```
-docker container ls 
+docker container ls --last 1
 
-docker exec iis powershell Stop-Service w3svc
+docker exec iis-restart powershell Stop-Service w3svc
 
-docker container ls 
+docker container ls --last 1
 ```
 
-If you compare the two container listings, you'll see the container has been restarted, it has only been running for a few seconds in the second list. It's the same container, but Docker executed the startup command again when the container exited.
+If you compare the two container listings, you'll see the container has been restarted, it has only been running for a few seconds in the second list. **It's the same container**, but Docker executed the startup command again when the container exited.
 
-In [docker-compose-1.8.yml](app/docker-compose-1.8.yml) I've added the `restart` option to the application services. It works in the same way with Docker Compose:
+In [docker-compose-1.8.yml](app/docker-compose-1.8.yml) I've added the `restart` option to all the application services. It works in the same way with Docker Compose:
 
 ```
 cd "$env:workshop\app"
@@ -130,9 +138,11 @@ cd "$env:workshop\app"
 docker-compose -f docker-compose-1.8.yml up -d
 ```
 
+This will recreate all the application containers, and now they are resilient to failure. If the application process fails, Docker will restart the container.
+
 ## <a name="3"></a>3. Scale message handlers up to increase throughput
 
-Compose is a management tool for multiple containers running on a single Docker node. You define services rather than individual containers, so that you can run multiple instances of the same workload.
+Compose is a management tool for distributed solutions running on a single Docker host. You define services rather than individual containers, so that you can run multiple instances of the same workload.
 
 The message handlers are good candidates for scaling up - multiple containers will share the workload. Scale up the SQL Server handler to 3 instances:
 
@@ -144,7 +154,7 @@ docker-compose -f docker-compose-1.8.yml scale signup-save-handler=3
 docker container ls
 ```
 
-Now browse to the site and enter some prospects:
+The output from Compose shows new containers starting to meet the scale request. Now browse to the site and enter some prospects:
 
 ```
 $ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_signup-web_1
@@ -160,7 +170,11 @@ docker container logs app_signup-save-handler_2
 docker container logs app_signup-save-handler_3
 ```
 
-Compose is a useful tool for verifying distributed solutions on a single machine. It's a client-side tool; when it creates services Docker only sees them as a set of unrelated containers.
+> Docker isn't magic. It will run multiple containers for a service, but your application needs to work correctly when it scales. In this case the message handler uses [NATS queueing](http://nats.io/documentation/concepts/nats-queueing/) to share the load across multiple instances.
+
+Compose is a useful tool for verifying distributed solutions on a single machine. It's a client-side tool; when it creates services Docker only sees them as a set of unrelated containers, you need to manage the app through compose. 
+
+At the end of the workshop we'll see how to use the Compose file format with [Docker swarm mode](https://docs.docker.com/engine/swarm/), which lets you manage solutions as a whole unit.
 
 ## Next Up
 
