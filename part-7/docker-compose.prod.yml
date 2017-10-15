@@ -1,4 +1,4 @@
-version: '3.2'
+version: '3.3'
 
 services:
 
@@ -21,6 +21,7 @@ services:
   signup-save-handler:
     deploy:
       endpoint_mode: dnsrr
+      replicas: 3
 
   elasticsearch:
     deploy:
@@ -35,6 +36,19 @@ services:
       endpoint_mode: dnsrr  
 
   signup-index-handler:
+    deploy:
+      endpoint_mode: dnsrr
+      replicas: 3
+
+  prometheus:
+    deploy:
+      endpoint_mode: dnsrr
+
+  grafana:
+    ports:
+      - mode: host
+        target: 3000
+        published: 3000
     deploy:
       endpoint_mode: dnsrr
 

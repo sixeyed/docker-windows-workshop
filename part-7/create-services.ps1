@@ -23,18 +23,18 @@ docker service create `
  --publish mode=host,target=80,published=80 `
  --env-file db-credentials.env `
  --name signup-web `
- $env:dockerId/signup-web:1.3
+ $env:dockerId/signup-web:1.4
 
 docker service create `
  --network signup-net --endpoint-mode dnsrr `
  --env-file db-credentials.env `
  --name signup-save-handler `
- $env:dockerId/signup-save-handler
+ $env:dockerId/signup-save-handler:2
 
 docker service create `
  --network signup-net --endpoint-mode dnsrr `
  --name signup-index-handler `
- $env:dockerId/signup-index-handler
+ $env:dockerId/signup-index-handler:2
 
 docker service create `
  --network signup-net --endpoint-mode dnsrr `
