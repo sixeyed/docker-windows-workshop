@@ -268,18 +268,34 @@ In the _Build_ tab, select _Use secret text(s) or file(s), and add three _Secret
 
 ![img]()
 
-This is how Jenkins makes those secrets available to the job. When the job runs, the secrets are surfaced as files, with the file path in an environment variable named after the binding (e.g. the Docker client certificate will be in a file, and the file path will by `$env:DOCKER_CERT`).
+This is how Jenkins makes the certificate secrets available to the job. When the job runs, the secrets are surfaced as files, with the file path in an environment variable named after the binding (e.g. the Docker client certificate will be in a file, and the file path will be `$env:DOCKER_CERT`).
 
 The PowerShell build scripts use those certificate paths to connect to the Docker engine running on the host.
 
 Still in the _Build_ tab, click to add four build steps - all using _Windows PowerShell_ commands. The PowerShell scripts all use Docker Compose:
 
-- `.\part-6\01-build.ps1` - builds all the Docker images
-- `.\part-6\02-run.ps1` - runs the solution in containers
-- `.\part-6\03-test.ps1` - executes the end-to-end test suite (in a containewr)
-- `.\part-6\04-push.ps1` - pushes the build images to the local registry
+- `.\part-6\01-build.ps1`
+- `.\part-6\02-run.ps1` 
+- `.\part-6\03-test.ps1` 
+- `.\part-6\04-push.ps1` 
 
 That's it! Click _Save_ and then click _Build Now_ to start the job. You can click on the job number in the lict and select _Console Output_ to view the progress of the job.
 
+This is what the CI job does:
+
+- builds all the Docker images (script [01-build.ps1](part-6/01-build.ps1)) using multiple Compose scripts, which specify the paths to all the image contexts and Dockerfiles
+
+- runs the solution in containers (script [02-run.ps1](part-6/02-run.ps1)) using Docker Compose
+
+- executes an end-to-end test suite in a container (script [03-test.ps1](part-6/03-test.ps1)) - this uses a headless web browser to simulate users connecting to the website
+
+- pushes the build images to the local registry (script [04-push.ps1](part-6/04-push.ps1))
+
 You'll see all the usual Docker commands running, as the CI job builds all the images. The Jenkins job is running commands on your local Docker host, so you will see some image layers come from the cache, where Docker has been able to re-use parts of the build.
 
+At the end of the build, you will have a versioned set of application images in your local Docker registry.
+
+
+## Next Up
+
+We'll make use of another feature of compose in [Part 6](part-6.md), when we build out a full CI pipeline, with all the parts running in Docker containers on Windows.
