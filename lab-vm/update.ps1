@@ -7,9 +7,10 @@ param(
 $env:workshop='C:\scm\docker-windows-workshop'
 $env:dockerId=$dockerId
 
-# update content:
-cd $env:workshop
-git pull
+# update tools
+choco upgrade -y visualstudiocode
+choco upgrade -y firefox
+Get-ChildItem $env:Public\Desktop\*.lnk | ForEach-Object { Remove-Item $_ }
 
 # create shortcuts
 $WshShell = New-Object -comObject WScript.Shell
@@ -27,10 +28,6 @@ $Shortcut.TargetPath = "C:\Program Files\Microsoft VS Code\Code.exe"
 $shortcut.Arguments = "C:\scm\docker-windows-workshop"
 $Shortcut.Save()
 
-# update tools
-choco upgrade -y visualstudiocode
-choco upgrade -y firefox
-
 # update images
 docker image pull stefanscherer/dockertls-windows
 docker image pull sixeyed/git:2.13.0
@@ -45,7 +42,7 @@ docker image pull sixeyed/nunit:3.6.1
 [Environment]::SetEnvironmentVariable('dockerId', $env:dockerId, [EnvironmentVariableTarget]::Machine)
 
 # set dockerd config
-cp .\docker\daemon.json C:\ProgramData\docker\config\
+cp "$env:workshop\lab-vm\docker\daemon.json" C:\ProgramData\docker\config\
 
 # turn the firewall off again
 Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
