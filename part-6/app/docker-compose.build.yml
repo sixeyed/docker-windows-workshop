@@ -24,10 +24,10 @@ services:
 
   prometheus:
     build:
-      context: ../../
-      dockerfile: ./part-4/prometheus/Dockerfile
+      context: ../../part-4/prometheus
+      dockerfile: ./Dockerfile
 
   grafana:
     build:
-      context: ../../
-      dockerfile: ./part-4/grafana/Dockerfile
+      context: ../../part-4/grafana
+      dockerfile: ./Dockerfile
