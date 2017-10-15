@@ -31,7 +31,9 @@ You do not need Docker running on your laptop, but you will need a Remote Deskto
 
 ## <a name="3"></a>Step 3. Update your workshop content
 
-Open a PowerShell prompt **using Run as Administrator** (or from `C:\shortcuts` on the lab VM). 
+Open a PowerShell prompt from the start menu (or from `C:\shortcuts` on the lab VM). 
+
+> **Do not use PowerShell ISE!** It has a strange relationship with the `docker login` command, and you won't get far with it.
 
 Start by updating the workshop content on the VM:
 
