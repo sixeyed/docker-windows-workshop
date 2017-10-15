@@ -53,10 +53,11 @@ On the local VM you use the `docker` commands in the same way, but on a remote m
 
 ## <a name="2"></a>Step 2. Prepare Jenkins
 
+We'll use the [Jenkins](https://jenkins.io/index.html) automation server to run the CI job to build the Docker solution. Jenkins has a basic install process, and then adds functionality with plug-ins.
 
-We'll use the [Jenkins] automation server to run the CI job to build the Docker solution. Jenkins has a basic install process, and then adds functionality with plug-ins.
+> Jenkins is a good example of an app which is hard to full configure in a Dockerfile. There are tools which let you script plug-ins, but they don't always deploy dependencies. Instead we'll build a base image, complete the installation manually and then commit an image from the container.
 
-Start by building a basic Jenkins Docker image, which contains Git and Docker clients, from this [Dockerfile]. That image will be used to prepare the full Jenkins setup:
+Start by building a basic Jenkins Docker image, which contains Git and Docker clients, from this [Dockerfile](part-6/jenkins/Dockerfile). That image will be used to prepare the full Jenkins setup:
 
 ```
 cd $env:workshop\part-6\jenkins
@@ -77,7 +78,7 @@ Now get the IP address and browse to it (Jenkins uses port `8080` by default):
 ```
 $ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' jenkins
 
-start "http://$($ip):8080"
+firefox "http://$($ip):8080"
 ```
 
 For each new install, Jenkins generates a random administrator password. You can see the password in the container logs:
@@ -115,7 +116,7 @@ docker container rm jenkins
 
 ## Start the Infrastructure Services
 
-For our CI setup, we'll need a Git server and a local Docker registry, as well as Jenkins. The [infrastructure Docker Compose file] sets those up, using host mounts for the data volumes.
+For our CI setup, we'll need a Git server and a local Docker registry, as well as Jenkins. The [infrastructure Docker Compose file](part-6/infrastructure/docker-compose.yml) sets those up, using host mounts for the data volumes.
 
 Start all the containers with compose:
 
@@ -139,10 +140,10 @@ The containers used fixed IP addresses, so we can refer to them using hostnames.
 
 ## Setup the Bonobo Git Server
 
-[Bonobo] is an open-source ASP.NET Git server. Browse to the Bonobo app running in the container:
+[Bonobo](https://bonobogitserver.com) is an open-source ASP.NET Git server. Browse to the Bonobo app running in the container:
 
 ```
-start http://bonobo.local/bonobo.git.server
+firefox http://bonobo.local/bonobo.git.server
 ```
 
 Log in with the credentials `admin/admin`, and create a new user. This will be used by the Jenkins service, so the username will be `jenkins-ci`, and the password `jenkins`.
@@ -175,7 +176,7 @@ Go to _Credentials/Global_ and click  Add Credential. You need to set up four ne
 
 Now store your Docker ID in a global variable, so it's available as an environment variable to all the job steps. Under _Manage Jenkins/Configure Jenkins_ add an environment variable to _Global properties_:
 
-- dockerId='my-docker-id'
+- dockerId='<my-docker-id>'
 
 Now back in the Jenkins homepage, add a job. Call it `signup` and select the _Freestyle_ job type.
 

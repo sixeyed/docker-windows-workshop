@@ -116,7 +116,8 @@ Have a look at the `Program Files` directory, and then drill down into the SQL S
 
 ```
 ls 'C:\Program Files'
-ls 'C:\Program Files\Microsoft SQL Server\MSSQL13.SQLEXPRESS\MSSQL\data'
+cd 'C:\Program Files\Microsoft SQL Server'
+ls .\MSSQL13.SQLEXPRESS\MSSQL\data
 ```
 
 The `.mdf` and `.ldf` files are stored inside the container. You can run SQL statements to store data, but when you remove the container, the data is lost. For stateful services like database, you'll want to run them with the data physically stored outside of the container, so you can replace the container but retain the data. I'll cover that later in the workshop.
@@ -136,18 +137,26 @@ Get-Process -Name powershell -IncludeUserName
 
 The SQL Server process runs under the normal `NT AUTHORITY\SYSTEM` account. All the default user groups and accounts are present in the Windows Server Core Docker image, with all the usual access permissions. The PowerShell processes are running as `User Manager\ContainerAdministrator`. That's the default account for processes running in Windows Docker containers, and it has admin privileges.
 
-On Windows Server 2016, those processes are actually running in isolated environments on the host. Open another PowerShell terminal, and repeat the `Get-Process` cmdlet, but this time you're listing all the PowerShell processes running on the server:
+On Windows Server 2016, those processes are actually running in isolated environments on the host. 
+
+> Open another PowerShell terminal, and repeat the `Get-Process` cmdlet
+
+This time you're listing all the PowerShell processes running on the server:
 
 ```
 Get-Process -Name powershell -IncludeUserName
 ```
 
-You'll see your PowerShell sessions and the two container processes - with the same process IDs listed in the container -but with a blank username. There are two important takeaways from this:
+You'll see your PowerShell sessions and the two container processes - with the same process IDs listed in the container - but with a blank username. There are two important takeaways from this:
 
 - Windows Server container processes run natively on the host, which is why they are so efficient
 - container processes run as an unknown user on the host, so a rogue container process wouldn't be able to access host files or other processes.
 
-Close the second PowerShell window, and type `exit` in the first to exit the interactive Docker session. 
+Close the second PowerShell window, and exit the interactive Docker session in the first PowerShell window:
+
+```
+exit
+``` 
 
 Now clean up, by removing all containers:
 
@@ -298,11 +307,11 @@ You'll see the upload progress for each layer in the Docker image. The `hostname
 
 The logical size of those images is over 10GB each, but the bulk of that is in the Windows Server Core base image. Those layers are already stored in Docker Hub, so they don't get uploaded - only the new parts of the image get pushed. And Docker shares layers between images, so every image that builds on Windows Server Core will share the cached layers for that image.
 
-You can browse to *https://hub.docker.com/r/_my-docker-Id_/* and see your newly-pushed Docker images. These are public repositories, so anyone can pull the image - you don't even need a Docker ID to pull public images.
+You can browse to [Docker Hub](https://hub.docker.com), login with your Docker ID and see your newly-pushed Docker images. These are public repositories, so anyone can pull the image - you don't even need a Docker ID to pull public images.
 
 ## Next Up
 
-That's it for Part 1. Next in [Part 2](part-2.md).we'll get stuck into modernizing an old ASP.NET app, by bringing it to a modern application platform.
+That's it for Part 1. Next in [Part 2](part-2.md) we'll get stuck into modernizing an old ASP.NET app, by bringing it to a modern application platform.
 
 Before we move on, let's clear up all the running containers:
 
