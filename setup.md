@@ -31,31 +31,29 @@ You do not need Docker running on your laptop, but you will need a Remote Deskto
 
 ## <a name="3"></a>Step 3. Setup your VM
 
-Open Windows Explorer, navigate to `C:\shortcuts` and drag the three shortcuts (PowerShell, VS Code and Firefox) to the desktop.
+Open a PowerShell prompt from the start menu.
 
-Run PowerShell from the Desktop shortcut.
+> **Do not use PowerShell ISE for the workshop!** It has a strange relationship with the `docker login` command, and you won't get far with it.
 
-> **Do not use PowerShell ISE!** It has a strange relationship with the `docker login` command, and you won't get far with it.
-
-Start by updating the workshop content on the VM:
+Start by updating the workshop content:
 
 ```
-$env:workshop='C:\scm\docker-windows-workshop'
-cd $env:workshop
+cd C:\scm\docker-windows-workshop
 git pull
 ```
 
-Now save your Docker ID into an environment variable:
+Now run the update script - it will prompt you for your Docker ID. The script updates the tools on the VM and sets up your Docker ID in an environment variable:
 
 ```
-$env:dockerId='my-docker-id'
+cd lab-vm
+.\update.ps1
 ```
 
-> Be sure to use **your** Docker ID - mine is `sixeyed`, so I run `$env:dockerId='sixeyed'`. You need to do this so you can push the images you build.
+> Be sure to use **your** Docker ID - mine is `sixeyed`, so that's what I enter into the script.
 
 ## <a name="3"></a>Step 4. Test your setup
 
-Login to Docker Hub with you Docker credentials:
+Login to Docker Hub with your Docker credentials:
 
 ```
 docker login --username $env:dockerId

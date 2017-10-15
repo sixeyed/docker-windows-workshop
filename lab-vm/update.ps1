@@ -1,6 +1,6 @@
 param(
     [Parameter(Mandatory=$true)]
-    [string]$dockerId,
+    [string]$dockerId
 )
 
 # set env vars:
@@ -24,6 +24,7 @@ $Shortcut.Save()
 
 $Shortcut = $WshShell.CreateShortcut("$Home\Desktop\Code.lnk")
 $Shortcut.TargetPath = "C:\Program Files\Microsoft VS Code\Code.exe"
+$shortcut.Arguments = "C:\scm\docker-windows-workshop"
 $Shortcut.Save()
 
 # update tools
