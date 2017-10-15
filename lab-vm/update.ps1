@@ -46,3 +46,8 @@ docker image pull sixeyed/nunit:3.6.1
 # set environment
 [Environment]::SetEnvironmentVariable('workshop', $env:workshop, [EnvironmentVariableTarget]::Machine)
 [Environment]::SetEnvironmentVariable('dockerId', $env:dockerId, [EnvironmentVariableTarget]::Machine)
+
+# set dockerd config
+
+mkdir -path C:\ProgramData\docker\config
+cp .\docker\daemon.json C:\ProgramData\docker\config\

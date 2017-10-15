@@ -291,11 +291,17 @@ This is what the CI job does:
 
 - pushes the build images to the local registry (script [04-push.ps1](part-6/04-push.ps1))
 
+> Your local registry is runninh on HTTP, not HTTPS. Docker doesn't allow pushes to insecure registries by default, but part of the setup script for the VM creates the [daemon.json](lab-vm/docker/daemon.json) config file to allow insecure push to `registry.local`.
+
 You'll see all the usual Docker commands running, as the CI job builds all the images. The Jenkins job is running commands on your local Docker host, so you will see some image layers come from the cache, where Docker has been able to re-use parts of the build.
 
-At the end of the build, you will have a versioned set of application images in your local Docker registry.
+At the end of the build, you will have a versioned set of application images in your local Docker registry - you can see the repository list from this API call:
+
+```
+(iwr http://registry.local:5000/v2_catalog).Content | ConvertFrom-Json
+```
 
 
 ## Next Up
 
-We'll make use of another feature of compose in [Part 6](part-6.md), when we build out a full CI pipeline, with all the parts running in Docker containers on Windows.
+We have an automated CI pipeline now, which can build and push a versioned set of images with every push to the source repository.In [Part 7](part-7.md) we'll switch to swarm mode and run the application in a highly-available cluster.
