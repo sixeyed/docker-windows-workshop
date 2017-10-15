@@ -44,7 +44,7 @@ cd "$env:workshop\app"
 docker-compose -f .\docker-compose-1.3.yml up -d
 ```
 
-The output from compose will show the new containers for the message queue and the message handler; the app container gets uupdated and the database container stays the same:
+The output from compose will show the new containers for the message queue and the message handler; the app container gets updated and the database container stays the same:
 
 ```
 app_signup-db_1 is up-to-date
@@ -60,6 +60,7 @@ Browse to the new application container and you'll see the UI and UX haven't cha
 
 ```
 $ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_signup-web_1
+
 firefox "http://$ip"
 ```
 
@@ -112,6 +113,7 @@ You can add a few more users with different roles and countries, if you want to 
 
 ```
 $ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_kibana_1
+
 firefox "http://$($ip):5601"
 ```
 
@@ -146,6 +148,7 @@ And because the web app configuration has changed, there will be a new web conta
 
 ```
 $ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_signup-web_1
+
 firefox "http://$ip"
 ```
 
