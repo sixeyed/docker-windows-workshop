@@ -82,7 +82,7 @@ docker service rm pinger
 
 It's time to buddy up! 
 
-![Ferris & pals](img/ferris-buellers-day-off.jpg]
+![Ferris & pals](img/ferris-buellers-day-off.jpg)
     
 Your workshop VM is in the same virtual network as your neighbour's, so you can create a swarm between you. First you need to:
 

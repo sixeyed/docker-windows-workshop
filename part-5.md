@@ -178,4 +178,4 @@ At the end of the workshop we'll see how to use the Compose file format with [Do
 
 ## Next Up
 
-We'll make use of another feature of compose in [Part 6](part-6.md), when we build out a full CI pipeline, with all the parts running in Docker containers on Windows.
+We'll make more use of compose in [Part 6](part-6.md), when we build out a full CI pipeline, with all the parts running in Docker containers on Windows.
