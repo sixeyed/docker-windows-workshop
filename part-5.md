@@ -14,7 +14,7 @@ Every time we restart the SQL Server container, any data stored in the database 
 
 Docker provides [volumes](https://docs.docker.com/engine/admin/volumes/volumes/) for storing data outside of containers. A volume can simply be a mount, where a directory in the container is actually mapped to a directory on the host.
 
-As a simple example, create a new IIS container with the log directory mapped to the host:
+As a simple example, create a new IIS container with the log directory mapped to a new path on the host:
 
 ```
 mkdir C:\iis-logs
@@ -148,7 +148,8 @@ Now browse to the site and enter some prospects:
 
 ```
 $ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_signup-web_1
-start "http://$ip"
+
+firefox "http://$ip"
 ```
 
 Check the container logs, and you'll see the prospect signup messages have been distributed among the three containers:

@@ -12,9 +12,9 @@ services:
       - app-net
 
   signup-web:
-    image: ${dockerId}/signup-web:1.3
+    image: ${dockerId}/signup-web:1.4
     ports:
-      - "80"
+      - "80:80"
     env_file:
       - db-credentials.env
     depends_on:
@@ -29,7 +29,7 @@ services:
       - app-net
 
   signup-save-handler:
-    image: ${dockerId}/signup-save-handler
+    image: ${dockerId}/signup-save-handler:2
     env_file:
       - db-credentials.env
     depends_on:
@@ -55,10 +55,28 @@ services:
       - app-net
 
   signup-index-handler:
-    image: ${dockerid}/signup-index-handler
+    image: ${dockerid}/signup-index-handler:2
     depends_on:
       - elasticsearch
       - message-queue
+    networks:
+      - app-net
+
+  prometheus:
+    image: ${dockerid}/signup-prometheus
+    depends_on:
+      - signup-web
+      - signup-index-handler
+      - signup-save-handler
+    networks:
+      - app-net
+
+  grafana:
+    image: ${dockerid}/signup-grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
     networks:
       - app-net
 
