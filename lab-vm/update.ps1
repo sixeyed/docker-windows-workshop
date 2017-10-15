@@ -27,6 +27,9 @@ $Shortcut.TargetPath = "C:\Program Files\Microsoft VS Code\Code.exe"
 $shortcut.Arguments = "C:\scm\docker-windows-workshop"
 $Shortcut.Save()
 
+# turn the firewall off again
+Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled $false
+
 # update tools
 choco upgrade -y visualstudiocode
 choco upgrade -y firefox
@@ -38,6 +41,7 @@ docker image pull sixeyed/docker-ce:17.05.0-ce
 docker image pull sixeyed/jenkins:2.46.2
 docker image pull sixeyed/registry:2.6.0-nanoserver
 docker image pull sixeyed/bonobo:6.1.0-windowsservercore
+docker image pull sixeyed/nunit:3.6.1
 
 # set environment
 [Environment]::SetEnvironmentVariable('workshop', $env:workshop, [EnvironmentVariableTarget]::Machine)

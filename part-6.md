@@ -7,7 +7,7 @@ It's very simple to configure a full CI system using Docker - where the source c
 * [1. Configure Docker for remote access](#1)
 * [2. Prepare Jenkins](#2)
 * [3. Run infrastructure services](#3)
-* [4. Configure CI job](#4)
+* [4. Configure and run the CI job](#4)
 
 
 ## <a name="1"></a>Step 1. Configure Docker for remote access
@@ -127,9 +127,12 @@ Now we have a configured Jenkins server in a Docker image, so wherever we run a 
 
 ## <a name="3"></a>Step 3. Run infrastructure services
 
+For our full CI setup, we'll use a Git server and a local Docker registry, as well as Jenkins. We'll run them all in containers. Having your complete build environment in containers is useful - it means your whole application deployment pipeline is portable.
+
+
 ## Start the Infrastructure Services
 
-For our full CI setup, we'll need a Git server and a local Docker registry, as well as Jenkins. The [infrastructure Docker Compose file](part-6/infrastructure/docker-compose.yml) sets those up, using host mounts for the data volumes.
+The [infrastructure Docker Compose file](part-6/infrastructure/docker-compose.yml) sets up all the CI services, using host mounts for the data volumes.
 
 Start all the containers with compose:
 
@@ -238,7 +241,7 @@ Now store your Docker ID in a global variable, so it's available as an environme
 ![img]()
 
 
-## <a name="2"></a>Step 4. Configure CI job
+## <a name="2"></a>Step 4. 4. Configure and run the CI job
 
 Setting up the infrastructure services is the hard part. Now we'll configure a CI job for Jenkins to build, run and test the full solution. This is much easier - we'll be using simple PowerShell scripts which run Docker commands. All the work is done in Docker containers.
 
@@ -276,5 +279,7 @@ Still in the _Build_ tab, click to add four build steps - all using _Windows Pow
 - `.\part-6\03-test.ps1` - executes the end-to-end test suite (in a containewr)
 - `.\part-6\04-push.ps1` - pushes the build images to the local registry
 
-That's it! Click _Save_ and then click _Build Now_ to start the job. You can click on the job number in the lict and select _Console Output_ to viewe the progress of the job.
+That's it! Click _Save_ and then click _Build Now_ to start the job. You can click on the job number in the lict and select _Console Output_ to view the progress of the job.
+
+You'll see all the usual Docker commands running, as the CI job builds all the images. The Jenkins job is running commands on your local Docker host, so you will see some image layers come from the cache, where Docker has been able to re-use parts of the build.
 
