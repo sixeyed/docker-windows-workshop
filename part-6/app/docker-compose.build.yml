@@ -4,13 +4,13 @@ services:
 
   signup-db:
     build:
-      context: ../../part-4/db
+      context: ../../part-5/db
       dockerfile: ./Dockerfile
 
   signup-web:
     build:
       context: ../../
-      dockerfile: ./part-3/web-1.3/Dockerfile
+      dockerfile: ./part-4/web-1.4/Dockerfile
 
   signup-save-handler:
     build:
@@ -21,3 +21,13 @@ services:
     build:
       context: ../../
       dockerfile: ./part-3/index-handler/Dockerfile
+
+  prometheus:
+    build:
+      context: ../../
+      dockerfile: ./part-4/prometheus/Dockerfile
+
+  grafana:
+    build:
+      context: ../../
+      dockerfile: ./part-4/grafana/Dockerfile

@@ -151,7 +151,7 @@ cd "$env:workshop\part-6"
 .\write-hosts.ps1
 ```
 
-You'll see entries similar to these in `notepad C:\Windows\System32\drivers\etc\hosts`:
+You'll see entries similar to these at the end of `C:\Windows\System32\drivers\etc\hosts`:
 
 ```
 172.19.240.200 registry.local
@@ -171,9 +171,13 @@ Your IP addresses will be different, because Docker uses a random IP address ran
 firefox http://bonobo.local/bonobo.git.server
 ```
 
-Log in with the credentials `admin/admin`, and create a new user. This will be used by the Jenkins service, so the username will be `jenkins-ci`, and the password `jenkins`.
+Log in with the credentials `admin/admin`, and click *Users* / *Create new user* to add a user. This will be used by the Jenkins service, so the username will be `jenkins-ci`, and the password `jenkins`:
 
-Then create a new repository for the source code - call it `docker-windows-workshop`, and add the `jenkins-ci` user as a contributor.
+![Bonobo - create user]()
+
+Then create a new repository for the source code. Click *Repositories* / *Create new repository*.  Call it `docker-windows-workshop`, and add the `jenkins-ci` user as a contributor:
+
+![Bonobo - create repository]()
 
 Now push the local source code on your machine to the Git server running in Docker:
 
@@ -185,50 +189,92 @@ git remote add bonobo.local http://bonobo.local/Bonobo.Git.Server/docker-windows
 git push bonobo.local master
 ```
 
-Explore `C:\bonobo` and you'll see the Bonobo database and the repo folders are stored on the host.
+You'll need to log in to Bonobo when you push - you can use the default `admin/admin` credentials:
 
+![Bonobo push creds]()
 
-## Configure the Jenkins CI job
+This pushes the repository from your local disk to the Git server running in a container. The storage for Bonobo is configured to use a local volume, so the actual data gets stored in the `C` drive on your host.
+
+Explore `C:\bonobo` and you'll see the Bonobo database and the repo folders are there:
+
+```
+& tree C:\bonobo
+```
+
+Now the code is available in our private Git repo, we can configure Jenkins to build the project.
+
+## Set up credentials for Jenkins 
 
 Browse to Jenkins on http://jenkins.local:8080.
 
-Go to _Credentials/Global_ and click  Add Credential. You need to set up four new credentials:
+> If you can't remember your Jenkins admin password, you can find it with this command: `cat /jenkins/jenkins/secrets/initialAdminPassword`. Remember the Jenkins files are stored on your host.
+
+We need to start by setting up credentials, so Jenkins can use the Git server and connect to Docker. Go to _Credentials/Global_ and click *Add Credentials*. You need to set up four new credentials:
 
 1. a `Username with password` credential for Bonobo, username `jenkins-ci`, password `jenkins`
+
+![img]()
+
 2. a `Secret file` credential for the generated CA certificate - upload `C:\certs\vm\client\ca.pem` and call it `docker-ca`
+
+![img]()
+
 3. a `Secret file` credential for the generated certificate - upload `C:\certs\vm\client\cert.pem` and call it `docker-cert`
+
+![img]()
+
 4. a `Secret file` credential for the generated key - upload `C:\certs\vm\client\key.pem` and call it `docker-key`
 
-Now store your Docker ID in a global variable, so it's available as an environment variable to all the job steps. Under _Manage Jenkins/Configure Jenkins_ add an environment variable to _Global properties_:
+![img]()
 
-- dockerId='<my-docker-id>'
+You should have four global credentials saved, which means Jenkins jobs can fetch from Git repositories and securely invoke commands on the local Docker engine:
 
-Now back in the Jenkins homepage, add a job. Call it `signup` and select the _Freestyle_ job type.
+![img]()
 
-In the SCM tab configure the connection to the Git server:
+## Set up your Docker ID 
 
-- Repository url - http://bonobo/Bonobo.Git.Server/docker-windows-workshop.git
-- Credentials - select the `jenkins-ci` credential.
+Now store your Docker ID in a global variable, so it's available as an environment variable to all the job steps. Under _Manage Jenkins/Configure System_, select _Environment variables_ and add a variable with the name `dockerId` and a value with your Docker ID:
 
-Bindings
-
-- use secret files: DOCKER_CA, DOCKER_CERT, DOCKER_KEY
+![img]()
 
 
-Build steps - PowerShell
+## <a name="2"></a>Step 4. Configure CI job
 
-```
-.\part-6\01-build.ps1
-```
+Setting up the infrastructure services is the hard part. Now we'll configure a CI job for Jenkins to build, run and test the full solution. This is much easier - we'll be using simple PowerShell scripts which run Docker commands. All the work is done in Docker containers.
 
-```
-.\part-6\02-run.ps1
-```
+## Configure the Jenkins CI job
 
-```
-.\part-6\03-test.ps1
-```
+Back in the Jenkins homepage, click _New item_ to add a job. Call it `signup` and select the _Freestyle_ job type.
 
-```
-.\part-6\04-push.ps1
-```
+In the _Source Code Management_ tab select `Git` and configure the connection to the Git server: 
+
+- _Repository URL_ - `http://bonobo/Bonobo.Git.Server/docker-windows-workshop.git`
+- _Credentials_ - `jenkins-ci`
+
+![img]()
+
+When you run the job, Jenkins will pull the latest code from the Git server - which is the contents of this repo. It has all the solution source code, build scripts, Dockerfiles and Docker Compose files which will get used in the build. 
+
+> Remember that Jenkins is running inside a container. It can reach the Git server by its container name - so the domain name in the URL is just `bonobo`.
+
+In the _Build_ tab, select _Use secret text(s) or file(s), and add three _Secret file_ bindings:
+
+- `DOCKER_CA` using the `ca.pem` credential
+- `DOCKER_CERT` using the `cert.pem` credential
+- `DOCKER_KEY` using the `key.pem` credential
+
+![img]()
+
+This is how Jenkins makes those secrets available to the job. When the job runs, the secrets are surfaced as files, with the file path in an environment variable named after the binding (e.g. the Docker client certificate will be in a file, and the file path will by `$env:DOCKER_CERT`).
+
+The PowerShell build scripts use those certificate paths to connect to the Docker engine running on the host.
+
+Still in the _Build_ tab, click to add four build steps - all using _Windows PowerShell_ commands. The PowerShell scripts all use Docker Compose:
+
+- `.\part-6\01-build.ps1` - builds all the Docker images
+- `.\part-6\02-run.ps1` - runs the solution in containers
+- `.\part-6\03-test.ps1` - executes the end-to-end test suite (in a containewr)
+- `.\part-6\04-push.ps1` - pushes the build images to the local registry
+
+That's it! Click _Save_ and then click _Build Now_ to start the job. You can click on the job number in the lict and select _Console Output_ to viewe the progress of the job.
+
