@@ -1,9 +1,8 @@
 # Part 7 - Docker Swarm - Native Clustering for High Availability and Scale
 
-In production environments, you will run multiple Docker engines in a cluster and manage services rather than individual containers. The clustering technology built into Docker is called swarm mode - you can easily create a swarm across dozens of machines just by running one command on each.
+In production environments, you will run multiple Docker engines in a cluster and manage services rather than individual containers. The clustering technology built into Docker is called [swarm mode](https://docs.docker.com/engine/swarm/) - you can easily create a swarm across dozens of machines just by running one command on each.
 
 In the final part of the workshop, we'll be using swarm mode to run the application.
-
 
 ## Steps
 
@@ -28,11 +27,19 @@ docker swarm init --advertise-addr 127.0.0.1
 
 That makes your node a swarm manager. The output is the command you would use to join other nodes to the swarm, but in this step we'll stick with a single node.
 
-create service:
+Shortly we'll deploy the workshop app to the swarm, but before that we'll just explore swarm mode with a simple example.
+
+In swarm mode you deploy containers are services. You create a service and specify its configuration, and Docker runs the service as containers on the swarm.
+
+Create a simple service which runs in a single container that pings itself:
 
 ```
 docker service create --entrypoint "ping -t localhost" --name pinger microsoft/nanoserver
+```
 
+Services are a first-class resource in swarm mode. You can list all services, list the containers running the service (called "tasks"), and check the logs for the service:
+
+```
 docker service ls
 
 docker service ps pinger
@@ -40,43 +47,65 @@ docker service ps pinger
 docker service logs pinger
 ```
 
-scale up:
+Services are an abstraction over containers. Working at the service level, you don't care which node is running the containers. You just specify a service level, and the swarm maintains it.
+
+You can scale up the service by running more replicas:
 
 ```
 docker service update --replicas=3 pinger
+```
 
+Scaling up the service adds more task containers. This is a single node swarm so they will all be running on your VM. You can see the extra tasks, and their logs:
+
+```
 docker service ps pinger
 
 docker service logs pinger
 ```
 
-
-update:
+Swarm mode also supports automatic updates. You upgrade your app by updating the service with a new image. For services with multiple replicas, this is a zero-downtime update because Docker removes one container at a time, and replaces it with a new one:
 
 ```
 docker service update --image microsoft/windowsservercore pinger
-
-docker service inspect pinger
-
-docker service ps pinger
-
-docker service logs pinger
 ```
 
-rollback:
+This replaces the container image, switching from Nano Server to Winfows Server Core. The `entrypoint` definition for the service is still the same, so when new task containers start, they will run the same command. The service definition is stored in the swarm:
+
+```
+docker service inspect pinger
+```
+
+Check the task list for the service, and you can see the rollout happens gradually. Some containers will be using the original definition with Nano Server, and some will be using Windows Server Core:
+
+```
+docker service ps pinger
+```
+
+Because swarm saves the service definition, you can easily rollback an update if the new version of the app has a problem:
 
 ```
 docker service update --rollback pinger
+```
 
+The rollback happens in the same way, with task containers being replaced with versions using the original definition:
+
+```
 docker service ps pinger
 ```
 
-remove:
+And you can see the logs are still collected from all the containers:
+
+```
+docker service logs pinger
+```
+
+You can stop and remove all the task containers just by removing the service:
 
 ```
 docker service rm pinger
 ```
 
+Now we're ready to deploy the real application to a real swarm.
 
 ## <a name="2"></a>Step 2. Set up the production swarm
 

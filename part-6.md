@@ -100,17 +100,17 @@ You should see just these plugins installing:
 
 ![Jenkins plugins](img/jenkins-plugins.PNG)
 
-In a real environment you would set up an admin user now, rather than use the built-in admin user. But for the workshop just select *Continue as admin*:
+When the plugin deployment completes, you'll be asked to create a user. In a real environment you would set up an admin user now, rather than use the built-in admin user. But for the workshop just select *Continue as admin*:
 
 ![Jenkins Continue as Admin](img/jenkins-continue-as-admin.PNG)
 
 Once the basic install completes, select *Manage Jenkins* then *Manage Plugins* to add one more plugin:
 
+- Choose *Available* (it may take a few minutes for Jenkins to load the plugin list)
+- Filter on *PowerShell*
+
 ![Jenkins PowerShell plugin](img/jenkins-powershell-plugin.PNG)
 
-- Manage jenkins/manage plugins
-- Choose *Available*
-- Filter on *PowerShell*
 - Select *Install without restart*
 
 That gives us a fully configured Jenkins instance. We can export the container as an image which is our portable CI server.  We need to stop the container first, then `commit` the container as an image, and then we can remove the container:
@@ -240,7 +240,7 @@ Now store your Docker ID in a global variable, so it's available as an environme
 ![Jenkins - Docker ID](img/jenkins-dockerId.PNG)
 
 
-## <a name="2"></a>Step 4. 4. Configure and run the CI job
+## <a name="2"></a>Step 4. Configure and run the CI job
 
 Setting up the infrastructure services is the hard part. Now we'll configure a CI job for Jenkins to build, run and test the full solution. This is much easier - we'll be using simple PowerShell scripts which run Docker commands. All the work is done in Docker containers.
 
@@ -305,4 +305,4 @@ At the end of the build, you will have a versioned set of application images in 
 
 ## Next Up
 
-We have an automated CI pipeline now, which can build and push a versioned set of images with every push to the source repository.In [Part 7](part-7.md) we'll switch to swarm mode and run the application in a highly-available cluster.
+We have an automated CI pipeline now, which can build and push a versioned set of images with every push to the source repository. In [Part 7](part-7.md) we'll switch to swarm mode and run the application in a highly-available cluster.
