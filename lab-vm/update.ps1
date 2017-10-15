@@ -21,3 +21,8 @@ $item = $folder.Parsename('Code.exe')
 $verb = $item.Verbs() | ? {$_.Name -eq 'Pin to Tas&kbar'}
 if ($verb) {$verb.DoIt()}
 
+# configure Firefox
+$ffPrefs = 'C:\Program Files\Mozilla Firefox\defaults\pref'
+mkdir -p -f $ffPrefs
+cp .\autoconfig.js $ffPrefs
+cp .\mozilla.cfg $ffPrefs
