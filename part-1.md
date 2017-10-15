@@ -231,10 +231,10 @@ for ($i=0; $i -lt 5; $i++) {
 When the browsers have finished loading, you'll see that each site displays a different hostname, which is the same as the container ID Docker generates in each case. On the host you have six `w3wp` processes running, and you can see the memory and CPU usage with `Get-Process`:
 
 ```
-Get-Process -Name w3wp | select Id, Name, WorkingSet
+Get-Process -Name w3wp | select Id, Name, WorkingSet, Cpu
 ```
 
-On my Azure VM, the wroker processes average around 50MB of RAM and 5 seconds of CPU time.
+On my Azure VM, the worker processes average around 50MB of RAM and 5 seconds of CPU time.
 
 This is a simple ASP.NET website running in Docker, with just two lines in a Dockerfile. But it has some drawbacks. First, there are no logs - IIS stores request logs in the container filesystem, but Docker is only listening for logs on the standard output from the startup program. There's no automatic relay from the log files to the console output, so there are no HTTP access log entries in the containers:
 
@@ -286,10 +286,16 @@ Feel free to hit the Tweet button, sign in and share your workshop progress :)
 Now if you list the images and filter on your Docker ID, you'll see the images you've built today, with the newest at the top:
 
 ```
-> docker image ls -f reference="$env:dockerId/*"
-REPOSITORY              TAG                 IMAGE ID            CREATED             SIZE
-sixeyed/tweet-app       latest              0643d4c6116f        2 minutes ago       10.7GB
-sixeyed/hostname-app    latest              f2ae4ec014c4        28 minutes ago      11.5GB
+docker image ls -f reference="$env:dockerId/*"
+```
+
+My output looks like this:
+
+```
+REPOSITORY                      TAG                 IMAGE ID            CREATED             SIZE
+sixeyed/tweet-app               latest              0643d4c6116f        2 minutes ago       10.7GB
+sixeyed/hostname-app            latest              f2ae4ec014c4        28 minutes ago      11.5GB
+sixeyed/docker-workshop-verify  latest              75b001142cb0        35 minutes ago      10.3GB
 ```
 
 Those images are only stored in the cache on your Azure VM, and that VM will be deleted after the workshop. Next we'll push the images to a public repository so you can run them from any Windows machine with Docker.

@@ -260,7 +260,7 @@ You've done what you need to move your own apps to Docker in production!
 
 > Want to hear more from your workshop team? **We're here all week!**
 
-- [Stefan](https://twitter.com/stefscherer) is on the Hallway Track, I'm sure he'll be happy to field any questions about the workshop :) [Let's talk about Windows containers](https://hallwaytrack.dockercon.com/offers/31858)
+- [Stefan](https://twitter.com/stefscherer) has a group chat set up on the Hallway Track, I'm sure he'll be happy to field any questions about the workshop :) [Let's talk about Windows containers](https://hallwaytrack.dockercon.com/offers/31858) **tonight at 17:15**
 
 - [Michael](https://twitter.com/friism) is presenting [Docker Multi-arch All the Things](https://dockerconeurope.smarteventscloud.com/connect/sessionDetail.ww?SESSION_ID=139237) with Docker Captain [Phil Estes](https://twitter.com/estesp) on **Tuesday at 14:00**
 

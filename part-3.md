@@ -24,7 +24,7 @@ First you need to change some code. Open`.\signup\src\SignUp.Web\SignUp.aspx.cs`
 PublishProspectSignedUpEvent(prospect);
 ```
 
-That replaces the synchronous SQL insert with message publishing. You can see the code for the message handler which subscribes to the message in [Program.cs](src/ProductLaunch/ProductLaunch.MessageHandlers.SaveProspect/Program.cs) - it uses the exact same `SaveProspect` code lifted from the web app. The message handler will be packaged into a new image with this [Dockerfile](part-3/save-handler/Dockerfile).
+That replaces the synchronous SQL insert with message publishing. You can see the code for the message handler which subscribes to the message in [Program.cs](signup/src/SignUp.MessageHandlers.SaveProspect/Program.cs) - it uses the exact same `SaveProspect` code lifted from the web app. The message handler will be packaged into a new image with this [Dockerfile](part-3/save-handler/Dockerfile).
 
 You need to build a new version of the web image, and a new message handler image:
 
@@ -81,7 +81,7 @@ The app performs better now, but all the data is stored in SQL Server which isn'
 
 We'll be running [Elasticsearch](https://www.elastic.co/products/elasticsearch) for storage and [Kibana](https://www.elastic.co/products/kibana) to provide an accessible front-end. To populate Elasticsearch with data when a user signs up, we just need to add another message handler, which will listen to the same messages published by the web app.
 
-The code for that is in another [Program.cs](src/ProductLaunch/ProductLaunch.MessageHandlers.IndexProspect/Program.cs). You'll build it in the same way, using this [Dockerfile](part-3/index-handler/Dockerfile):
+The code for that is in another [Program.cs](signup/src/SignUp.MessageHandlers.IndexProspect/Program.cs). You'll build it in the same way, using this [Dockerfile](part-3/index-handler/Dockerfile):
 
 ```
 cd $env:workshop
