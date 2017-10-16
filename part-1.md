@@ -309,7 +309,7 @@ docker image push $env:dockerId/hostname-app
 docker image push $env:dockerId/tweet-app
 ```
 
-You'll see the upload progress for each layer in the Docker image. The `hostname-app` image uplads quickly as it only adds one small layer on top of Microsoft's ASP.NET image. The `tweet-app` image takes longer to push - there are more layers, and the configured IIS layer runs to 40MB. 
+You'll see the upload progress for each layer in the Docker image. The `hostname-app` image uploads quickly as it only adds one small layer on top of Microsoft's ASP.NET image. The `tweet-app` image takes longer to push - there are more layers, and the configured IIS layer runs to 40MB. 
 
 The logical size of those images is over 10GB each, but the bulk of that is in the Windows Server Core base image. Those layers are already stored in Docker Hub, so they don't get uploaded - only the new parts of the image get pushed. And Docker shares layers between images, so every image that builds on Windows Server Core will share the cached layers for that image.
 
