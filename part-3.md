@@ -14,7 +14,7 @@ The current code makes a synchronous call to SQL Server to insert a row when a u
 
 We'll fix that by using a message queue instead - running in a Docker container. When you sign up the web app will publish an event message on the queue, which a message handler picks up and actions. The message handler is a .NET console app running in a container.
 
-First you need to change some code. Open`.\signup\src\SignUp.Web\SignUp.aspx.cs` in VS Code (or Notepad or whatever editor you like). Comment out the `SavePropsect` call at line 74, and uncomment the `PublishProspectSignedUpEvent` call at line 78. The section should look like this:
+First you need to change some code. Open`$env:workshop\signup\src\Signup.Web\SignUp.aspx.cs` in VS Code (or Notepad or whatever editor you like). Comment out the `SavePropsect` call at line 74, and uncomment the `PublishProspectSignedUpEvent` call at line 78. The section should look like this:
 
 ```
 /* synchronous */
