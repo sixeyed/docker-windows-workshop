@@ -126,7 +126,7 @@ Your workshop VM is in the same virtual network as your neighbour's, so you can 
 Run this script to tag your local images and push them to Docker Hub:
 
 ```
-$repositories = 'signup-db', 'signup-web', 'signup-save-handler', 'signup-index-handler', 'prometheus', 'grafana'
+$repositories = 'signup-db', 'signup-web', 'signup-save-handler', 'signup-index-handler', 'signup-prometheus', 'signup-grafana'
 
 foreach ($repository in $repositories) {
     $sourceTag = "$($env:dockerId)/$($repository)"
