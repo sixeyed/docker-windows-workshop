@@ -299,7 +299,7 @@ You'll see all the usual Docker commands running, as the CI job builds all the i
 At the end of the build, you will have a versioned set of application images in your local Docker registry - you can see the repository list from this API call:
 
 ```
-(iwr http://registry.local:5000/v2_catalog).Content | ConvertFrom-Json
+(iwr http://registry.local:5000/v2/_catalog).Content | ConvertFrom-Json
 ```
 
 
