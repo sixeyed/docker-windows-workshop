@@ -1,0 +1,33 @@
+version: '3.1'
+
+services:
+
+  signup-db:
+    build:
+      context: ../../part-5/db
+      dockerfile: ./Dockerfile
+
+  signup-web:
+    build:
+      context: ../../
+      dockerfile: ./part-4/web-1.4/Dockerfile
+
+  signup-save-handler:
+    build:
+      context: ../../
+      dockerfile: ./part-3/save-handler/Dockerfile
+
+  signup-index-handler:
+    build:
+      context: ../../
+      dockerfile: ./part-3/index-handler/Dockerfile
+
+  prometheus:
+    build:
+      context: ../../part-4/prometheus
+      dockerfile: ./Dockerfile
+
+  grafana:
+    build:
+      context: ../../part-4/grafana
+      dockerfile: ./Dockerfile

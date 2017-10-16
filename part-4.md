@@ -1,165 +1,166 @@
-# Part 4 - Resilience and Scalability with Docker Compose
+# Part 4 - Preparing for Production with Instrumentation
 
-In this part we'll see how to use Docker Compose to scale our app and make the containers, and data, resilient to hardware failure. Compose is a client-side tool that works against a single Docker engine. At the end of the workshop we'll look at resilience and scale across multiple nodes in a Docker swarm.
+The app is ready to be promoted to production now, but we'll have problems when we run at scale. For production load you may run dozens of web containers and message handler containers, and currently the only instrumentation we have is text-based log entries. 
+
+In Docker all containers look the same, whether they're running ASP.NET WebForms apps in Windows or .NET Core console apps in Linux - and you can expose metrics from containers to give you a single dashboard for the performance of all your containers.
+
+In this section we'll add metrics to the solution using [Prometheus](http://prometheus.io) - a popular open-source monitoring server, and [Grafana](https://grafana.com) - a dashboard that plugs into Prometheus. We'll run those new components in Docker Windows containers too.
 
 ## Steps
 
-* [1. Add persistent storage to SQL Server](#1)
-* [2. Set application services to restart when Docker starts](#2)
-* [3. Scale message handlers up to increase throughput](#3)
+* [1. Expose custom metrics from the message handlers](#1)
+* [2. Expose IIS metrics from the web application](#2)
+* [3. Run the solution with Prometheus and Grafana](#3)
+* [4. Import the dashboard for the solution](#4)
 
-## <a name="1"></a>Step 1. Add persistent storage to SQL Server
+## <a name="1"></a>Step 1. Expose custom metrics from the message handlers
 
-Every time we restart the SQL Server container, any data stored in the database is lost. Docker images are read-only so they can be shared - writing data in a container doesn' affect the image. Each container adds a writeable layer on top of the image layers for its own data. When you remove the container you lose the data.
+You can instrumentation to your apps in two ways. The first is to record custom metrics in your code, which gives you clear insight into the specific events that interest you. 
 
-Docker provides [volumes]() for storing data outside of containers. A volume can simply be a mount, where a directory in the container is actually mapped to a directory on the host.
+The message handlers already have code to record metrics when they handle messages. In this step we'll expose those metrics on an HTTP endpoint, so Prometheus can scrape them.
 
-As a simple example, create a new IIS container with the log directory mapped to the host:
+You'll need to change the `Program.cs` files to uncomment the lines which start the metrics server:
 
-```
-mkdir C:\iis-logs
+- Open `.\signup\src\SignUp.MessageHandlers.IndexProspect\Program.cs`. Uncomment lines **23-25**.
+- Open `.\signup\src\SignUp.MessageHandlers.SaveProspect\Program.cs`. Uncomment lines **25-27**.
 
-docker container run --detach --name iis --publish-all `
- --volume "C:\iis-logs:C:\inetpub\logs" `
- microsoft/iis:nanoserver
-```
-
-Make a web request to the container, and check the contents of the log folder on the host:
+In both cases, the `Main` method should now start like this:
 
 ```
-$ip = docker inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' iis
-
-iwr -useb http://$ip
-
-ls C:\iis-logs\LogFiles\W3SVC1
+var server = new MetricServer(50505, new IOnDemandCollector[] { new DotNetStatsCollector() });
+server.Start();
+Console.WriteLine($"Metrics server listening on port 50505");
 ```
 
-IIS running inside the container has created a log file in the `LogFiles` directory, which is actually mapped to the host. You can do the same with SQL Server to store the data and log files on the host.
-
-> It's slightly more complicated with SQL Server because you can't mount a directory from the host if the directory on the image already contains data. You can't override the existing SQL Server data directory, so instead we'll make a custom SQL Server image.
-
-The [Dockerfile](part-4/db/Dockerfile) for the database image is based from Microsoft' SQL Server image. It adds an [initialization script](part-4/db/Initialize-Database.ps1) as the entrypoint. That script creates the SignUp database a known file location.
-
-Build the image, which is now suited to using data volumes:
+The Dockerfiles for the handlers haven't changed, so you can rebuild them using the setup from Part 3, giving them a version 2 tag:
 
 ```
-cd "$env:workshopRoot\part-4\db"
+cd $env:workshop
 
-docker image build --tag "$env:dockerId/signup-db" .
+docker image build --tag $env:dockerId/signup-index-handler:2 -f part-3\index-handler\Dockerfile .
+
+docker image build --tag $env:dockerId/signup-save-handler:2 -f part-3\save-handler\Dockerfile .
 ```
 
-I've added a volume mount to the database service definition in [docker-compose-1.6.yml](app/docker-compose-1.6.yml). Create a directory on the host for the SQL Server data, and bring up the application: 
+When the handler containers run, they will have a Prometheus-compatible endpoint listening on port `50505`, which provides key .NET metrics as well as custom app metrics.
+
+
+## <a name="2"></a>Step 2. Expose IIS metrics from the web application
+
+The other way to add metrics to your app is to export Windows Performance Counters from the container. This way gives you core information without having to change your app code, but the metrics you get are only generic. 
+
+In this step you'll expose IIS performance counters from the web app container.
+
+In the [Dockerfile](part-4/web-1.4/Dockerfile) for version 1.4 of the app, there are additional steps to packe a console app alongside the web application. The console app exports the performance counter values from IIS as Prometheus-formatted metrics.
+
+Build a new version of the web image which includes the metrics exporter:
 
 ```
-mkdir C:\mssql
+cd $env:workshop
 
-cd "$env:workshopRoot\app"
-
-docker-compose -f docker-compose-1.6.yml up -d
+docker image build --tag $env:dockerId/signup-web:1.4 -f part-4\web-1.4\Dockerfile .
 ```
 
-The database container is replaced, as the definition has changed. The app container is replace too, because the database dependency has been updated. Browse to the app:
+When the app container runs, it will also have a Prometheus-compatible endpoint listening on port `50505`, which provides performance counter metrics from the IIS Windows service hosting the app.
+
+
+## <a name="3"></a>Step 3. Run the solution with Prometheus and Grafana
+
+Prometheus is a metrics server. It runs a time-series database to store instrumentation data, polls configured endpoints to collect data, and provides an API (and a simple Web UI) to retrieve the raw or aggregated data.
+
+Prometheus uses a simple configuration file, listing the endpoints it should scrape for metrics. We'll use an existing Prometheus Docker image as the base, and bundle a custom config file for our app, in [prometheus.yml](part-4/prometheus/prometheus.yml):
 
 ```
-$ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_signup-web_1
-start "http://$ip"
+cd "$env:workshop\part-4\prometheus"
+
+docker image build --tag $env:dockerId/signup-prometheus .
 ```
 
-Add a new prospect in the website, and then check the data is saved to SQL Server:
+Grafana is a dashboard server. It can connect to various data sources and provide rich dashboards to show the overall health of your app. There isn't an official Windows variant of the Grafana image, but it's easy to build your own. The [Dockerfile for Grafana](part-4/grafana/Dockerfile) is a good example of how to package third-party apps to run in containers.
+
+Build the Grafana image so we can run a dashboard showing the health of the app:
 
 ```
-docker container exec app_signup-db_1 powershell `
- "Invoke-SqlCmd -Query 'SELECT * FROM Prospects' -Database SignUp"
+cd "$env:workshop\part-4\grafana"
+
+docker image build --tag $env:dockerId/signup-grafana .
 ```
 
-Also look at the contents of `C:\mssql` on the host, and you'll see the `.mdf` and `.ldf` SQL files there. The data is now persisted outside of the SQL container. Remove all running containers, and then bring the appup again, to create a new set of containers:
+Now we can deploy the updated application. Use Docker Compose to update the containers to [version 1.6](app/docker-compose-1.6.yml) of the solution:
 
 ```
-cd "$env:workshopRoot\app"
+cd "$env:workshop\app"
 
-docker container rm -f $(docker container ls --quiet --all)
-
-docker-compose -f docker-compose-1.6.yml up -d
+docker-compose -f .\docker-compose-1.6.yml up -d
 ```
 
-The new SQL container attaches the database files on the host, so the existing data is intact. Repeat the SQL query and you'll see your prospect data is still there:
+## <a name="4"></a>Step 4. Set up the solution dashboard
 
-```
-docker container exec app_signup-db_1 powershell `
- "Invoke-SqlCmd -Query 'SELECT * FROM Prospects' -Database SignUp"
-```
-
-## <a name="2"></a>2. Set application services to restart when Docker starts
-
-Docker volumes allow data to persist outside of the container lifecycle. Containers stop when the process inside them stops - but you can set up containers to automatically restart if the application ends.
-
-We'll run a simple example with IIS:
-
-```
-docker container run -d -P --name iis `
- --restart always `
- microsoft/iis:windowsservercore
-```
-
-The `restart` option means that if the IIS Windows Service stops and the container exits, it will be autimatically restarted. Check the site by grabbing the container's IP address:
-
-```
-$ip = docker inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' iis
-
-iwr -useb http://$ip
-```
-
-Now kill the IIS Windows Service:
-
-```
-docker container ls 
-
-docker exec iis powershell Stop-Service w3svc
-
-docker container ls 
-```
-
-If you compare the two container listings, you'll see the container has been restarted, it has only been running for a few seconds in the second list. It's the same container. but Docker executed the startup command again when the container exited.
-
-In [docker-compose-1.7.yaml](app/docker-compose-1.7.yaml) I've added the `restart` option to the application services. It works in the same way with Docker Compose:
-
-```
-cd "$env:workshopRoot\app"
-
-docker-compose -f docker-compose-1.7.yml up -d
-```
-
-## <a name="3"></a>3. Scale message handlers up to increase throughput
-
-Compose is a management tool for multiple containers running on a single Docker node. You define services rather than individual containers, so that you can run multiple instances of the same workload.
-
-The message handlers are good candidates for scaling up - multiple containers will share the workload. Scale up the SQL Server handler to 3 instances:
-
-```
-cd "$env:workshopRoot\app"
-
-docker-compose -f docker-compose-1.7.yml scale signup-save-handler=3
-
-docker container ls
-```
-
-Now browse to the site and enter some prospects:
+Browse to the new application container, and send some load - refresh the homepage a few times, and then submit a form:
 
 ```
 $ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_signup-web_1
-start "http://$ip"
+
+firefox "http://$ip"
 ```
 
-Check the container logs, and you'll see the prospect signup messages have been distributed among the three containers:
+The web application and the message handlers are collecting metrics now, and Prometheus is scrpaing them. You can see the metrics data collected in the basic Prometheus UI:
 
 ```
-docker container logs app_signup-save-handler_1
-docker container logs app_signup-save-handler_2
-docker container logs app_signup-save-handler_3
+$ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_prometheus_1
+
+firefox "http://$($ip):9090"
 ```
 
-Compose is a useful tool for verifying distributed solutions on a single machine. It's a client-side tool; when it creates services Docker only sees them as a set of unrelated containers.
+Try looking at the `process_cpu_seconds_total` metric in Graph view:
+
+![Prometheus UI](img/prometheus-metrics.png)
+
+This shows the amount of CPU in the message handlers, which is exported from a standard .NET performance counter. 
+
+The Prometheus UI is good for sanity-checking the metrics collection. Prometheus itself records metrics, so you can look at the `scrape_samples_scraped` metric to see how many times Prometheus has polled the container endpoints.
+
+But the Prometheus UI isn't featured enough for a dashboard - for that we'll set up Grafana. First browse to the Grafana container:
+
+```
+$ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_grafana_1
+
+firefox "http://$($ip):3000"
+```
+
+- Login with credentials `admin` / `admin`
+
+- Select _Add data source_ and configure a new Prometheus data source as follows:
+
+![Grafana data source](img/grafana-add-data-source.PNG)
+
+- Name: `Sign Up`
+- Type: `Prometheus`
+- Url: `http://prometheus:9090`
+- Access: `proxy`
+
+That sets up Grafana so it can read the metrics collected by Prometheus. You can build your own dashboard to show whatever metrics you like, but I have one prepared for the workshop which you can import.
+
+From the main menu select _Dashboards...Import_, load the `SignUp-dashboard.json` file in `C:\scm\docker-windows-workshop\part-4\grafana` and connect it to the Prometheus data source:
+
+![Grafana dashboard import](img/grafana-import-dashboard.png)
+
+You'll see an overall dashboard showing the status and performance of the web application and the message handlers:
+
+![Grafana dashboard](img/grafana-dashboard.png)
+
+The dashboard shows how many HTTP requests are coming in to the web app, and how many events the handlers have received, processed and failed.
+
+It also shows memory and CPU usage for the apps inside the containers, so at a glance you can see how hard your containers are working and what they're doing.
 
 ## Next Up
 
-We'll make use of another feature of compose in [Part 5](part-5.md), when we build out a full CI pipeline, with all the parts running in Docker containers on Windows.
+For a half-day workshop, we're done! You've seen how to run Windows apps in Docker containers, add third-party components to your solution, break features out of monoliths, and add consistent instrumentation. 
+
+You've done what you need to move your own apps to Docker in production. Next steps:
+
+- try one of the [Docker labs on GitHub](https://github.com/docker/labs)
+- follow [@EltonStoneman](https://twitter.com/EltonStoneman), [@stefscherer](https://twitter.com/stefscherer) and [@friism](https://twitter.com/friism) on Twitter
+- read [Docker on Windows](https://www.amazon.co.uk/Docker-Windows-Elton-Stoneman/dp/1785281658), the book
+
+For a whole-day workshop, we'll continue after lunch. In [Part 5](part-5.md) you'll learn how to add resilience and scalability to your apps with Docker Compose.

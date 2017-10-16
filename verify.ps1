@@ -1,5 +1,7 @@
-docker build `
- -t $Env:dockerID/ws-verify `
- $pwd\verify;
+docker image build `
+ --tag $env:dockerID/docker-workshop-verify `
+ $pwd\verify
 
-docker run --rm $Env:dockerID/ws-verify;
+docker container run --rm $env:dockerID/docker-workshop-verify
+
+docker image push $env:dockerID/docker-workshop-verify

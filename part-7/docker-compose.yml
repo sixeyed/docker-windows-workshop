@@ -1,21 +1,18 @@
-version: '3.2'
+version: '3.3'
 
 services:
   
   signup-db:
-    image: ${dockerId}/signup-db
+    image: sixeyed/signup-db:rtm
     env_file:
       - db-credentials.env
     networks:
       - app-net
 
   signup-web:
-    image: ${dockerId}/signup-web:1.3
+    image: sixeyed/signup-web:rtm
     env_file:
       - db-credentials.env
-    depends_on:
-      - signup-db
-      - message-queue
     networks:
       - app-net
 
@@ -25,12 +22,9 @@ services:
       - app-net
 
   signup-save-handler:
-    image: ${dockerId}/signup-save-handler
+    image: sixeyed/signup-save-handler:rtm
     env_file:
       - db-credentials.env
-    depends_on:
-      - signup-db
-      - message-queue
     networks:
       - app-net
 
@@ -43,15 +37,20 @@ services:
 
   kibana:
     image: sixeyed/kibana:nanoserver
-    depends_on:
-      - elasticsearch
     networks:
       - app-net
 
   signup-index-handler:
-    image: ${dockerid}/signup-index-handler
-    depends_on:
-      - elasticsearch
-      - message-queue
+    image: sixeyed/signup-index-handler:rtm
+    networks:
+      - app-net
+
+  prometheus:
+    image: sixeyed/signup-prometheus:rtm
+    networks:
+      - app-net
+
+  grafana:
+    image: sixeyed/signup-grafana:rtm
     networks:
       - app-net

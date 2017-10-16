@@ -21,6 +21,7 @@ namespace SignUp.Model.Initializers
             AddCountry(context, "NOR", "Norway");
             AddCountry(context, "SWE", "Sweden");
             AddCountry(context, "IRE", "Ireland");
+            AddCountry(context, "DMK", "Denmark");
 
             context.SaveChanges();
         }

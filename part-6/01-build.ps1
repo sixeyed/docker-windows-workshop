@@ -1,6 +1,6 @@
 Write-Output '*** App Build: '
 
-cd part-5
+cd part-6
 
 $gatewayAddress = (Get-NetRoute -DestinationPrefix '0.0.0.0/0').NextHop
 

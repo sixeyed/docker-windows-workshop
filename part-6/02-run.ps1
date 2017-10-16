@@ -1,6 +1,6 @@
 Write-Output '*** Start App: '
 
-cd part-5
+cd part-6
 
 $gatewayAddress = (Get-NetRoute -DestinationPrefix '0.0.0.0/0').NextHop
 
@@ -16,7 +16,7 @@ Write-Output '*** Containers: '
 
 Write-Output '*** Sleeping'
 
-Start-Sleep -Seconds 20
+Start-Sleep -Seconds 30
 
 $ip = & docker $config inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_signup-web_1
 

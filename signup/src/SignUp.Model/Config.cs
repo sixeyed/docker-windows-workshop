@@ -9,11 +9,11 @@ namespace SignUp.Model
 
         public static string DbConnectionString { get { return Get("DB_CONNECTION_STRING"); } }
 
-        public static string DbMaxRetryCount { get { return Get("DB_MAX_RETRY_COUNT"); } }
+        public static string DbMaxRetryCount { get { return Get("DB_MAX_RETRY_COUNT", "1"); } }
 
-        public static string DbMaxDelaySeconds { get { return Get("DB_MAX_DELAY_SECONDS"); } }
+        public static string DbMaxDelaySeconds { get { return Get("DB_MAX_DELAY_SECONDS", "5"); } }
 
-        private static string Get(string variable)
+        private static string Get(string variable, string defaultValue = null)
         {
             if (!_Values.ContainsKey(variable))
             {
@@ -21,6 +21,10 @@ namespace SignUp.Model
                 if (string.IsNullOrEmpty(value))
                 {
                     value = Environment.GetEnvironmentVariable(variable, EnvironmentVariableTarget.Process);
+                }
+                if (string.IsNullOrEmpty(value))
+                {
+                    value = defaultValue;
                 }
                 _Values[variable] = value;
             }

@@ -5,7 +5,7 @@ docker service create `
  --network signup-net --endpoint-mode dnsrr `
  --env-file db-credentials.env `
  --name signup-db `
- $env:dockerId/signup-db
+ sixeyed/signup-db:rtm
 
 docker service create `
  --network signup-net --endpoint-mode dnsrr `
@@ -14,7 +14,7 @@ docker service create `
 
 docker service create `
  --network signup-net --endpoint-mode dnsrr `
- --env ES_JAVA_OPTS=-Xms512m -Xmx512m `
+ --env ES_JAVA_OPTS="-Xms512m -Xmx512m" `
  --name elasticsearch `
  sixeyed/elasticsearch:nanoserver
 
@@ -23,18 +23,18 @@ docker service create `
  --publish mode=host,target=80,published=80 `
  --env-file db-credentials.env `
  --name signup-web `
- $env:dockerId/signup-web:1.3
+ sixeyed/signup-web:rtm
 
 docker service create `
  --network signup-net --endpoint-mode dnsrr `
  --env-file db-credentials.env `
  --name signup-save-handler `
- $env:dockerId/signup-save-handler
+ sixeyed/signup-save-handler:rtm
 
 docker service create `
  --network signup-net --endpoint-mode dnsrr `
  --name signup-index-handler `
- $env:dockerId/signup-index-handler
+ sixeyed/signup-index-handler:rtm
 
 docker service create `
  --network signup-net --endpoint-mode dnsrr `
