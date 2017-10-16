@@ -14,7 +14,7 @@ docker service create `
 
 docker service create `
  --network signup-net --endpoint-mode dnsrr `
- --env ES_JAVA_OPTS=-Xms512m -Xmx512m `
+ --env ES_JAVA_OPTS="-Xms512m -Xmx512m" `
  --name elasticsearch `
  sixeyed/elasticsearch:nanoserver
 
