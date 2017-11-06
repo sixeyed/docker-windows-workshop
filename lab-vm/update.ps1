@@ -32,6 +32,10 @@ $Shortcut.Save()
 [Environment]::SetEnvironmentVariable('workshop', $env:workshop, [EnvironmentVariableTarget]::Machine)
 [Environment]::SetEnvironmentVariable('dockerId', $env:dockerId, [EnvironmentVariableTarget]::Machine)
 
+# update repo
+cd $env:workshop
+git pull
+
 # set dockerd config
 cp "$env:workshop\lab-vm\docker\daemon.json" C:\ProgramData\docker\config\
 

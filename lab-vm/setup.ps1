@@ -29,7 +29,8 @@ choco install -y visualstudiocode
 choco install -y firefox
 
 # configure Server Manager 
-New-ItemProperty -Path HKCU:\Software\Microsoft\ServerManager -Name DoNotOpenServerManagerAtLogon -PropertyType DWORD -Value "1" -Force
+New-ItemProperty -Path HKLM:\Software\Microsoft\ServerManager -Name DoNotOpenServerManagerAtLogon -PropertyType DWORD -Value "1" -Force
+New-ItemProperty -Path HKLM:\Software\Microsoft\ServerManager\Oobe -Name DoNotOpenInitialConfigurationTasksAtLogon -PropertyType DWORD -Value "1" -Force
 
 # turn off firewall and Defender *this is meant for short-lived lab VMs*
 Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
