@@ -1,5 +1,5 @@
 # escape=`
-FROM microsoft/mssql-server-windows-express
+FROM microsoft/mssql-server-windows-express:2016-sp1
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
 ENV ACCEPT_EULA=Y `

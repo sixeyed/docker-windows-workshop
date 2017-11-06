@@ -13,10 +13,8 @@ RUN msbuild SignUp.Web.csproj /p:OutputPath=c:\out\web\SignUpWeb `
 FROM dockersamples/aspnet-monitoring-exporter AS exporter
 
 # app image
-FROM microsoft/aspnet:windowsservercore-10.0.14393.1593
+FROM microsoft/aspnet:windowsservercore-10.0.14393.1770
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
-
-RUN Set-ItemProperty -path 'HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters' -Name ServerPriorityTimeLimit -Value 0 -Type DWord
 
 RUN Remove-Website -Name 'Default Web Site';`
     New-Item -Path 'C:\web-app' -Type Directory; `

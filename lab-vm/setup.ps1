@@ -58,3 +58,8 @@ docker image pull sixeyed/jenkins:2.46.2
 docker image pull sixeyed/registry:2.6.0-nanoserver
 docker image pull sixeyed/bonobo:6.1.0-windowsservercore
 docker image pull sixeyed/nunit:3.6.1
+
+# tag Windows images
+docker image tag "microsoft/iis:windowsservercore-$currentWindowsTag" microsoft/iis:windowsservercore
+docker image tag "microsoft/iis:nanoserver-$currentWindowsTag" microsoft/iis:nanoserver
+docker image tag "microsoft/aspnet:windowsservercore-$currentWindowsTag" microsoft/aspnet:latest

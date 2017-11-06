@@ -81,7 +81,7 @@ Run it in the background as a detached container:
 docker container run --detach --name sql `
  --env ACCEPT_EULA=Y `
  --env sa_password=DockerCon!!! `
- microsoft/mssql-server-windows-express
+ microsoft/mssql-server-windows-express:2016-sp1
 ```
 
 > The workshop VM pre-loads a set of Docker images. If you don't have a local copy of an image, Docker will pull it when you first run a container. 

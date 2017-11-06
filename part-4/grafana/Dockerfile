@@ -1,5 +1,5 @@
 # escape=`
-FROM microsoft/windowsservercore:10.0.14393.1593
+FROM microsoft/windowsservercore:10.0.14393.1770
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
 RUN Set-ItemProperty -path 'HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters' -Name ServerPriorityTimeLimit -Value 0 -Type DWord

@@ -1,9 +1,6 @@
 # escape=`
-FROM microsoft/aspnet:windowsservercore-10.0.14393.1480
+FROM microsoft/aspnet:windowsservercore-10.0.14393.1715
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
-
-# disable DNS cache so container addresses always fetched from Docker
-RUN Set-ItemProperty -path 'HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters' -Name ServerPriorityTimeLimit -Value 0 -Type DWord
 
 ENTRYPOINT ["powershell", "./bootstrap.ps1"]
 COPY bootstrap.ps1 /
