@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 
 namespace SignUp.Model
 {
@@ -7,7 +8,18 @@ namespace SignUp.Model
     {
         private static Dictionary<string, string> _Values = new Dictionary<string, string>();
 
-        public static string DbConnectionString { get { return Get("DB_CONNECTION_STRING"); } }
+        public static string DbConnectionString
+        {
+            get
+            {
+                var value = Get("DB_CONNECTION_STRING");
+                if (string.IsNullOrEmpty(value))
+                {
+                    value = ConfigurationManager.ConnectionStrings["SignUpDb"].ConnectionString;
+                }
+                return value;
+            }
+        }
 
         public static string DbMaxRetryCount { get { return Get("DB_MAX_RETRY_COUNT", "1"); } }
 
