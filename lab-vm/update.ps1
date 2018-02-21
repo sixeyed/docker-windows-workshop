@@ -3,8 +3,6 @@ param(
     [string]$dockerId
 )
 
-$currentWindowsTag = '10.0.14393.1770'
-
 # set env vars:
 $env:workshop='C:\scm\docker-windows-workshop'
 $env:dockerId=$dockerId
@@ -37,13 +35,12 @@ $Shortcut.Save()
 $path = $env:PATH + "C:\Program Files\Mozilla Firefox;"
 [Environment]::SetEnvironmentVariable('PATH', $path, [EnvironmentVariableTarget]::Machine)
 
+# update lab repo
+cd $env:workshop
+git pull
+
 # set dockerd config
 cp "$env:workshop\lab-vm\docker\daemon.json" C:\ProgramData\docker\config\
-
-# tag Windows images
-docker image tag "microsoft/iis:windowsservercore-$currentWindowsTag" microsoft/iis:windowsservercore
-docker image tag "microsoft/iis:nanoserver-$currentWindowsTag" microsoft/iis:nanoserver
-docker image tag "microsoft/aspnet:windowsservercore-$currentWindowsTag" microsoft/aspnet:latest
 
 # turn off firewall and Defender *this is meant for short-lived lab VMs*
 Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False

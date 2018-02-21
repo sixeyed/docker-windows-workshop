@@ -1,8 +1,8 @@
 # escape=`
-FROM sixeyed/git:2.13.0 AS git
-FROM sixeyed/docker-ce:17.05.0-ce AS docker
+FROM sixeyed/git:2.15.1 AS git
+FROM sixeyed/docker-ee:17.06.2-ee-6 AS docker
 
-FROM sixeyed/jenkins:2.46.2
+FROM sixeyed/jenkins:2.89.2
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
 RUN New-Item -Type Directory 'C:\git'; `

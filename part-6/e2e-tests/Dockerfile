@@ -1,5 +1,5 @@
 # escape=`
-FROM sixeyed/msbuild:netfx-4.5.2 AS builder
+FROM microsoft/dotnet-framework-build:4.7.1-windowsservercore-ltsc2016 AS builder
 
 WORKDIR C:\src\SignUp.EndToEndTests
 COPY signup\src\SignUp.EndToEndTests\packages.config .

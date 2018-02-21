@@ -55,6 +55,6 @@ This workshop is a living thing. There are tags for previous versions:
 
 - [winops-17](https://github.com/sixeyed/docker-windows-workshop/tree/winops-17) - from [WinOps](https://www.winops.org/london/#dockerWS), 2017
 
-- [dockercon-eu-17](https://github.com/sixeyed/docker-windows-workshop/tree/dockercon-eu-17) - from [DockerCon EU](https://europe-2017.dockercon.com), 2017)
+- [dockercon-eu-17](https://github.com/sixeyed/docker-windows-workshop/tree/dockercon-eu-17) - from [DockerCon EU](https://europe-2017.dockercon.com), 2017
 
 - [xpirit-17](https://github.com/sixeyed/docker-windows-workshop/tree/xpirit-17) - From Xpirit's [Docker on Microsoft MeetUp](https://www.meetup.com/Docker-with-Microsoft-Technologies/events/244448740), 2017

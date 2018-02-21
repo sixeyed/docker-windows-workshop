@@ -1,5 +1,5 @@
 # escape=`
-FROM sixeyed/msbuild:netfx-4.5.2 AS builder
+FROM microsoft/dotnet-framework-build:4.7.1-windowsservercore-ltsc2016 AS builder
 
 WORKDIR C:\src\SignUp.MessageHandlers.SaveProspect
 COPY signup\src\SignUp.MessageHandlers.SaveProspect\packages.config .
@@ -9,7 +9,7 @@ COPY signup\src C:\src
 RUN msbuild SignUp.MessageHandlers.SaveProspect.csproj /p:OutputPath=c:\out\save-prospect\SaveProspectHandler
 
 # app image
-FROM microsoft/windowsservercore:10.0.14393.1770
+FROM microsoft/windowsservercore:ltsc2016
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
 WORKDIR /save-prospect-handler

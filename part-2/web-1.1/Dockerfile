@@ -1,5 +1,5 @@
 # escape=`
-FROM microsoft/aspnet:windowsservercore-10.0.14393.1715
+FROM microsoft/aspnet:4.7.1-windowsservercore-10.0.14393.1884
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
 ENTRYPOINT ["powershell", "./bootstrap.ps1"]

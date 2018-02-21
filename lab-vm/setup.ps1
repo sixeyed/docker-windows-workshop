@@ -1,9 +1,3 @@
-
-$dockerVersion = '17.06'
-$composeVersion = '1.16'
-$currentWindowsTag = '10.0.14393.1770'
-$previousWindowsTag = '10.0.14393.1715'
-
 # run Windows Update
 # TODO - you will need to do this manually with `sconfig`, if the update needs a reboot
 Install-Module PSWindowsUpdate -Force
@@ -14,19 +8,15 @@ Get-WUInstall -AcceptAll -IgnoreReboot | Out-File C:\PSWindowsUpdate.log
 Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 
 # update Docker & install Compose
-iwr -useb https://raw.githubusercontent.com/sixeyed/docker-init/master/windows/install-docker-ce_$dockerVersion.ps1 | iex
-iwr -useb https://raw.githubusercontent.com/sixeyed/docker-init/master/windows/install-docker-compose_$composeVersion.ps1 | iex
-
-# update base images
-docker image pull "microsoft/windowsservercore:$currentWindowsTag"
-docker image pull "microsoft/nanoserver:$currentWindowsTag"
-docker image tag "microsoft/windowsservercore:$currentWindowsTag" microsoft/windowsservercore:latest
-docker image tag "microsoft/nanoserver:$currentWindowsTag" microsoft/nanoserver:latest
+Install-Module DockerProvider -Force
+Install-Package Docker -ProviderName DockerProvider -Force
+iwr -useb https://raw.githubusercontent.com/sixeyed/docker-init/master/windows/install-docker-compose.ps1 | iex
 
 # install tools
 choco install -y poshgit
 choco install -y visualstudiocode
 choco install -y firefox
+refreshenv
 
 # configure Server Manager 
 New-ItemProperty -Path HKLM:\Software\Microsoft\ServerManager -Name DoNotOpenServerManagerAtLogon -PropertyType DWORD -Value "1" -Force
@@ -36,30 +26,42 @@ New-ItemProperty -Path HKLM:\Software\Microsoft\ServerManager\Oobe -Name DoNotOp
 Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
 Set-MpPreference -DisableRealtimeMonitoring $true
 
+# clone lab repo
+mkdir C:\scm -ErrorAction Ignore
+cd C:\scm
+git clone https://github.com/sixeyed/docker-windows-workshop.git
+
 # pull lab images
-docker image pull "microsoft/iis:windowsservercore-$currentWindowsTag"
-docker image pull "microsoft/iis:nanoserver-$currentWindowsTag"
-docker image pull "microsoft/iis:nanoserver-$previousWindowsTag"
-docker image pull "microsoft/aspnet:windowsservercore-$currentWindowsTag"
-docker image pull "microsoft/aspnet:windowsservercore-$previousWindowsTag"
-docker image pull microsoft/mssql-server-windows-express:2016-sp1
-docker image pull nats:nanoserver
+$images = 
+"microsoft/windowsservercore:ltsc2016",
+'microsoft/nanoserver:sac2016',
+'microsoft/dotnet-framework:4.7.1-windowsservercore-ltsc2016',
+'microsoft/dotnet-framework-build:4.7.1-windowsservercore-ltsc2016',
+'microsoft/iis:windowsservercore-ltsc2016',
+'microsoft/iis:nanoserver-sac2016',
+'microsoft/aspnet:4.7.1-windowsservercore-ltsc2016',
+'microsoft/mssql-server-windows-express:2016-sp1',
+'nats:nanoserver',
+'stefanscherer/dockertls-windows',
+'dockersamples/mta-dev-web-builder:4.7.1',
+'dockersamples/aspnet-monitoring-prometheus',
+'dockersamples/elasticsearch:5.6.0-nanoserver-sac2016',
+'dockersamples/kibana:5.6.0-windowsservercore-ltsc2016',
+'sixeyed/git:2.15.1',
+'sixeyed/docker-ee:17.06.2-ee-6',
+'sixeyed/jenkins:2.89.2',
+'sixeyed/registry:2.6.0-nanoserver',
+'sixeyed/bonobo:6.1.0-windowsservercore',
+'sixeyed/nunit:3.6.1'
 
-docker image pull stefanscherer/dockertls-windows
-docker image pull dockersamples/aspnet-monitoring-prometheus
-
-docker image pull sixeyed/msbuild:netfx-4.5.2
-docker image pull sixeyed/msbuild:netfx-4.5.2-webdeploy
-docker image pull sixeyed/elasticsearch:nanoserver
-docker image pull sixeyed/kibana:nanoserver
-docker image pull sixeyed/git:2.13.0
-docker image pull sixeyed/docker-ce:17.05.0-ce
-docker image pull sixeyed/jenkins:2.46.2
-docker image pull sixeyed/registry:2.6.0-nanoserver
-docker image pull sixeyed/bonobo:6.1.0-windowsservercore
-docker image pull sixeyed/nunit:3.6.1
+foreach ($tag in $images) {
+    Write-Output "** Processing tag: $tag"
+    & docker image pull $tag
+}
 
 # tag Windows images
-docker image tag "microsoft/iis:windowsservercore-$currentWindowsTag" microsoft/iis:windowsservercore
-docker image tag "microsoft/iis:nanoserver-$currentWindowsTag" microsoft/iis:nanoserver
-docker image tag "microsoft/aspnet:windowsservercore-$currentWindowsTag" microsoft/aspnet:latest
+docker image tag microsoft/windowsservercore:ltsc2016 microsoft/windowsservercore:latest
+docker image tag microsoft/nanoserver:sac2016 microsoft/nanoserver:latest
+docker image tag microsoft/iis:windowsservercore-ltsc2016 microsoft/iis:windowsservercore
+docker image tag microsoft/iis:nanoserver-sac2016 microsoft/iis:nanoserver
+docker image tag microsoft/aspnet:4.7.1-windowsservercore-ltsc2016 microsoft/aspnet:latest

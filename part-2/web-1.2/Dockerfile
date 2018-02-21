@@ -1,5 +1,5 @@
 # escape=`
-FROM sixeyed/msbuild:netfx-4.5.2-webdeploy AS builder
+FROM dockersamples/mta-dev-web-builder:4.7.1 AS builder
 
 WORKDIR C:\src\SignUp.Web
 COPY signup\src\SignUp.Web\packages.config .
@@ -10,7 +10,7 @@ RUN msbuild SignUp.Web.csproj /p:OutputPath=c:\out\web\SignUpWeb `
         /p:DeployOnBuild=true /p:VSToolsPath=C:\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\tools\VSToolsPath
 
 # app image
-FROM microsoft/aspnet:windowsservercore-10.0.14393.1770
+FROM microsoft/microsoft/aspnet:4.7.1-windowsservercore-ltsc2016
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
 RUN Remove-Website -Name 'Default Web Site';`
