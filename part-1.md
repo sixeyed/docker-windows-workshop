@@ -2,7 +2,7 @@
 
 We'll start with the basics and get a feel for running Docker on Windows.
 
-If you've previously used Docker, it's still worth following along. This workshop uses the new expanded Docker CLI syntax (like `docker container ls` rather than `docker ps`), so it will introduce you to the new commands, and it shows some more advanced usage of Windows Docker containers.
+If you've previously used Docker, it's still worth following along. This workshop uses the expanded Docker CLI syntax (like `docker container ls` rather than `docker ps`), so it may introduce you to some new commands, and it shows some more advanced usage of Windows Docker containers.
 
 ## Steps
 
@@ -291,10 +291,10 @@ docker image ls -f reference="$env:dockerId/*"
 My output looks like this:
 
 ```
-REPOSITORY                      TAG                 IMAGE ID            CREATED             SIZE
-sixeyed/tweet-app               latest              0643d4c6116f        2 minutes ago       10.7GB
-sixeyed/hostname-app            latest              f2ae4ec014c4        28 minutes ago      11.5GB
-sixeyed/docker-workshop-verify  latest              75b001142cb0        35 minutes ago      10.3GB
+REPOSITORY                      TAG              IMAGE ID            CREATED              SIZE
+sixeyed/tweet-app               latest           64fcfbceea4b        About a minute ago   10.8GB
+sixeyed/hostname-app            latest           bf41287f7762        35 minutes ago       13.5GB
+sixeyed/docker-workshop-verify  latest           dcf4c3874c4e        41 minutes ago       10.4GB
 ```
 
 Those images are only stored in the cache on your Azure VM, and that VM will be deleted after the workshop. Next we'll push the images to a public repository so you can run them from any Windows machine with Docker.

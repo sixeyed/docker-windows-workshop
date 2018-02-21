@@ -2,7 +2,9 @@
 
 You will be provided with a virtual machine which is already prepped for the lab. In this step you'll add your Docker ID and test the VM.
 
-> If you're **not** at a hosted workshop and you're just running through this yourself, you can create your own [lab VM](lab-vm.md). If you **are** at a workshop, you should already have the credentials for your own VM.
+> If you're **not** at a hosted workshop and you're just running through this yourself, you can create your own [lab VM](lab-vm.md) or just install [Docker for Windows](https://www.docker.com/docker-windows) on your own machine to follow along. 
+
+> If you **are** at a workshop, you should already have the credentials for your own VM.
 
 ## Steps
 
@@ -21,7 +23,7 @@ You will build images and push them to Docker Hub during the workshop, so they a
 
 You have a dedicated VM running in Azure. This is a Windows Server 2016 VM with Docker and some useful tools installed. You will be provided with the VM credentials at the workshop.
 
-> Your Azure VM will be destoyed after the workshop, so your work will be lost - but the images you push to Docker Hub will still be available.
+> Your Azure VM will be destroyed after the workshop, so your work will be lost - but the images you push to Docker Hub will still be available.
 
 You do not need Docker running on your laptop, but you will need a Remote Desktop client to connect to the VM.
 
@@ -35,21 +37,16 @@ Open a PowerShell prompt from the start menu.
 
 > **Do not use PowerShell ISE for the workshop!** It has a strange relationship with the `docker login` command, and you won't get far with it.
 
-Start by updating the workshop content:
+Start by running the update script to get the latest lab content on the VM. This will prompt you for your Docker ID. The script updates the tools on the VM and sets up your Docker ID in an environment variable:
 
 ```
-cd C:\scm\docker-windows-workshop
-git pull
-```
-
-Now run the update script - it will prompt you for your Docker ID. The script updates the tools on the VM and sets up your Docker ID in an environment variable:
-
-```
-cd lab-vm
+cd C:\scm\docker-windows-workshop\lab-vm
 .\update.ps1
 ```
 
 > Be sure to use **your** Docker ID - mine is `sixeyed`, so that's what I enter into the script.
+
+Now close the PowerShell session and open a new one from the PowerShell shortcut on the desktop (the other shortcuts open the workshop content in Firefox, and the source code in VS Code).
 
 ## <a name="3"></a>Step 4. Test your setup
 

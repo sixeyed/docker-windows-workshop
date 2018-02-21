@@ -40,6 +40,7 @@ $images =
 'microsoft/iis:windowsservercore-ltsc2016',
 'microsoft/iis:nanoserver-sac2016',
 'microsoft/aspnet:4.7.1-windowsservercore-ltsc2016',
+'microsoft/aspnet:4.7.1-windowsservercore-10.0.14393.1884',
 'microsoft/mssql-server-windows-express:2016-sp1',
 'nats:nanoserver',
 'stefanscherer/dockertls-windows',
