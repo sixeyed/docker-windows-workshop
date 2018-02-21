@@ -1,6 +1,13 @@
 # Part 2 - Modernizing .NET apps - the platform
 
-In this section we have an existing app, already packaged as an MSI. We'll Dockerize a few versions of the app, seeing how to do service updates and the benefits of Dockerfiles over MSIs.
+In this section we have an existing app, already packaged as an MSI. We'll Dockerize a few versions of the app using different approaches, seeing how to do service updates and the benefits of Dockerfiles over MSIs.
+
+## Goals
+
+* Learn how to package .NET apps to run in Docker
+* Learn how to use Docker Compose to manage distributed applications
+* Learn how Docker uses healthchecks to test your application's status
+* Learn how multi-stage Dockerfiles make your application portable
 
 ## Steps
 
@@ -32,7 +39,7 @@ Compose will start the SQL Server container and then the web app container. Get 
 
 ```
 $ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_signup-web_1
-firefox "http://$ip/ProductLaunch"
+firefox "http://$ip/SignUp"
 ```
 
 > You may see an error from the ASP.NET site saying it can't access SQL Server. This is a timing issue with version 1.0 of the app - it  expects SQL Server to be always available, but here the web container may have launched before the SQL Server container is ready to open a connection. Refresh the page and it will load correctly. **We'll fix this in the next part of the workshop.**
@@ -77,7 +84,7 @@ Now the new version of the app is running in new container. It has the same name
 
 ```
 $ip = docker inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_signup-web_1
-firefox "http://$ip/ProductLaunch"
+firefox "http://$ip/SignUp"
 ```
 
 Sign up with another set of details, and when you repeat the SQL query you'll see that the new data is there, along with the original data:

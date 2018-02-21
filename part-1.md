@@ -4,6 +4,13 @@ We'll start with the basics and get a feel for running Docker on Windows.
 
 If you've previously used Docker, it's still worth following along. This workshop uses the expanded Docker CLI syntax (like `docker container ls` rather than `docker ps`), so it may introduce you to some new commands, and it shows some more advanced usage of Windows Docker containers.
 
+## Goals
+
+* Learn how to run interactive, background and task containers
+* Learn how to connect to containers from your Docker host
+* Learn how applications run inside Windows containers
+* Learn how to share your images by pushing them to Docker Hub
+
 ## Steps
 
 * [1. Run some simple Windows Docker containers](#1)
