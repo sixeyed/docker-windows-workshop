@@ -3,7 +3,7 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
     <div class="jumbotron">
-        <h1>Image2Docker is literally the best thing I've ever heard of!</h1>
+        <h1>Play with Docker is the best thing I've ever heard of!</h1>
         <p class="lead">Here are my details. Sign me up.</p>
     </div>
 

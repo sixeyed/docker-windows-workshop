@@ -3,26 +3,27 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
     <div class="jumbotron">
-        <h1>Have you tried Image2Docker?</h1>
-        <p class="lead">Image2Docker - tools for extracting apps from VMs into Dockerfiles.</p>
+        <h1>Have you tried Play with Docker?</h1>
+        <p class="lead">A simple, interactive and fun playground to learn Docker.</p>
         <div style="text-align: right">
-            <!-- v2 -->
-            <a href="http://2017.dockercon.com/register-dockercon-2017/" target="_blank">
-                <img src="img/dockercon-2017.png"/>
+            <!-- v2 
+            <a href="https://2018.dockercon.com/" target="_blank">
+                <img src="img/dockercon-us-2018.png"/>
             </a>
+             -->
         </div>
     </div>
 
     <div class="row">
         <div class="col-md-6">
-            <h2>Automatically migrate apps to Docker</h2>
+            <h2>Docker from the comfort of your browser</h2>
             <p>
-                Your first step in lifting and shifting existing workloads to Docker, without changing code. Open source tools for Linux and Windows.</p>
+                Play with Docker (PWD) gives you a configured Docker setup running in the cloud, which you manage from your browser.</p>
             <p>
-                Image2Docker is focused on Web workloads. You can extract LAMP apps from Linux, and ASP.NET apps from Windows - straight into Dockerfiles. </p>
+                There's a playground for just trying things out - like Docker Swarm mode - and there are self-paced training labs too.</p>
             <p>
-                <a class="btn btn-default" href="https://github.com/docker/communitytools-image2docker-linux" target="_blank">Check out Image2Docker for Linux</a> | 
-                <a class="btn btn-default" href="https://github.com/docker/communitytools-image2docker-win" target="_blank">Check out Image2Docker for Windows</a>
+                <a class="btn btn-default" href="https://labs.play-with-docker.com/" target="_blank">Play with Docker</a> | 
+                <a class="btn btn-default" href="http://training.play-with-docker.com/" target="_blank">PWD Classroom</a>
             </p>
         </div>
         <div class="col-md-6">

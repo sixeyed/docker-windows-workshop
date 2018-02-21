@@ -11,10 +11,11 @@
 body {
     padding-top: 50px;
     padding-bottom: 20px;
-    /* v2 */
+    /* v2 
     background-color: #37A1D5;
     color: #FFF;
     font-size: 18px;
+    */
 }
 
 /* Wrapping element */
@@ -43,7 +44,7 @@ textarea {
     }
 }
 
-/* v2 */
+/* v2 
 
 .jumbotron {
     font-family: 'Geomanist Book';
@@ -53,4 +54,4 @@ textarea {
 h1, h2 {
     font-family: 'Geomanist Book';
 }
-
+*/
