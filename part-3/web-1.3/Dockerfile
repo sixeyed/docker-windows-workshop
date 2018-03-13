@@ -6,8 +6,7 @@ COPY signup\src\SignUp.Web\packages.config .
 RUN nuget restore packages.config -PackagesDirectory ..\packages
 
 COPY signup\src C:\src
-RUN msbuild SignUp.Web.csproj /p:OutputPath=c:\out\web\SignUpWeb `
-        /p:DeployOnBuild=true /p:VSToolsPath=C:\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\tools\VSToolsPath
+RUN msbuild SignUp.Web.csproj /p:OutputPath=c:\out /p:DeployOnBuild=true
 
 # app image
 FROM microsoft/aspnet:4.7.1-windowsservercore-ltsc2016
@@ -32,4 +31,4 @@ ENV MESSAGE_QUEUE_URL="nats://message-queue:4222" `
 ENTRYPOINT ["powershell", "C:\\bootstrap.ps1"]
 
 COPY .\signup\docker\bootstrap.ps1 C:\
-COPY --from=builder C:\out\web\SignUpWeb\_PublishedWebsites\SignUp.Web C:\web-app
+COPY --from=builder C:\out\_PublishedWebsites\SignUp.Web C:\web-app

@@ -6,8 +6,7 @@ COPY signup\src\SignUp.Web\packages.config .
 RUN nuget restore packages.config -PackagesDirectory ..\packages
 
 COPY signup\src C:\src
-RUN msbuild SignUp.Web.csproj /p:OutputPath=c:\out\web\SignUpWeb `
-        /p:DeployOnBuild=true /p:VSToolsPath=C:\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\tools\VSToolsPath
+RUN msbuild SignUp.Web.csproj /p:OutputPath=c:\out /p:DeployOnBuild=true
 
 # perf counter exporter
 FROM dockersamples/aspnet-monitoring-exporter AS exporter
@@ -38,4 +37,4 @@ ENTRYPOINT ["powershell", "C:\\bootstrap.ps1"]
 
 COPY .\part-4\web-1.4\bootstrap.ps1 C:\
 COPY --from=exporter C:\aspnet-exporter .
-COPY --from=builder C:\out\web\SignUpWeb\_PublishedWebsites\SignUp.Web C:\web-app
+COPY --from=builder C:\out\_PublishedWebsites\SignUp.Web C:\web-app
