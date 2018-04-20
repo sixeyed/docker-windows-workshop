@@ -1,5 +1,5 @@
 param(
-    [string] $ImageListPath,    
+    [string] $ImageListPath = '.\docker-images.txt',    
     [string] $SourceRegistry = '',
     [string] $TargetRegistry = ''
 )
