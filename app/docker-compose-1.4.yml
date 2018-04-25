@@ -39,14 +39,14 @@ services:
       - app-net
 
   elasticsearch:
-    image: sixeyed/elasticsearch:nanoserver
+    image: dockersamples/elasticsearch:5.6.0-nanoserver
     environment:
       - ES_JAVA_OPTS=-Xms512m -Xmx512m
     networks:
       - app-net
 
   kibana:
-    image: sixeyed/kibana:nanoserver
+    image: dockersamples/kibana:5.6.0-windowsservercore
     ports:
       - "5601"
     depends_on:
