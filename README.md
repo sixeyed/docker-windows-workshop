@@ -49,6 +49,8 @@ The full day workshop continues in the afternoon with parts 5-7.
 
 This workshop is a living thing. There are tags for previous versions:
 
+- [docker-bangalore-18](https://github.com/sixeyed/docker-windows-workshop/tree/docker-bangalore-18) - From the [Docker Bangalore MeetUp, April 2018](https://www.meetup.com/Docker-Bangalore/events/249634763/)
+
 - [winops-feb18](https://github.com/sixeyed/docker-windows-workshop/tree/winops-feb18) - From the [London WinOps MeetUp #19](https://www.meetup.com/WinOps/events/247873979/), February 2018
 
 - [xpirit-17](https://github.com/sixeyed/docker-windows-workshop/tree/xpirit-17) - From Xpirit's [Docker on Microsoft MeetUp](https://www.meetup.com/Docker-with-Microsoft-Technologies/events/244448740), 2017
