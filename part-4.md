@@ -104,7 +104,7 @@ $ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddr
 firefox "http://$ip"
 ```
 
-The web application and the message handlers are collecting metrics now, and Prometheus is scrpaing them. You can see the metrics data collected in the basic Prometheus UI:
+The web application and the message handlers are collecting metrics now, and Prometheus is scraping them. You can see the metrics data collected in the basic Prometheus UI:
 
 ```
 $ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_prometheus_1
@@ -160,7 +160,8 @@ For a half-day workshop, we're done! You've seen how to run Windows apps in Dock
 You've done what you need to move your own apps to Docker in production. Next steps:
 
 - try one of the [Docker labs on GitHub](https://github.com/docker/labs)
-- follow [@EltonStoneman](https://twitter.com/EltonStoneman), [@stefscherer](https://twitter.com/stefscherer) and [@friism](https://twitter.com/friism) on Twitter
+- follow [@EltonStoneman](https://twitter.com/EltonStoneman) and [@stefscherer](https://twitter.com/stefscherer) on Twitter
 - read [Docker on Windows](https://www.amazon.co.uk/Docker-Windows-Elton-Stoneman/dp/1785281658), the book
+- watch [Modernizing .NET Apps with Docker on Pluralsight](https://pluralsight.pxf.io/c/1197078/424552/7490?u=https%3A%2F%2Fwww.pluralsight.com%2Fcourses%2Fmodernizing-dotnet-framework-apps-docker), the video course (don't have Pluralsight? Ping @EltonStoneman on Twitter to get a free trial).
 
 For a whole-day workshop, we'll continue after lunch. In [Part 5](part-5.md) you'll learn how to add resilience and scalability to your apps with Docker Compose.
