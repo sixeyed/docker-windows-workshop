@@ -1,15 +1,15 @@
 # run Windows Update
 # TODO - you will need to do this manually with `sconfig`, if the update needs a reboot
-Install-Module PSWindowsUpdate -Force
-Import-Module PSWindowsUpdate
-Get-WUInstall -AcceptAll -IgnoreReboot | Out-File C:\PSWindowsUpdate.log
+#Install-Module PSWindowsUpdate -Force
+#Import-Module PSWindowsUpdate
+#Get-WUInstall -AcceptAll -IgnoreReboot | Out-File C:\PSWindowsUpdate.log
 
 # install Chocolatey 
 Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 
 # update Docker & install Compose
-Install-Module DockerProvider -Force
-Install-Package Docker -ProviderName DockerProvider -Force
+#Install-Module DockerProvider -Force
+#Install-Package Docker -ProviderName DockerProvider -Force
 iwr -useb https://raw.githubusercontent.com/sixeyed/docker-init/master/windows/install-docker-compose.ps1 | iex
 
 # install tools
