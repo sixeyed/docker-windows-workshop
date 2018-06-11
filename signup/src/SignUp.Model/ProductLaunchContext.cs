@@ -5,7 +5,7 @@ namespace SignUp.Model
 {
     public class SignUpContext : DbContext
     {
-        public SignUpContext() : base(Config.DbConnectionString) { }
+        public SignUpContext() : base("SignUpDb") { }
 
         public DbSet<Country> Countries { get; set; }
 

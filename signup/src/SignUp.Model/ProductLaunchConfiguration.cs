@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Data.Entity;
 using System.Data.Entity.SqlServer;
 
@@ -8,8 +9,8 @@ namespace SignUp.Model
     {
         public SignUpConfiguration()
         {
-            var maxRetryCount = int.Parse(Config.DbMaxRetryCount);
-            var maxDelaySeconds = int.Parse(Config.DbMaxDelaySeconds);
+            var maxRetryCount = int.Parse(ConfigurationManager.AppSettings["Db.MaxRetryCount"]);
+            var maxDelaySeconds = int.Parse(ConfigurationManager.AppSettings["Db.MaxDelaySeconds"]);
 
             Console.WriteLine($"- Setting DbConfiguration - maxRetryCount: {maxRetryCount}, maxDelaySeconds: {maxDelaySeconds}");
 

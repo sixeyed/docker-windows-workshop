@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SignUp.Model</RootNamespace>
     <AssemblyName>SignUp.Model</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,7 +49,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Config.cs" />
     <Compile Include="Initializers\StaticDataInitializer.cs" />
     <Compile Include="ProductLaunchConfiguration.cs" />
     <Compile Include="ProductLaunchContext.cs" />
@@ -60,7 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SignUp.Entities\SignUp.Entities.csproj">
-      <Project>{f1bbb80f-eb0c-41b6-a7a9-7994fb3fe5e8}</Project>
+      <Project>{76f9894e-72b3-4d37-b79b-3548f09f1231}</Project>
       <Name>SignUp.Entities</Name>
     </ProjectReference>
   </ItemGroup>

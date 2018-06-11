@@ -124,10 +124,16 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="ApplicationInsights.config">
+    <Content Include="fonts\geomanist\hinted-Geomanist-Book.woff2" />
+    <Content Include="appSettings.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="fonts\geomanist\hinted-Geomanist-Book.woff2" />
+    <Content Include="connectionStrings.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="log4net.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -247,15 +253,15 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SignUp.Entities\SignUp.Entities.csproj">
-      <Project>{f1bbb80f-eb0c-41b6-a7a9-7994fb3fe5e8}</Project>
+      <Project>{76f9894e-72b3-4d37-b79b-3548f09f1231}</Project>
       <Name>SignUp.Entities</Name>
     </ProjectReference>
     <ProjectReference Include="..\SignUp.Messaging\SignUp.Messaging.csproj">
-      <Project>{e02eff91-8c52-4dce-8279-3fd1ee0659ef}</Project>
+      <Project>{eaf3e985-6a9a-4a6c-a599-3c5467d67189}</Project>
       <Name>SignUp.Messaging</Name>
     </ProjectReference>
     <ProjectReference Include="..\SignUp.Model\SignUp.Model.csproj">
-      <Project>{3AFC4A48-5DB6-48FF-A459-20EC21A2EB28}</Project>
+      <Project>{3afc4a48-5db6-48ff-a459-20ec21a2eb28}</Project>
       <Name>SignUp.Model</Name>
     </ProjectReference>
   </ItemGroup>
