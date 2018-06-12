@@ -38,7 +38,7 @@ cd $env:workshop
 git pull
 
 # set dockerd config
-cp "$env:workshop\lab-vm\docker\daemon.json" C:\ProgramData\docker\config\
+# cp "$env:workshop\lab-vm\docker\daemon.json" C:\ProgramData\docker\config\
 
 # turn off firewall and Defender *this is meant for short-lived lab VMs*
 Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
