@@ -66,6 +66,22 @@ The VM has a bunch of tools and Docker images pre-installed. But the Git install
 
 ---
 
+## Install Docker Compose
+
+The VM setup script also deploys Docker Compose and that also failed, so here's another manual step:
+
+.exercise[
+    - Open a PowerShell prompt from the start menu and run:
+
+    ```
+    iwr -useb `
+      https://raw.githubusercontent.com/sixeyed/docker-init/master/windows/install-docker-compose.ps1 `
+      | iex
+
+    ```]
+
+---
+
 ## Update your VM setup
 
 Now run a script to make sure everything is up to date.
