@@ -12,21 +12,6 @@ You will build images and push them to Docker Hub during the workshop, so they a
 
 - Sign up for a free Docker ID on [Docker Hub](https://hub.docker.com)
 
-## Goals for the day
-
-The morning workshop covers Parts 1-4:
-
-- [Part 1](part-1.md) - running Docker on Windows
-- [Part 2](part-2.md) - packaging an existing ASP.NET app in Docker
-- [Part 3](part-3.md) - modernizing the ASP.NET app with Docker
-- [Part 4](part-4.md) - preparing for production with instrumentation
-
-The full day workshop continues in the afternoon with parts 5-7.
-
-- [Part 5](part-5.md) - resilience and scalability with Docker Compose
-- [Part 6](part-6.md) - containerized CI (and CD) with Docker
-- [Part 7](part-7.md) - production-ready orchestration with Docker swarm mode
-
 ---
 
 ## Workshop conventions
@@ -61,9 +46,29 @@ You can connect to the VM using:
 
 ---
 
+## Clone the workshop source code
+
+The VM has a bunch of tools and Docker images pre-installed. But the Git install failed, so you'll need to do that manually.
+
+.exercise[
+    - Open a PowerShell prompt from the start menu and run:
+
+    ```
+    choco install -y poshgit
+
+    $env:PATH="$env:PATH;C:\Program Files\Git\bin;"
+
+    cd C:\scm
+    
+    git clone https://github.com/sixeyed/docker-windows-workshop.git
+
+    ```]
+
+---
+
 ## Update your VM setup
 
-The VM has a bunch of tools and Docker images pre-installed. Start by running a script to make sure everything is up to date.
+Now run a script to make sure everything is up to date.
 
 The script will ask for your Docker ID - **be sure to use your Docker ID** (not your email address).
 
