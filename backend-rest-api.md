@@ -52,6 +52,7 @@ The image bundles a default database connection string, but you can override it 
       -e ConnectionStrings:SignUpDb="Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!" `
       dwwx/reference-data-api
     ```]
+
 ---
 
 ## Try it out
@@ -74,7 +75,7 @@ The API is available on port `8060` on your Docker host, so you can browse there
 
 ## Upgrade to use the new API
 
-Now we can run the app and have the reference data served by the API. Check out the [v3 manifest](./app/v3.yml) - it adds a services for the REST API.
+Now we can run the app and have the reference data served by the API. Check out the [v3 manifest](./app/v3.yml) - it adds a service for the REST API.
 
 The manifest also configures the web app to use the API. This has to be a change to the monolith - in this case using Dependency Injection to load a different implementation of the reference data loader.
 
