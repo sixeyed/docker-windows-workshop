@@ -1,7 +1,11 @@
-﻿using SignUp.Entities;
+﻿using Microsoft.Extensions.DependencyInjection;
+using SignUp.Core;
+using SignUp.Entities;
 using SignUp.Messaging;
 using SignUp.Messaging.Messages.Events;
 using SignUp.Model;
+using SignUp.Web.ProspectSave;
+using SignUp.Web.ReferenceData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,26 +16,27 @@ namespace SignUp.Web
 {
     public partial class SignUp : Page
     {
-        private static Dictionary<string, Country> _Countries;
-        private static Dictionary<string, Role> _Roles;
+        private static Dictionary<string, Country> _Countries = new Dictionary<string, Country>();
+        private static Dictionary<string, Role> _Roles = new Dictionary<string, Role>();
 
         public static void PreloadStaticDataCache()
         {
-            _Countries = new Dictionary<string, Country>();
-            _Roles = new Dictionary<string, Role>();
-            using (var context = new SignUpContext())
-            {
-                _Countries["-"] = context.Countries.Single(x => x.CountryCode == "-");
-                foreach (var country in context.Countries.Where(x=>x.CountryCode != "-").OrderBy(x => x.CountryName))
-                {
-                    _Countries[country.CountryCode] = country;
-                }
+            var loaderType = Config.Current["Dependencies:IReferenceDataLoader"];
+            var type = Type.GetType(loaderType);
+            var loader = (IReferenceDataLoader)Global.ServiceProvider.GetService(type);
 
-                _Roles["-"] = context.Roles.Single(x => x.RoleCode == "-");
-                foreach (var role in context.Roles.Where(x => x.RoleCode != "-").OrderBy(x => x.RoleName))
-                {
-                    _Roles[role.RoleCode] = role;
-                }
+            var countries = loader.GetCountries();
+            _Countries["-"] = countries.Single(x => x.CountryCode == "-");
+            foreach (var country in countries.Where(x => x.CountryCode != "-").OrderBy(x => x.CountryName))
+            {
+                _Countries[country.CountryCode] = country;
+            }
+            
+            var roles = loader.GetRoles();
+            _Roles["-"] = roles.Single(x => x.RoleCode == "-");
+            foreach (var role in roles.Where(x => x.RoleCode != "-").OrderBy(x => x.RoleName))
+            {
+                _Roles[role.RoleCode] = role;
             }
         }
 
@@ -71,37 +76,12 @@ namespace SignUp.Web
                 Role = role
             };
 
-            /* synchronous */
-            SaveProspect(prospect);           
-
-            /* aynchronous */
-            // PublishProspectSignedUpEvent(prospect);
+            var handlerType = Config.Current["Dependencies:IProspectSaveHandler"];
+            var type = Type.GetType(handlerType);
+            var handler = (IProspectSaveHandler)Global.ServiceProvider.GetService(type);
+            handler.SaveProspect(prospect);
 
             Server.Transfer("ThankYou.aspx");
-        }
-
-        private void SaveProspect(Prospect prospect)
-        {
-            using (var context = new SignUpContext())
-            {
-                //reload child objects:
-                prospect.Country = context.Countries.Single(x => x.CountryCode == prospect.Country.CountryCode);
-                prospect.Role = context.Roles.Single(x => x.RoleCode == prospect.Role.RoleCode);
-
-                context.Prospects.Add(prospect);
-                context.SaveChanges();
-            }
-        }
-
-        private void PublishProspectSignedUpEvent(Prospect prospect)
-        {
-            var eventMessage = new ProspectSignedUpEvent
-            {
-                Prospect = prospect,
-                SignedUpAt = DateTime.UtcNow
-            };
-
-            MessageQueue.Publish(eventMessage);
         }
     }
 }

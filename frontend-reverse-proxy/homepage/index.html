@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+  <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="Content/bootstrap.css" />
+  <link rel="stylesheet" href="Content/Site.css" />
+</head>
+
+<body>
+
+  <div id="app">
+    <v-app style="background-color:#eaf7fc">
+      <v-container grid-list-lg fluid>
+        <v-layout row wrap>
+
+          <v-flex xs4>
+            <v-card>
+              <v-card-title primary-title>
+                <div>
+                  <h1>Play with Docker</h1>
+                  <h2>The Playground</h2>
+                </div>
+              </v-card-title>
+              <v-card-actions>
+                <v-btn flat class="orange--text" href="https://labs.play-with-docker.com/">Launch</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-flex>
+
+          <v-flex xs4>
+            <v-card>
+              <v-card-title primary-title>
+                <div>
+                  <h1>Play with Docker</h1>
+                  <h2>The Classroom</h2>
+                </div>
+              </v-card-title>
+              <v-card-actions>
+                <v-btn flat class="orange--text" href="http://training.play-with-docker.com/">Launch</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-flex>
+
+          <v-flex xs4>
+            <v-card>
+              <v-card-title primary-title>
+                <div>
+                  <h1>Play with Docker</h1>
+                  <h2>The Newsletter</h2>
+                </div>
+              </v-card-title>
+              <v-card-actions>
+                <v-btn flat class="orange--text" href="/app/SignUp.aspx">Sign Up!</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-flex>
+
+        </v-layout>
+
+
+        <v-layout row wrap align-right>
+          <v-flex xs12>
+            <a href="https://2018.dockercon.com/" target="_blank">
+              <img src="img/dockercon-us-2018.png" />
+            </a>
+          </v-flex>
+        </v-layout>
+
+      </v-container>
+    </v-app>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
+  <script>
+    new Vue({
+      el: '#app'
+    })
+  </script>
+</body>
+
+</html>

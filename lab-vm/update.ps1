@@ -32,8 +32,6 @@ $Shortcut.Save()
 # set environment
 [Environment]::SetEnvironmentVariable('workshop', $env:workshop, [EnvironmentVariableTarget]::Machine)
 [Environment]::SetEnvironmentVariable('dockerId', $env:dockerId, [EnvironmentVariableTarget]::Machine)
-$path = $env:PATH + ";C:\Program Files\Mozilla Firefox;"
-[Environment]::SetEnvironmentVariable('PATH', $path, [EnvironmentVariableTarget]::Machine)
 
 # update lab repo
 cd $env:workshop

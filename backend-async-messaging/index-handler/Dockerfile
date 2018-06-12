@@ -13,6 +13,5 @@ FROM microsoft/dotnet:2.0-runtime-nanoserver-sac2016
 
 WORKDIR /index-prospect-handler
 ENTRYPOINT ["dotnet", "SignUp.MessageHandler.IndexProspect.dll"]
-ENV MESSAGE_QUEUE_URL="nats://message-queue:4222"
 
 COPY --from=builder C:\out\ .

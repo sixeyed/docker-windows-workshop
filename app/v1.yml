@@ -4,21 +4,18 @@ services:
   
   signup-db:
     image: microsoft/mssql-server-windows-express:2016-sp1
-    ports:
-      - "1433:1433"
     environment: 
       - ACCEPT_EULA=Y
-    env_file:
-      - db-credentials.env
+      - sa_password=DockerCon!!!
     networks:
       - app-net
 
   signup-web:
-    image: ${dockerId}/signup-web:1.0
+    image: dwwx/signup-web
     ports:
-      - "80"
-    env_file:
-      - db-credentials.env
+      - "8020:80"
+    environment: 
+      - ConnectionStrings:SignUpDb=Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!
     depends_on:
       - signup-db
     networks:

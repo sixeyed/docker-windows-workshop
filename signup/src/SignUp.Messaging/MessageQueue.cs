@@ -1,4 +1,5 @@
 ﻿using NATS.Client;
+using SignUp.Core;
 using SignUp.Messaging.Messages;
 
 namespace SignUp.Messaging
@@ -18,7 +19,7 @@ namespace SignUp.Messaging
 
         public static IConnection CreateConnection()
         {
-            return new ConnectionFactory().CreateConnection(Config.MessageQueueUrl);
+            return new ConnectionFactory().CreateConnection(Config.Current["MessageQueue:Url"]);
         }
     }
 }

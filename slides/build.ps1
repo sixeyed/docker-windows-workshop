@@ -21,9 +21,13 @@ foreach ($contentFile in $contentList){
 $content = $content.Replace('](/', "]($rawUrl")
 $content = $content.Replace('](./', "]($repoUrl")
 
-#$content = $content.Replace('{_x}', '<i class="fas fa-keyboard"></i>')
-#$content = $content.Replace('{_i}', '<i class="fas fa-info-circle"></i>')
-
 $(Get-Content template.html).Replace('${content}', $content) | Out-File .\index.html
 
 docker image build -t "dwwx/slides:$branch" .
+
+docker container rm -f dwwx-slides
+
+# sleep so HNS releases the port
+Start-Sleep -Seconds 3
+
+docker container run -d -p 8099:80 --name dwwx-slides "dwwx/slides:$branch"

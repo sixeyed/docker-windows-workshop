@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -11,27 +12,29 @@ namespace SignUp.Api.ReferenceData.Repositories
 {
     public abstract class RepositoryBase<T> : IRepository<T>
     {
+        protected readonly IConfiguration _configuration;
+        protected readonly ILogger _logger;
+
         protected abstract string GetAllSqlQuery { get; }
 
-        public RepositoryBase(IConfiguration configuration)
+        public RepositoryBase(IConfiguration configuration, ILogger logger)
         {
-            Configuration = configuration;
+            _configuration = configuration;
+            _logger = logger;
         }
-
-        public IConfiguration Configuration { get; }
-
 
         public IDbConnection Connection
         {
             get
             {
-                var connectionString = Configuration.GetConnectionString("SignUpDb");
+                var connectionString = _configuration.GetConnectionString("SignUpDb");
                 return new SqlConnection(connectionString);
             }
         }
 
         public IEnumerable<T> GetAll()
         {
+            _logger.LogDebug("GetAll - executing SQL query: '{0}'", GetAllSqlQuery);
             using (IDbConnection dbConnection = Connection)
             {
                 dbConnection.Open();

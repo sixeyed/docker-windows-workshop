@@ -29,7 +29,6 @@ namespace SignUp.Api.ReferenceData
             {
                 app.UseDeveloperExceptionPage();
             }
-
             app.UseMvc();
         }
     }

@@ -1,6 +1,7 @@
 ﻿using NATS.Client;
 using Prometheus;
 using Prometheus.Advanced;
+using SignUp.Core;
 using SignUp.Entities;
 using SignUp.Messaging;
 using SignUp.Messaging.Messages.Events;
@@ -26,7 +27,7 @@ namespace SignUp.MessageHandlers.SaveProspect
             //server.Start();
             //Console.WriteLine($"Metrics server listening on port 50505");
 
-            Console.WriteLine($"Connecting to message queue url: {Messaging.Config.MessageQueueUrl}");
+            Console.WriteLine($"Connecting to message queue url: {Config.Current["MessageQueue:Url"]}");
             using (var connection = MessageQueue.CreateConnection())
             {
                 var subscription = connection.SubscribeAsync(ProspectSignedUpEvent.MessageSubject, QUEUE_GROUP);

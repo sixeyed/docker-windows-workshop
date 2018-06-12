@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SignUp.Core;
 using SignUp.MessageHandler.IndexProspect.Indexer;
 using SignUp.MessageHandler.IndexProspect.Workers;
 
@@ -9,12 +10,8 @@ namespace SignUp.MessageHandler.IndexProspect
     {
         static void Main(string[] args)
         {
-            IConfiguration config = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
-                .Build();
-
             var serviceProvider = new ServiceCollection()
-                .AddSingleton(config)
+                .AddSingleton(Config.Current)
                 .AddSingleton<Index>()
                 .AddSingleton<QueueWorker>()
                 .BuildServiceProvider();
