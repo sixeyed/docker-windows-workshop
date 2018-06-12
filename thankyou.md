@@ -2,11 +2,13 @@
 
 Thanks for coming to the workshop. We hope it was useful and we'll be glad to have your feedback.
 
-What's next in your Docker journey? There's one last slide...
+The content for this workshop will stay online and you don't need a Windows Server VM to follow along - you can do everything with [Docker for Windows](https://www.docker.com/docker-windows) on Windows 10.
+
+But before you go...
 
 ---
 
-## Next steps
+## Next steps in your Docker journey
 
 - Use [Play with Docker](https://labs.play-with-docker.com/)
 

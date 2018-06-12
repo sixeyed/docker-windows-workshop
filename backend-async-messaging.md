@@ -18,7 +18,7 @@ This is a full .NET Framework app, so it can continue to use the original Entity
 
 ## Build the message handler
 
-Check out the [Dockerfile]() for the message handler. 
+Check out the [Dockerfile](./backend-async-messaging/save-handler/Dockerfile) for the message handler. 
 
 It uses the same principle to compile and package the app using containers, and the images use .NET Framework running on Windows Server Core. 
 
@@ -37,7 +37,7 @@ It uses the same principle to compile and package the app using containers, and 
 
 Check out the [v4 manifest](./app/v4.yml) - it adds services for the message handler and the message queue.
 
-The message queue is [NATS](), a high-performance in-memory queue which is ideal for communication between containers.
+The message queue is [NATS](https://nats.io), a high-performance in-memory queue which is ideal for communication between containers.
 
 The manifest also configures the web app to use messaging. This has to be a change to the monolith - in this case using Dependency Injection to load a different implementation of the prospect save handler.
 

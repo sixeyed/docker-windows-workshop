@@ -14,8 +14,8 @@ The new component is a simple REST API. You can browse the [source for the Refer
 
 The API uses a new technology stack:
 
-- ASP.NET Core as a fast, cross-platform alternative to full ASP.NET
-- [Dapper]() as a fast, lightweight ORM
+- [ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/?view=aspnetcore-2.1) as a fast, cross-platform alternative to full ASP.NET
+- [Dapper](https://github.com/StackExchange/Dapper) as a fast, lightweight ORM
 
 We can use new technologies without impacting the monolith, because this component runs in a separate container.
 
@@ -23,7 +23,7 @@ We can use new technologies without impacting the monolith, because this compone
 
 ## Build the API
 
-Check out the [Dockerfile]() for the API. 
+Check out the [Dockerfile](./backend-rest-api/reference-data-api/Dockerfile) for the API. 
 
 It uses the same principle to compile and package the app using containers, but the images use .NET Core running on Nano Server. 
 
@@ -42,7 +42,7 @@ It uses the same principle to compile and package the app using containers, but 
 
 You can run the API on its own, but it needs to connect to SQL Server. 
 
-The image bundles a default database connection string, but you can override it when you run containers with an environment variable.
+The image bundles a default database connection string, and you can override it when you run containers with an environment variable.
 
 .exercise[
     - Run the API, connecting it to the existing SQL container:
@@ -142,4 +142,4 @@ How? Just by adding a new routing rule in the reverse proxy that's already part 
 
 That's something you can try out yourself.
 
-> Hint: `nginx.conf` is where you need to start
+> Hint: the `location` blocks in `nginx.conf` are where you need to start
