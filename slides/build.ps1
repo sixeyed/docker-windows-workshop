@@ -14,8 +14,10 @@ $separatorContent = Get-Content separator.md -Raw
 $content = ""
 foreach ($contentFile in $contentList){
     Write-Output "Adding content from: $contentFile"
-    $content += Get-Content "..\$contentFile" -Raw
-    $content += $separatorContent
+    $section = Get-Content "..\$contentFile" -Raw
+    $section += "`n---`n"
+    $section = $section.Replace('---', ".footnote[Source: [$contentFile](./$contentFile)] `n---")
+    $content += $section    
 }
 
 $content = $content.Replace('](/', "]($rawUrl")

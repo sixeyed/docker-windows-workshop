@@ -101,7 +101,7 @@ The UX is the same, but the save is asynchronous. You can see that in the logs f
 
 ## Let's just check that
 
-To be sure, let's make sure the datahas really been saved in the database.
+To be sure, let's make sure the data has really been saved in the database.
 
 .exercise[
     - Check the new data is there in the SQL container:

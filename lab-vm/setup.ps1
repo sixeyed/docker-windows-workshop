@@ -1,33 +1,7 @@
-# install Chocolatey 
-Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+$ErrorActionPreference = "SilentlyContinue"
 
-# install Compose
-iwr -useb https://raw.githubusercontent.com/sixeyed/docker-init/master/windows/install-docker-compose.ps1 | iex
-# TODO - add path
+Write-Output '-VM setup script starting-'
 
-# install tools
-choco install -y poshgit
-choco install -y visualstudiocode
-choco install -y firefox
-
-refreshenv
-$env:PATH=$env:PATH + ';C:\Program Files\Mozilla Firefox'
-[Environment]::SetEnvironmentVariable('PATH', $env:PATH, [EnvironmentVariableTarget]::Machine)
-
-# configure Server Manager 
-New-ItemProperty -Path HKLM:\Software\Microsoft\ServerManager -Name DoNotOpenServerManagerAtLogon -PropertyType DWORD -Value "1" -Force
-New-ItemProperty -Path HKLM:\Software\Microsoft\ServerManager\Oobe -Name DoNotOpenInitialConfigurationTasksAtLogon -PropertyType DWORD -Value "1" -Force
-
-# turn off firewall and Defender *this is meant for short-lived lab VMs*
-Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
-Set-MpPreference -DisableRealtimeMonitoring $true
-
-# clone lab repo
-mkdir C:\scm -ErrorAction Ignore
-cd C:\scm
-git clone https://github.com/sixeyed/docker-windows-workshop.git
-
-# pull lab images
 $images = 
 'microsoft/windowsservercore:ltsc2016',
 'microsoft/nanoserver:sac2016',
@@ -41,7 +15,38 @@ $images =
 'microsoft/mssql-server-windows-express:2016-sp1',
 'nats:1.1.0-nanoserver'
 
+Write-Output '* Pulling  images'
 foreach ($tag in $images) {
     Write-Output "** Processing tag: $tag"
     & docker image pull $tag
 }
+
+Write-Output '* Installing Docker Compose'
+iwr -useb https://raw.githubusercontent.com/sixeyed/docker-init/master/windows/install-docker-compose.ps1 | iex
+
+Write-Output '* Installing Chocolatey'
+Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+
+Write-Output '* Installing tools'
+choco install -y poshgit
+choco install -y visualstudiocode
+choco install -y firefox
+
+Write-Output '* Configuring environment'
+refreshenv
+$env:PATH=$env:PATH + ';C:\Program Files\Mozilla Firefox'
+[Environment]::SetEnvironmentVariable('PATH', $env:PATH, [EnvironmentVariableTarget]::Machine)
+ 
+New-ItemProperty -Path HKLM:\Software\Microsoft\ServerManager -Name DoNotOpenServerManagerAtLogon -PropertyType DWORD -Value "1" -Force
+New-ItemProperty -Path HKLM:\Software\Microsoft\ServerManager\Oobe -Name DoNotOpenInitialConfigurationTasksAtLogon -PropertyType DWORD -Value "1" -Force
+
+# turn off firewall and Defender *this is meant for short-lived lab VMs*
+Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
+Set-MpPreference -DisableRealtimeMonitoring $true
+
+Write-Output '* Cloning the workshop repo'
+mkdir C:\scm -ErrorAction Ignore
+cd C:\scm
+git clone https://github.com/sixeyed/docker-windows-workshop.git
+
+Write-Output '-VM setup script done-'
