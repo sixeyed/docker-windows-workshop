@@ -1,3 +1,12 @@
-.reveal h3, .reveal h4, .reveal h5, .reveal h6 {
+.reveal h2 {
   text-transform: none;
+  font-size: 2em;
+}
+
+.reveal p {
+  font-size: 70%;
+}
+
+.reveal .slides {
+  text-align: left;
 }
