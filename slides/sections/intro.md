@@ -48,8 +48,7 @@ dwwx-dcus1800.centralus.cloudapp.azure.com
 
 The VM has a bunch of tools and Docker images pre-installed. But the Git install failed, so you'll need to do that manually.
 
-.exercise[
-    - Open a PowerShell prompt from the start menu and run:
+_Open a PowerShell prompt from the start menu and run:_
 
     ```
     choco install -y poshgit
@@ -60,7 +59,7 @@ The VM has a bunch of tools and Docker images pre-installed. But the Git install
     
     git clone https://github.com/sixeyed/docker-windows-workshop.git
 
-    ```]
+    ```
 
 ---
 
@@ -68,15 +67,14 @@ The VM has a bunch of tools and Docker images pre-installed. But the Git install
 
 The VM setup script also deploys Docker Compose and that also failed, so here's another manual step:
 
-.exercise[
-    - Open a PowerShell prompt from the start menu and run:
+_Open a PowerShell prompt from the start menu and run:_
 
     ```
     iwr -useb `
       https://raw.githubusercontent.com/sixeyed/docker-init/master/windows/install-docker-compose.ps1 `
       | iex
 
-    ```]
+    ```
 
 ---
 
@@ -86,14 +84,13 @@ Now run a script to make sure everything is up to date.
 
 The script will ask for your Docker ID - **be sure to use your Docker ID** (not your email address).
 
-.exercise[
-    - Open a PowerShell prompt from the start menu and run:
+_Open a PowerShell prompt from the start menu and run:_
 
     ```
     cd C:\scm\docker-windows-workshop
 
     .\lab-vm\update.ps1
-    ```]
+    ```
 
 Now close that PowerShell prompt.
 
@@ -105,24 +102,22 @@ Now close that PowerShell prompt.
 
 Login to Docker Hub with your Docker credentials:
 
-.exercise[
-    - Open a PowerShell prompt from the desktop shortcut and run:
+_Open a PowerShell prompt from the desktop shortcut and run:_
 
     ```
     docker login --username $env:dockerId
-    ```]
+    ```
 ---
 
 ## Check everything's OK
 
 Now check the Docker setup by running a simple verify script.
 
-.exercise[
     ```
     cd $env:workshop
 
     .\verify.ps1
-    ```]
+    ```
 
 > You should see a Docker image gets built, a container is run and the image is pushed to Docker Hub.
 

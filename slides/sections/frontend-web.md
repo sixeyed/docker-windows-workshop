@@ -10,12 +10,11 @@ Right now the web app is a monolith. By the end of the workshop we'll have broke
 
 Check out the [Dockerfile](./frontend-web/web/Dockerfile) for the application. It uses Docker to compile the app from source, and package it into an image.
 
-.exercise[
-    - Build the image:
+_Build the image:_
 
     ```
     docker image build -t dwwx/signup-web -f .\frontend-web\web\Dockerfile .
-    ```]
+    ```
 
 ---
 
@@ -25,12 +24,11 @@ That's it!
 
 You don't need Visual Studio or .NET 4.7.2 installed to build the app, you just need the source repo and Docker. 
 
-.exercise[
-    - Try running the app in a container:
+_Try running the app in a container:_
 
     ```
     docker container run -d -p 8020:80 --name app dwwx/signup-web
-    ```]
+    ```
 
 ---
 
@@ -38,15 +36,14 @@ You don't need Visual Studio or .NET 4.7.2 installed to build the app, you just 
 
 You can browse to port `8020` on your Docker host (that's your Windows Server 2016 VM or your Windows 10 laptop). Or you can browse direct to the container:
 
-.exercise[
-    - Get the container's IP address and launch the browser:
+_Get the container's IP address and launch the browser:_
 
     ```
     $ip = docker container inspect `
       --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app
 
     firefox "http://$ip"
-    ```]
+    ```
 
 ---
 
@@ -56,12 +53,11 @@ Oops.
 
 Remember the app needs SQL Server, and there's no SQL Server on this machine. We'll run it properly next, but first let's clean up that container. 
 
-.exercise[
-    - Remove the `app` container:
+_Remove the `app` container:_
 
     ```
     docker container rm -f app
-    ```]
+    ```
 
 ---
 
@@ -69,12 +65,11 @@ Remember the app needs SQL Server, and there's no SQL Server on this machine. We
 
 Now  we'll run the database in a container too - using Docker Compose to manage the whole app. Check out the [v1 manifest](./app/v1.yml), it specifies SQL Server and the web app. 
 
-.exercise[
-    - Now run the app using compose:
+_Now run the app using compose:_
 
     ```
     docker-compose -f .\app\v1.yml up -d
-    ```]
+    ```
 
 ---
 
@@ -82,14 +77,12 @@ Now  we'll run the database in a container too - using Docker Compose to manage 
 
 As before, browse to port `8020` on your Docker host or browse direct to the container:
 
-.exercise[
-
     ```
     $ip = docker container inspect `
       --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_signup-web_1
 
     firefox "http://$ip"
-    ```]
+    ```
 
 ---
 
@@ -97,13 +90,12 @@ As before, browse to port `8020` on your Docker host or browse direct to the con
 
 But let's check it really works. Click the _Sign Up_ button, fill in the form and click _Go!_ to save your details.
 
-.exercise[
-    - Check the data has been saved in the SQL container:
+_Check the data has been saved in the SQL container:_
 
     ```
     docker container exec app_signup-db_1 powershell `
     "Invoke-SqlCmd -Query 'SELECT * FROM Prospects' -Database SignUp"
-    ```]
+    ```
 
 ---
 

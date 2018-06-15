@@ -16,14 +16,13 @@ The [Dockerfile](./frontend-reverse-proxy/homepage/Dockerfile) is really simple 
 
 It will run in its own container, so it can use a different technology stack from the main app.
 
-.exercise[
-    - Build the homepage image:
+_Build the homepage image:_
 
     ```
     docker image build `
       -t dwwx/homepage `
       -f .\frontend-reverse-proxy\homepage\Dockerfile .
-    ```]
+    ```
 
 ---
 
@@ -31,27 +30,25 @@ It will run in its own container, so it can use a different technology stack fro
 
 You can run the homepage on its own - great for fast iterating through changes. 
 
-.exercise[
-    - Run the homepage:
+_Run the homepage:_
 
     ```
     docker container run -d -p 8040:80 --name home dwwx/homepage
-    ```]
+    ```
 ---
 
 ## Try it out
 
 The homepage is available on port `8040` on your Docker host, so you can browse there or direct to the container:
 
-.exercise[
-    - Get the homepage container's IP and launch the browser:
+_Get the homepage container's IP and launch the browser:_
 
     ```
     $ip = docker container inspect `
       --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' home
 
     firefox "http://$ip"
-    ```]
+    ```
 
 ---
 
@@ -71,14 +68,13 @@ We'll use [Nginx](http://nginx.org/en/) as the proxy. All requests will come to 
 
 Nginx can do a lot more than that - in the [nginx.conf configuration file](./frontend-reverse-proxy/reverse-proxy/conf/nginx.conf) we're setting up caching, and you can also use Nginx for SSL termination.
 
-.exercise[
-    - Build the reverse proxy image:
+_Build the reverse proxy image:_
 
     ```
     docker image build `
       -t dwwx/reverse-proxy `
       -f .\frontend-reverse-proxy\reverse-proxy\Dockerfile .
-    ```]
+    ```
 
 ---
 
@@ -88,12 +84,11 @@ Now we can run the app and have content proxied by Nginx. Check out the [v2 mani
 
 Only the reverse proxy has `ports` specified. It is the public entrypoint to the app, all other containers are internal - they can access each other, but the outside world can't get to them.
 
-.exercise[
-    - Upgrade to v2:
+_Upgrade to v2:_
 
     ```
     docker-compose -f .\app\v2.yml up -d
-    ```]
+    ```
 
 > Compose compares the running state to the desired state in the manifest and starts new containers. 
 
@@ -103,13 +98,12 @@ Only the reverse proxy has `ports` specified. It is the public entrypoint to the
 
 The reverse proxy is published to port `8020`, so you can browse there or to the new Nginx container:
 
-.exercise[
     ```
     $ip = docker container inspect `
       --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_proxy_1
 
     firefox "http://$ip"
-    ```]
+    ```
 
 > Now you can click through to the original _Sign Up_ page.
 
@@ -121,13 +115,12 @@ Check nothing's broken.
 
 Click the _Sign Up!_ button, fill in the form and click _Go!_ to save your details.
 
-.exercise[
-    - Check the new data is there in the SQL container:
+_Check the new data is there in the SQL container:_
 
     ```
     docker container exec app_signup-db_1 powershell `
       "Invoke-SqlCmd -Query 'SELECT * FROM Prospects' -Database SignUp"
-    ```]
+    ```
 
 ---
 
