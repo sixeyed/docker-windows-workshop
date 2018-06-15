@@ -23,11 +23,11 @@ $content = $content.Replace('](./', "]($repoUrl")
 
 $(Get-Content template.html).Replace('${content}', $content) | Out-File .\index.html
 
-docker image build -t "dwwx/slides:$branch" .
+#docker image build -t "dwwx/slides:$branch" .
 
-docker container rm -f dwwx-slides
+#docker container rm -f dwwx-slides
 
 # sleep so HNS releases the port
-Start-Sleep -Seconds 3
+#Start-Sleep -Seconds 3
 
-docker container run -d -p 8099:80 --name dwwx-slides "dwwx/slides:$branch"
+#docker container run -d -p 8099:80 --name dwwx-slides "dwwx/slides:$branch"
