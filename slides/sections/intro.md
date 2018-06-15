@@ -18,12 +18,11 @@ You will build images and push them to Docker Hub during the workshop, so they a
 
 Exercises are shown like this:
 
-.exercise[
-    - This is something you do yourself...
+_This is something you do yourself..._
 
-    ```
-    copy and paste this code
-    ```]
+```
+copy and paste this code
+```
 
 ---
 
@@ -34,15 +33,14 @@ You'll be given the connection details for your Windows Server 2016 VM during th
 You can connect to the VM using:
 
 - RDP (Windows)
-- Microsoft Remote Desktop (Mac)
-- Remmina (linux)
+- Microsoft Remote Desktop (Mac - from the App Store)
+- Remmina (Linux)
 
-.exercise[
-    - RDP into the server VM. The server name will be something like:
+_RDP into the server VM. The server name will be something like:_
 
-    ```
-    dwwx-dcus1800.centralus.cloudapp.azure.com
-    ```]
+```
+dwwx-dcus1800.centralus.cloudapp.azure.com
+```
 
 ---
 
