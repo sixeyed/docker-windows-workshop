@@ -40,30 +40,9 @@ dwwx-dcus1800.centralus.cloudapp.azure.com
 
 ---
 
-## Clone the workshop source code
-
-The VM has a bunch of tools and Docker images pre-installed. But the Git install failed, so you'll need to do that manually.
-
-_Open a PowerShell prompt from the start menu and run:_
-
-```
-choco install -y poshgit
-
-$env:PATH="$env:PATH;C:\Program Files\Git\bin;"
-
-cd C:\scm
-    
-git clone https://github.com/sixeyed/docker-windows-workshop.git
-
-```
-
----
-
 ## Update your VM setup
 
 Now run a script to make sure everything is up to date.
-
-The script will ask for your Docker ID - **be sure to use your Docker ID** (not your email address).
 
 _Open a PowerShell prompt from the start menu and run:_
 
