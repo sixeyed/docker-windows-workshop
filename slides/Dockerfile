@@ -1,7 +1,7 @@
 FROM sixeyed/nginx
 
 WORKDIR C:/nginx/html
-COPY ./reveal.js-3.6.0/ .
+COPY ./reveal/ ./reveal/
 COPY *.md ./sections
 COPY ./index.html .
 
