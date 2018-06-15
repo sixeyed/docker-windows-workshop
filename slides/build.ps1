@@ -8,26 +8,21 @@ Write-Output "Building branch: $branch"
 $rawUrl = "https://raw.githubusercontent.com/sixeyed/docker-windows-workshop/$branch/"
 $repoUrl = "https://github.com/sixeyed/docker-windows-workshop/blob/$branch/"
 
-$contentList = Get-Content ".\contents\$branch.txt"
-$content = ""
-foreach ($contentFile in $contentList){
-    Write-Output "Adding content from: $contentFile"
-    $section = "<section data-markdown=`"sections/$contentFile`"></section>`n"
-    #$section += "`n---`n"
-    #$section = $section.Replace('---', ".footnote[Source: [$contentFile](./$contentFile)] `n---")
-    $content += $section    
+$markdownList = Get-Content ".\contents\$branch.txt"
+$html = ""
+foreach ($markdownFile in $markdownList){
+    Write-Output "Adding content from: $markdownFile"
+    $markdown = Get-Content ".\sections\$markdownFile"
+    $markdown.Replace('](/', "]($rawUrl").Replace('](./', "]($repoUrl") | Out-File ".\sections\$markdownFile" -Encoding UTF8
+    $section = "<section data-markdown=`"sections/$markdownFile`"></section>`n"
+    $html += $section    
 }
 
-$content = $content.Replace('](/', "]($rawUrl")
-$content = $content.Replace('](./', "]($repoUrl")
-
-$(Get-Content template.html).Replace('${content}', $content) | Out-File .\index.html -Encoding UTF8
+$(Get-Content template.html).Replace('${content}', $html) | Out-File .\index.html -Encoding UTF8
 
 docker image build -t "dwwx/slides:$branch" .
-
 docker container rm -f dwwx-slides
 
 # sleep so HNS releases the port
 Start-Sleep -Seconds 3
-
 docker container run -d -p 8099:80 --name dwwx-slides "dwwx/slides:$branch"

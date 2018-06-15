@@ -1,4 +1,6 @@
-# Switching to Asynchronous Messaging
+﻿# Switching to Asynchronous Messaging
+
+---
 
 Right now the app saves data by synchronously connecting to SQL Server. That's a bottleneck which will stop the app performing if there's a peak in traffic.
 
@@ -10,7 +12,7 @@ When you sign up the web app will publish an event message on the queue, which a
 
 ## The save message handler
 
-The new component is a simple .NET Console app. You can browse the [source for the save message handler](./signup/src/SignUp.MessageHandlers.SaveProspect) - the work is all done in the `Program` class.
+The new component is a simple .NET Console app. You can browse the [source for the save message handler](https://github.com/sixeyed/docker-windows-workshop/blob/dcus18/signup/src/SignUp.MessageHandlers.SaveProspect) - the work is all done in the `Program` class.
 
 This is a full .NET Framework app, so it can continue to use the original Entity Framework logic from the monolith. It's a low-risk approach to updating the architecture.
 
@@ -18,7 +20,7 @@ This is a full .NET Framework app, so it can continue to use the original Entity
 
 ## Build the message handler
 
-Check out the [Dockerfile](./backend-async-messaging/save-handler/Dockerfile) for the message handler. 
+Check out the [Dockerfile](https://github.com/sixeyed/docker-windows-workshop/blob/dcus18/backend-async-messaging/save-handler/Dockerfile) for the message handler. 
 
 It uses the same principle to compile and package the app using containers, and the images use .NET Framework running on Windows Server Core. 
 
@@ -34,7 +36,7 @@ docker image build `
 
 ## Upgrade to use asynchronous messaging
 
-Check out the [v4 manifest](./app/v4.yml) - it adds services for the message handler and the message queue.
+Check out the [v4 manifest](https://github.com/sixeyed/docker-windows-workshop/blob/dcus18/app/v4.yml) - it adds services for the message handler and the message queue.
 
 The message queue is [NATS](https://nats.io), a high-performance in-memory queue which is ideal for communication between containers.
 

@@ -1,7 +1,4 @@
-FROM sixeyed/nginx
+FROM microsoft/iis:nanoserver-sac2016
 
-WORKDIR C:/nginx/html
+WORKDIR C:/inetpub/wwwroot
 COPY . .
-
-# move to nginx base
-WORKDIR C:/nginx

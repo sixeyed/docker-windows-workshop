@@ -1,4 +1,4 @@
-# Intro
+﻿# Intro
 
 Welcome to the workshop :)
 
@@ -88,9 +88,7 @@ cd C:\scm\docker-windows-workshop
 .\lab-vm\update.ps1
 ```
 
-Now close that PowerShell prompt.
-
-> **Do not use PowerShell ISE for the workshop!** It has a strange relationship with some `docker` commands, and you won't get far with it.
+> **Do not use PowerShell ISE for the workshop!** It has a strange relationship with some `docker` commands.
 
 ---
 
