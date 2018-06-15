@@ -24,11 +24,11 @@ It uses the same principle to compile and package the app using containers, and 
 
 _Build the API image:_
 
-    ```
-    docker image build `
-      -t dwwx/save-handler `
-      -f .\backend-async-messaging\save-handler\Dockerfile .
-    ```
+```
+docker image build `
+  -t dwwx/save-handler `
+  -f .\backend-async-messaging\save-handler\Dockerfile .
+```
 
 ---
 
@@ -42,9 +42,9 @@ The manifest also configures the web app to use messaging. This has to be a chan
 
 _Upgrade to v4:_
 
-    ```
-    docker-compose -f .\app\v4.yml up -d
-    ```
+```
+docker-compose -f .\app\v4.yml up -d
+```
 
 ---
 
@@ -56,9 +56,9 @@ The message handler writes console log entries, so you can see that it has conne
 
 _Check the handler logs:_
 
-    ```
-    docker container logs app_signup-save-handler_1
-    ```
+```
+docker container logs app_signup-save-handler_1
+```
 
 > You should see that the handler is connected and listening
 
@@ -68,12 +68,12 @@ _Check the handler logs:_
 
 The entrypoint is still the proxy listening on port `8020`, so you can browse there or to the container:
 
-    ```
-    $ip = docker container inspect `
-      --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_proxy_1
+```
+$ip = docker container inspect `
+  --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_proxy_1
 
-    firefox "http://$ip"
-    ```
+firefox "http://$ip"
+```
 
 > Now when you submit data, the web app publishes an event and the handler makes the database save
 
@@ -87,9 +87,9 @@ The UX is the same, but the save is asynchronous. You can see that in the logs f
 
 _Check the handler logs:_
 
-    ```
-    docker container logs app_signup-save-handler_1
-    ```
+```
+docker container logs app_signup-save-handler_1
+```
 
 > You should see that the handler has receievd and actioned a message, and it gets an ID back from the database
 
@@ -101,10 +101,10 @@ To be sure, let's make sure the data has really been saved in the database.
 
 _Check the new data is there in the SQL container:_
 
-    ```
-    docker container exec app_signup-db_1 powershell `
-      "Invoke-SqlCmd -Query 'SELECT * FROM Prospects' -Database SignUp"
-    ```
+```
+docker container exec app_signup-db_1 powershell `
+  "Invoke-SqlCmd -Query 'SELECT * FROM Prospects' -Database SignUp"
+```
 
 ---
 

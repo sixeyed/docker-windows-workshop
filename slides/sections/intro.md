@@ -30,11 +30,7 @@ copy and paste this code
 
 You'll be given the connection details for your Windows Server 2016 VM during the workshop.
 
-You can connect to the VM using:
-
-- RDP (Windows)
-- Microsoft Remote Desktop (Mac - from the App Store)
-- Remmina (Linux)
+You can connect to the VM using RDP on Windows, [Microsoft Remote Desktop](https://itunes.apple.com/us/app/microsoft-remote-desktop-8-0/id715768417) from the Mac App Store or [Remmina](https://github.com/FreeRDP/Remmina/wiki#for-end-users) on Linux.
 
 _RDP into the server VM. The server name will be something like:_
 
@@ -50,16 +46,16 @@ The VM has a bunch of tools and Docker images pre-installed. But the Git install
 
 _Open a PowerShell prompt from the start menu and run:_
 
-    ```
-    choco install -y poshgit
+```
+choco install -y poshgit
 
-    $env:PATH="$env:PATH;C:\Program Files\Git\bin;"
+$env:PATH="$env:PATH;C:\Program Files\Git\bin;"
 
-    cd C:\scm
+cd C:\scm
     
-    git clone https://github.com/sixeyed/docker-windows-workshop.git
+git clone https://github.com/sixeyed/docker-windows-workshop.git
 
-    ```
+```
 
 ---
 
@@ -69,12 +65,12 @@ The VM setup script also deploys Docker Compose and that also failed, so here's 
 
 _Open a PowerShell prompt from the start menu and run:_
 
-    ```
-    iwr -useb `
-      https://raw.githubusercontent.com/sixeyed/docker-init/master/windows/install-docker-compose.ps1 `
-      | iex
+```
+iwr -useb `
+  https://raw.githubusercontent.com/sixeyed/docker-init/master/windows/install-docker-compose.ps1 `
+    | iex
 
-    ```
+```
 
 ---
 
@@ -86,11 +82,11 @@ The script will ask for your Docker ID - **be sure to use your Docker ID** (not 
 
 _Open a PowerShell prompt from the start menu and run:_
 
-    ```
-    cd C:\scm\docker-windows-workshop
+```
+cd C:\scm\docker-windows-workshop
 
-    .\lab-vm\update.ps1
-    ```
+.\lab-vm\update.ps1
+```
 
 Now close that PowerShell prompt.
 
@@ -104,20 +100,21 @@ Login to Docker Hub with your Docker credentials:
 
 _Open a PowerShell prompt from the desktop shortcut and run:_
 
-    ```
-    docker login --username $env:dockerId
-    ```
+```
+docker login --username $env:dockerId
+```
+
 ---
 
 ## Check everything's OK
 
 Now check the Docker setup by running a simple verify script.
 
-    ```
-    cd $env:workshop
+```
+cd $env:workshop
 
-    .\verify.ps1
-    ```
+.\verify.ps1
+```
 
 > You should see a Docker image gets built, a container is run and the image is pushed to Docker Hub.
 

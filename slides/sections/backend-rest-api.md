@@ -29,11 +29,11 @@ It uses the same principle to compile and package the app using containers, but 
 
 _Build the API image:_
 
-    ```
-    docker image build `
-      -t dwwx/reference-data-api `
-      -f .\backend-rest-api\reference-data-api\Dockerfile .
-    ```
+```
+docker image build `
+  -t dwwx/reference-data-api `
+  -f .\backend-rest-api\reference-data-api\Dockerfile .
+```
 
 ---
 
@@ -45,11 +45,11 @@ The image bundles a default database connection string, and you can override it 
 
 _Run the API, connecting it to the existing SQL container:_
 
-    ```
-    docker container run -d -p 8060:80 --name api `
-      -e ConnectionStrings:SignUpDb="Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!" `
-      dwwx/reference-data-api
-    ```
+```
+docker container run -d -p 8060:80 --name api `
+  -e ConnectionStrings:SignUpDb="Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!" `
+  dwwx/reference-data-api
+```
 
 ---
 
@@ -59,12 +59,12 @@ The API is available on port `8060` on your Docker host, so you can browse there
 
 _Get the API container's IP and launch the browser:_
 
-    ```
-    $ip = docker container inspect `
-      --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' api
+```
+$ip = docker container inspect `
+  --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' api
 
-    firefox "http://$ip/api/countries"
-    ```
+firefox "http://$ip/api/countries"
+```
 
 > Replace `/countries` with `/roles` to see the other dataset
 
@@ -78,9 +78,9 @@ The manifest also configures the web app to use the API. This has to be a change
 
 _Upgrade to v3:_
 
-    ```
-    docker-compose -f .\app\v3.yml up -d
-    ```
+```
+docker-compose -f .\app\v3.yml up -d
+```
 
 ---
 
@@ -88,12 +88,12 @@ _Upgrade to v3:_
 
 The entrypoint is still the proxy listening on port `8020`, so you can browse there or to the container:
 
-    ```
-    $ip = docker container inspect `
-      --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_proxy_1
+```
+$ip = docker container inspect `
+  --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_proxy_1
 
-    firefox "http://$ip"
-    ```
+firefox "http://$ip"
+```
 
 > Now when you click through to the original _Sign Up_ page, the dropdowns are loaded from the API.
 
@@ -107,9 +107,9 @@ The logs will show that the countries and roles controllers have been called - t
 
 _Check the logs:_
 
-    ```
-    docker container logs app_reference-data-api_1
-    ```
+```
+docker container logs app_reference-data-api_1
+```
 
 ---
 
@@ -121,10 +121,10 @@ Click the _Sign Up!_ button, fill in the form and click _Go!_ to save your detai
 
 _Check the new data is there in the SQL container:_
 
-    ```
-    docker container exec app_signup-db_1 powershell `
-      "Invoke-SqlCmd -Query 'SELECT * FROM Prospects' -Database SignUp"
-    ```
+```
+docker container exec app_signup-db_1 powershell `
+  "Invoke-SqlCmd -Query 'SELECT * FROM Prospects' -Database SignUp"
+```
 
 ---
 

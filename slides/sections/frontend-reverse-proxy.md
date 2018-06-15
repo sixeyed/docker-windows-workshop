@@ -18,11 +18,11 @@ It will run in its own container, so it can use a different technology stack fro
 
 _Build the homepage image:_
 
-    ```
-    docker image build `
-      -t dwwx/homepage `
-      -f .\frontend-reverse-proxy\homepage\Dockerfile .
-    ```
+```
+docker image build `
+  -t dwwx/homepage `
+  -f .\frontend-reverse-proxy\homepage\Dockerfile .
+```
 
 ---
 
@@ -32,9 +32,10 @@ You can run the homepage on its own - great for fast iterating through changes.
 
 _Run the homepage:_
 
-    ```
-    docker container run -d -p 8040:80 --name home dwwx/homepage
-    ```
+```
+docker container run -d -p 8040:80 --name home dwwx/homepage
+```
+
 ---
 
 ## Try it out
@@ -43,12 +44,12 @@ The homepage is available on port `8040` on your Docker host, so you can browse 
 
 _Get the homepage container's IP and launch the browser:_
 
-    ```
-    $ip = docker container inspect `
-      --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' home
+```
+$ip = docker container inspect `
+  --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' home
 
-    firefox "http://$ip"
-    ```
+firefox "http://$ip"
+```
 
 ---
 
@@ -70,11 +71,11 @@ Nginx can do a lot more than that - in the [nginx.conf configuration file](./fro
 
 _Build the reverse proxy image:_
 
-    ```
-    docker image build `
-      -t dwwx/reverse-proxy `
-      -f .\frontend-reverse-proxy\reverse-proxy\Dockerfile .
-    ```
+```
+docker image build `
+  -t dwwx/reverse-proxy `
+  -f .\frontend-reverse-proxy\reverse-proxy\Dockerfile .
+```
 
 ---
 
@@ -86,9 +87,9 @@ Only the reverse proxy has `ports` specified. It is the public entrypoint to the
 
 _Upgrade to v2:_
 
-    ```
-    docker-compose -f .\app\v2.yml up -d
-    ```
+```
+docker-compose -f .\app\v2.yml up -d
+```
 
 > Compose compares the running state to the desired state in the manifest and starts new containers. 
 
@@ -98,12 +99,12 @@ _Upgrade to v2:_
 
 The reverse proxy is published to port `8020`, so you can browse there or to the new Nginx container:
 
-    ```
-    $ip = docker container inspect `
-      --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_proxy_1
+```
+$ip = docker container inspect `
+  --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_proxy_1
 
-    firefox "http://$ip"
-    ```
+firefox "http://$ip"
+```
 
 > Now you can click through to the original _Sign Up_ page.
 
@@ -117,10 +118,10 @@ Click the _Sign Up!_ button, fill in the form and click _Go!_ to save your detai
 
 _Check the new data is there in the SQL container:_
 
-    ```
-    docker container exec app_signup-db_1 powershell `
-      "Invoke-SqlCmd -Query 'SELECT * FROM Prospects' -Database SignUp"
-    ```
+```
+docker container exec app_signup-db_1 powershell `
+  "Invoke-SqlCmd -Query 'SELECT * FROM Prospects' -Database SignUp"
+```
 
 ---
 
