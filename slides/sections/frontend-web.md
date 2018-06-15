@@ -30,7 +30,9 @@ You don't need Visual Studio or .NET 4.7.2 installed to build the app, you just 
 _Try running the app in a container:_
 
 ```
-docker container run -d -p 8020:80 --name app dwwx/signup-web
+docker container run `
+  -d -p 8020:80 --name app `
+  dwwx/signup-web
 ```
 
 ---
@@ -96,7 +98,8 @@ But let's check it really works. Click the _Sign Up_ button, fill in the form an
 _Check the data has been saved in the SQL container:_
 
 ```
-docker container exec app_signup-db_1 powershell `
+docker container exec app_signup-db_1 `
+  powershell `
   "Invoke-SqlCmd -Query 'SELECT * FROM Prospects' -Database SignUp"
 ```
 

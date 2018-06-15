@@ -59,21 +59,6 @@ git clone https://github.com/sixeyed/docker-windows-workshop.git
 
 ---
 
-## Install Docker Compose
-
-The VM setup script also deploys Docker Compose and that also failed, so here's another manual step:
-
-_Open a PowerShell prompt from the start menu and run:_
-
-```
-iwr -useb `
-  https://raw.githubusercontent.com/sixeyed/docker-init/master/windows/install-docker-compose.ps1 `
-    | iex
-
-```
-
----
-
 ## Update your VM setup
 
 Now run a script to make sure everything is up to date.
@@ -89,32 +74,6 @@ cd C:\scm\docker-windows-workshop
 ```
 
 > **Do not use PowerShell ISE for the workshop!** It has a strange relationship with some `docker` commands.
-
----
-
-## Log in to Docker Hub
-
-Login to Docker Hub with your Docker credentials:
-
-_Open a PowerShell prompt from the desktop shortcut and run:_
-
-```
-docker login --username $env:dockerId
-```
-
----
-
-## Check everything's OK
-
-Now check the Docker setup by running a simple verify script.
-
-```
-cd $env:workshop
-
-.\verify.ps1
-```
-
-> You should see a Docker image gets built, a container is run and the image is pushed to Docker Hub.
 
 ---
 
