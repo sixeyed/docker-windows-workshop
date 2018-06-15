@@ -1,3 +1,9 @@
-FROM microsoft/iis:nanoserver-sac2016
+FROM sixeyed/nginx
 
-COPY . C:/inetpub/wwwroot
+WORKDIR C:/nginx/html
+COPY ./reveal.js-3.6.0/ .
+COPY *.md ./sections
+COPY ./index.html .
+
+# move to nginx base
+WORKDIR C:/nginx

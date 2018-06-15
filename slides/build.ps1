@@ -9,14 +9,12 @@ $rawUrl = "https://raw.githubusercontent.com/sixeyed/docker-windows-workshop/$br
 $repoUrl = "https://github.com/sixeyed/docker-windows-workshop/blob/$branch/"
 
 $contentList = Get-Content ".\contents\$branch.txt"
-
-$separatorContent = Get-Content separator.md -Raw
 $content = ""
 foreach ($contentFile in $contentList){
     Write-Output "Adding content from: $contentFile"
-    $section = Get-Content "..\$contentFile" -Raw
-    $section += "`n---`n"
-    $section = $section.Replace('---', ".footnote[Source: [$contentFile](./$contentFile)] `n---")
+    $section = "<section data-markdown=`"sections/$contentFile`"></section>`n"
+    #$section += "`n---`n"
+    #$section = $section.Replace('---', ".footnote[Source: [$contentFile](./$contentFile)] `n---")
     $content += $section    
 }
 

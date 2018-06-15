@@ -1,11 +1,11 @@
-param(
-    [Parameter(Mandatory=$true)]
-    [string]$dockerId
-)
+#param(
+#    [Parameter(Mandatory=$true)]
+#    [string]$dockerId
+#)
 
 # set env vars:
 $env:workshop='C:\scm\docker-windows-workshop'
-$env:dockerId=$dockerId
+#$env:dockerId=$dockerId
 
 # update tools
 choco upgrade -y visualstudiocode
@@ -16,7 +16,7 @@ Get-ChildItem $env:Public\Desktop\*.lnk | ForEach-Object { Remove-Item $_ }
 $WshShell = New-Object -comObject WScript.Shell
 $Shortcut = $WshShell.CreateShortcut("$Home\Desktop\Firefox.lnk")
 $Shortcut.TargetPath = "C:\Program Files\Mozilla Firefox\firefox.exe"
-$shortcut.Arguments = "https://dockr.ly/windows-workshop"
+$shortcut.Arguments = "http://dcus18.dwwx.space"
 $Shortcut.Save()
 
 $Shortcut = $WshShell.CreateShortcut("$Home\Desktop\PowerShell.lnk")
@@ -31,7 +31,7 @@ $Shortcut.Save()
 
 # set environment
 [Environment]::SetEnvironmentVariable('workshop', $env:workshop, [EnvironmentVariableTarget]::Machine)
-[Environment]::SetEnvironmentVariable('dockerId', $env:dockerId, [EnvironmentVariableTarget]::Machine)
+#[Environment]::SetEnvironmentVariable('dockerId', $env:dockerId, [EnvironmentVariableTarget]::Machine)
 
 # update lab repo
 cd $env:workshop
