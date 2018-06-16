@@ -1,12 +1,64 @@
-.reveal h2 {
-  text-transform: none;
-  font-size: 2em;
+@font-face {
+  font-family: 'Geomanist Book';
+  src: url(fonts/geomanist/hinted-Geomanist-Book.eot);
+  src: url(fonts/geomanist/hinted-Geomanist-Book.eot?#iefix) format('embedded-opentype'),url(../fonts/geomanist/hinted-Geomanist-Book.woff2) format('woff2'),url(../fonts/geomanist/hinted-Geomanist-Book.woff) format('woff'),url(../fonts/geomanist/hinted-Geomanist-Book.ttf) format('truetype'),url(../fonts/geomanist/hinted-Geomanist-Book.svg#Geomanist-Book) format('svg');
+  font-weight: 400;
+  font-style: normal
 }
 
-.reveal p, html, body, .reveal div, .reveal span, .reveal applet, .reveal object, .reveal iframe, .reveal p, .reveal blockquote, .reveal pre, .reveal a, .reveal abbr, .reveal acronym, .reveal address, .reveal big, .reveal cite, .reveal code, .reveal del, .reveal dfn, .reveal em, .reveal img, .reveal ins, .reveal kbd, .reveal q, .reveal s, .reveal samp, .reveal small, .reveal strike, .reveal strong, .reveal sub, .reveal sup, .reveal tt, .reveal var, .reveal b, .reveal u, .reveal center, .reveal dl, .reveal dt, .reveal dd, .reveal ol, .reveal ul, .reveal li, .reveal fieldset, .reveal form, .reveal label, .reveal legend, .reveal table, .reveal caption, .reveal tbody, .reveal tfoot, .reveal thead, .reveal tr, .reveal th, .reveal td, .reveal article, .reveal aside, .reveal canvas, .reveal details, .reveal embed, .reveal figure, .reveal figcaption, .reveal footer, .reveal header, .reveal hgroup, .reveal menu, .reveal nav, .reveal output, .reveal ruby, .reveal section, .reveal summary, .reveal time, .reveal mark, .reveal audio, .reveal video {
-  font-size: 95%;
+body {
+  background-color: #F0F0F1;
+}
+
+.reveal {
+  font-size: 38px;
+  font-family: "Arial", sans-serif;
+}
+
+.reveal h1, .reveal h2, .reveal h3 {
+  font-family: 'Geomanist Book';  
+  color: #0075BC;
+}
+
+.reveal h1 {
+  font-size: 3em;  
+}
+
+.reveal h2 {
+  text-transform: none;
+  font-size: 2em;  
+}
+
+.reveal p, .reveal li {
+  font-size: 95%;  
+  color: #0096C7;  
+}
+
+.reveal a {
+  text-decoration-line: underline;
+  text-decoration-style: dotted;
+}
+
+.reveal pre {
+  width: 95%;
+  font-size: 0.8em;
+}
+
+.reveal blockquote {
+  width: 80%;
 }
 
 .reveal .slides {
   text-align: left;
+  background-image: url("img/docker.png");
+  background-position: 99% 99%;
+  background-size: 5%;
+  background-repeat: no-repeat;
+}
+
+.reveal .slide-number {
+  top: 8px;
+  bottom: unset;
+  font-size: 16px;
+  background-color: #0075BC;
 }

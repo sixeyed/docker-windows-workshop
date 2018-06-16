@@ -1,8 +1,11 @@
 [CmdletBinding()]
 param(
-    [Parameter(Mandatory=$True)]
     [string]$branch
 )
+
+if ("$branch" -eq "") {
+    $branch = $(git status -b --porcelain).Split("`n")[0].Substring(3)
+}
 
 Write-Output "Building branch: $branch"
 $rawUrl = "https://raw.githubusercontent.com/sixeyed/docker-windows-workshop/$branch/"
@@ -26,3 +29,8 @@ docker container rm -f dwwx-slides
 # sleep so HNS releases the port
 Start-Sleep -Seconds 3
 docker container run -d -p 8099:80 --name dwwx-slides "dwwx/slides:$branch"
+
+$ip = docker container inspect `
+  --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' dwwx-slides
+
+firefox "http://$ip"

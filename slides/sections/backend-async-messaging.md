@@ -40,7 +40,7 @@ Check out the [v4 manifest](https://github.com/sixeyed/docker-windows-workshop/b
 
 The message queue is [NATS](https://nats.io), a high-performance in-memory queue which is ideal for communication between containers.
 
-The manifest also configures the web app to use messaging. This has to be a change to the monolith - in this case using Dependency Injection to load a different implementation of the prospect save handler.
+The manifest also configures the web app to use messaging - using Dependency Injection to load a different implementation of the prospect save handler.
 
 _Upgrade to v4:_
 
@@ -50,7 +50,7 @@ docker-compose -f .\app\v4.yml up -d
 
 ---
 
-## Check the message handler is listening
+## Check the message handler
 
 You now have a message queue and a message handler running in containers. 
 
@@ -118,4 +118,4 @@ You can easily extend the ap now by adding new message handlers which subscribe 
 
 A new message handler could insert data into Elasticsearch and let users run their own analytics with Kibana. That's something you can try out yourself.
 
-> Hint: The code for that is in the workshop repo - `SignUp.MessageHandler.IndexProspect` is the place to start.
+> The code for that is in the workshop repo - search for `IndexProspect`.

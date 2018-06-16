@@ -12,11 +12,9 @@ We'll do it incrementally instead, by breaking features out of the monolith and 
 
 ## The new application homepage
 
-Check out the [index.html](https://github.com/sixeyed/docker-windows-workshop/blob/dcus18/frontend-reverse-proxy/homepage/index.html) for the new homepage. It's a static HTML site which uses Vue.js. 
+Check out [the new homepage](https://github.com/sixeyed/docker-windows-workshop/blob/dcus18/frontend-reverse-proxy/homepage/index.html). It's a static HTML site which uses Vue.js - it will run in its own container, so it can use a different technology stack from the main app.
 
 The [Dockerfile](https://github.com/sixeyed/docker-windows-workshop/blob/dcus18/frontend-reverse-proxy/homepage/Dockerfile) is really simple - it just copies the HTML content into an IIS image.
-
-It will run in its own container, so it can use a different technology stack from the main app.
 
 _Build the homepage image:_
 
@@ -67,7 +65,7 @@ To use the new homepage **without changing the original app** we can run a rever
 
 ## The reverse proxy
 
-We'll use [Nginx](http://nginx.org/en/) as the proxy. All requests will come to Nginx, and it will proxy content from the homepage container or the original app container, based on the requested route.
+We're using [Nginx](http://nginx.org/en/). All requests come to Nginx, and it proxies content from the homepage container or the original app container, based on the requested route.
 
 Nginx can do a lot more than that - in the [nginx.conf configuration file](https://github.com/sixeyed/docker-windows-workshop/blob/dcus18/frontend-reverse-proxy/reverse-proxy/conf/nginx.conf) we're setting up caching, and you can also use Nginx for SSL termination.
 
@@ -83,9 +81,9 @@ docker image build `
 
 ## Upgrade to use the new homepage
 
-Now we can run the app and have content proxied by Nginx. Check out the [v2 manifest](https://github.com/sixeyed/docker-windows-workshop/blob/dcus18/app/v2.yml) - it adds services for the homepage and the proxy. 
+Check out the [v2 manifest](https://github.com/sixeyed/docker-windows-workshop/blob/dcus18/app/v2.yml) - it adds services for the homepage and the proxy. 
 
-Only the reverse proxy has `ports` specified. It is the public entrypoint to the app, all other containers are internal - they can access each other, but the outside world can't get to them.
+Only the proxy has `ports` specified. It's the public entrypoint to the app, all other containers are internal - they can access each other, but the outside world can't get to them.
 
 _Upgrade to v2:_
 
