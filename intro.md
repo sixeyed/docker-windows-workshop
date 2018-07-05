@@ -56,7 +56,7 @@ The VM has a bunch of tools and Docker images pre-installed. But the Git install
     ```
     choco install -y poshgit
 
-    $env:PATH="$env:PATH;C:\Program Files\Git\bin;"
+    $env:PATH="$env:PATH;C:\Program Files\Git\bin;C:\Program Files\Mozilla Firefox"
 
     cd C:\scm
     
