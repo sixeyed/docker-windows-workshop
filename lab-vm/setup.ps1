@@ -1,5 +1,9 @@
 $ErrorActionPreference = "SilentlyContinue"
 
+# turn off firewall and Defender *this is meant for short-lived lab VMs*
+Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
+Set-MpPreference -DisableRealtimeMonitoring $true
+
 Write-Output '-VM setup script starting-'
 
 $images = 
@@ -38,17 +42,38 @@ Write-Output '* Configuring environment'
 refreshenv
 $env:PATH=$env:PATH + ';C:\Program Files\Mozilla Firefox;C:\Program Files\Git\bin'
 [Environment]::SetEnvironmentVariable('PATH', $env:PATH, [EnvironmentVariableTarget]::Machine)
- 
+$env:workshop='C:\scm\docker-windows-workshop'
+[Environment]::SetEnvironmentVariable('workshop', $env:workshop, [EnvironmentVariableTarget]::Machine)
+
 New-ItemProperty -Path HKLM:\Software\Microsoft\ServerManager -Name DoNotOpenServerManagerAtLogon -PropertyType DWORD -Value "1" -Force
 New-ItemProperty -Path HKLM:\Software\Microsoft\ServerManager\Oobe -Name DoNotOpenInitialConfigurationTasksAtLogon -PropertyType DWORD -Value "1" -Force
-
-# turn off firewall and Defender *this is meant for short-lived lab VMs*
-Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
-Set-MpPreference -DisableRealtimeMonitoring $true
 
 Write-Output '* Cloning the workshop repo'
 mkdir C:\scm -ErrorAction Ignore
 cd C:\scm
 git clone https://github.com/sixeyed/docker-windows-workshop.git
+
+Write-Output '* Creating desktop shortcuts'
+Get-ChildItem $env:Public\Desktop\*.lnk | ForEach-Object { Remove-Item $_ }
+
+$WshShell = New-Object -comObject WScript.Shell
+$Shortcut = $WshShell.CreateShortcut("$Home\Desktop\Firefox.lnk")
+$Shortcut.TargetPath = "C:\Program Files\Mozilla Firefox\firefox.exe"
+$shortcut.Arguments = "http://slcnet.dwwx.space"
+$Shortcut.Save()
+
+$Shortcut = $WshShell.CreateShortcut("$Home\Desktop\PowerShell.lnk")
+$Shortcut.TargetPath = "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"
+$shortcut.WorkingDirectory = "C:\scm\docker-windows-workshop"
+$Shortcut.Save()
+
+$Shortcut = $WshShell.CreateShortcut("$Home\Desktop\Code.lnk")
+$Shortcut.TargetPath = "C:\Program Files\Microsoft VS Code\Code.exe"
+$shortcut.Arguments = "C:\scm\docker-windows-workshop"
+$Shortcut.Save()
+
+# turn off firewall and Defender *this is meant for short-lived lab VMs*
+Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
+Set-MpPreference -DisableRealtimeMonitoring $true
 
 Write-Output '-VM setup script done-'
