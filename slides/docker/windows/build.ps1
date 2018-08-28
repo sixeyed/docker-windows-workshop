@@ -4,7 +4,7 @@ param(
 )
 
 if ("$branch" -eq "") {
-    $branch = $(git status -b --porcelain).Split("`n")[0].Substring(3)
+    $branch = $env:BRANCH
 }
 
 Write-Output "Building branch: $branch"
@@ -22,15 +22,3 @@ foreach ($markdownFile in $markdownList){
 }
 
 $(Get-Content template.html).Replace('${content}', $html) | Out-File .\index.html -Encoding UTF8
-
-docker image build -t "dwwx/slides:$branch" .
-docker container rm -f dwwx-slides
-
-# sleep so HNS releases the port
-Start-Sleep -Seconds 3
-docker container run -d -p 8099:80 --name dwwx-slides "dwwx/slides:$branch"
-
-$ip = docker container inspect `
-  --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' dwwx-slides
-
-firefox "http://$ip"

@@ -10,7 +10,7 @@ Right now the web app is a monolith. By the end of the workshop we'll have broke
 
 ## Build the web app image
 
-Check out the [Dockerfile](https://github.com/sixeyed/docker-windows-workshop/blob/dcus18/frontend-web/web/Dockerfile) for the application. It uses Docker to compile the app from source, and package it into an image.
+Check out the [Dockerfile](./frontend-web/web/Dockerfile) for the application. It uses Docker to compile the app from source, and package it into an image.
 
 _Build the image:_
 
@@ -68,12 +68,24 @@ docker container rm -f app
 
 ## Run the app - with dependencies
 
-Now  we'll run the database in a container too - using Docker Compose to manage the whole app. Check out the [v1 manifest](https://github.com/sixeyed/docker-windows-workshop/blob/dcus18/app/v1.yml), it specifies SQL Server and the web app. 
+Now  we'll run the database in a container too - using Docker Compose to manage the whole app. Check out the [v1 manifest](./app/v1.yml), it specifies SQL Server and the web app. 
 
 _Now run the app using compose:_
 
 ```
 docker-compose -f .\app\v1.yml up -d
+```
+
+---
+
+## Check what's running
+
+You now have two containers running. One is the web app image you've just built from source, and the other is SQL Server from Microsoft's public image.
+
+_List all the running containers:_
+
+```
+docker container ls
 ```
 
 ---

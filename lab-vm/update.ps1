@@ -1,18 +1,6 @@
-#param(
-#    [Parameter(Mandatory=$true)]
-#    [string]$dockerId
-#)
-
-# set env vars:
-$env:workshop='C:\scm\docker-windows-workshop'
-#$env:dockerId=$dockerId
-
-# update tools
-choco upgrade -y visualstudiocode
-choco upgrade -y firefox
+# create shortcuts
 Get-ChildItem $env:Public\Desktop\*.lnk | ForEach-Object { Remove-Item $_ }
 
-# create shortcuts
 $WshShell = New-Object -comObject WScript.Shell
 $Shortcut = $WshShell.CreateShortcut("$Home\Desktop\Firefox.lnk")
 $Shortcut.TargetPath = "C:\Program Files\Mozilla Firefox\firefox.exe"
@@ -29,16 +17,11 @@ $Shortcut.TargetPath = "C:\Program Files\Microsoft VS Code\Code.exe"
 $shortcut.Arguments = "C:\scm\docker-windows-workshop"
 $Shortcut.Save()
 
-# set environment
-[Environment]::SetEnvironmentVariable('workshop', $env:workshop, [EnvironmentVariableTarget]::Machine)
-#[Environment]::SetEnvironmentVariable('dockerId', $env:dockerId, [EnvironmentVariableTarget]::Machine)
-
 # update lab repo
+$branch = Get-Content C:\branch.txt
 cd $env:workshop
+git checkout $branch
 git pull
-
-# set dockerd config
-# cp "$env:workshop\lab-vm\docker\daemon.json" C:\ProgramData\docker\config\
 
 # turn off firewall and Defender *this is meant for short-lived lab VMs*
 Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
