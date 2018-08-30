@@ -1,56 +1,60 @@
-﻿<!doctype html>
+<!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>Docker Windows Workshop</title>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<link rel="stylesheet" href="reveal/css/reveal.css">
-		<link rel="stylesheet" href="reveal/css/theme/solarized.css">
-		<link rel="stylesheet" href="workshop.css">
-		
-		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="reveal/lib/css/zenburn.css">
+	<title>Docker Windows Workshop</title>
 
-		<!-- Printing and PDF exports -->
-		<script>
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? 'reveal/css/print/pdf.css' : 'reveal/css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-                <section data-markdown="sections/intro.md"></section>
-<section data-markdown="sections/frontend-web.md"></section>
-<section data-markdown="sections/frontend-reverse-proxy.md"></section>
-<section data-markdown="sections/backend-rest-api.md"></section>
-<section data-markdown="sections/backend-async-messaging.md"></section>
-<section data-markdown="sections/thankyou.md"></section>
+	<link rel="stylesheet" href="reveal/css/reveal.css">
+	<link rel="stylesheet" href="reveal/css/theme/solarized.css">
+	<link rel="stylesheet" href="workshop.css">
 
-			</div>
+	<!-- Theme used for syntax highlighting of code -->
+	<link rel="stylesheet" href="reveal/lib/css/zenburn.css">
+
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'reveal/css/print/pdf.css' : 'reveal/css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+	</script>
+</head>
+
+<body>
+	<div class="reveal">
+		<div class="slides">
+			<section data-markdown="sections/intro.md"></section>
+			<section data-markdown="sections/frontend-web.md"></section>
+			<section data-markdown="sections/frontend-reverse-proxy.md"></section>
+			<section data-markdown="sections/backend-rest-api.md"></section>
+			<section data-markdown="sections/backend-async-messaging.md"></section>
+			<section data-markdown="sections/thankyou.md"></section>
 		</div>
+	</div>
 
-		<script src="reveal/lib/js/head.min.js"></script>
-		<script src="reveal/js/reveal.js"></script>
+	<script src="reveal/lib/js/head.min.js"></script>
+	<script src="reveal/js/reveal.js"></script>
+	<script src="lib/clipboard.min.js"></script>
 
-		<script>
-			// More info about config & dependencies:
-			// - https://github.com/hakimel/reveal.js#configuration
-			// - https://github.com/hakimel/reveal.js#dependencies
-			Reveal.initialize({
-				dependencies: [
-					{ src: 'reveal/plugin/markdown/marked.js' },
-					{ src: 'reveal/plugin/markdown/markdown.js' },
-					{ src: 'reveal/plugin/notes/notes.js', async: true },
-					{ src: 'reveal/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
-				]
-            });
-            Reveal.configure({ slideNumber: 'c/t' });
-		</script>
-	</body>
+	<script>
+		// More info about config & dependencies:
+		// - https://github.com/hakimel/reveal.js#configuration
+		// - https://github.com/hakimel/reveal.js#dependencies
+		Reveal.initialize({
+			dependencies: [
+				{ src: 'reveal/plugin/markdown/marked.js' },
+				{ src: 'reveal/plugin/markdown/markdown.js' },
+				{ src: 'reveal/plugin/notes/notes.js', async: true },
+				{ src: 'reveal/plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } }
+			]
+		});
+		Reveal.configure({ slideNumber: 'c/t' });
+		new ClipboardJS('.hljs');
+	</script>
+</body>
+
 </html>
