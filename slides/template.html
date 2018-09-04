@@ -31,6 +31,7 @@
 
 		<script src="reveal/lib/js/head.min.js"></script>
 		<script src="reveal/js/reveal.js"></script>
+		<script src="lib/clipboard.min.js"></script>
 
 		<script>
 			// More info about config & dependencies:
@@ -45,6 +46,7 @@
 				]
             });
             Reveal.configure({ slideNumber: 'c/t' });
+			new ClipboardJS('.hljs');
 		</script>
 	</body>
 </html>

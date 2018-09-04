@@ -1,4 +1,12 @@
+param(    
+    [string] $branch = 'master'
+)
+
 $ErrorActionPreference = "SilentlyContinue"
+
+# turn off firewall and Defender *this is meant for short-lived lab VMs*
+Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
+Set-MpPreference -DisableRealtimeMonitoring $true
 
 Write-Output '-VM setup script starting-'
 
@@ -21,34 +29,31 @@ foreach ($tag in $images) {
     & docker image pull $tag
 }
 
-Write-Output '* Installing Docker Compose'
-iwr -useb https://raw.githubusercontent.com/sixeyed/docker-init/master/windows/install-docker-compose.ps1 | iex
-iwr -useb https://raw.githubusercontent.com/sixeyed/docker-init/master/windows/install-docker-compose.ps1 | iex
-iwr -useb https://raw.githubusercontent.com/sixeyed/docker-init/master/windows/install-docker-compose.ps1 | iex
-
 Write-Output '* Installing Chocolatey'
 Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 
 Write-Output '* Installing tools'
+choco install -y docker-compose
 choco install -y poshgit
 choco install -y visualstudiocode
 choco install -y firefox
+
 
 Write-Output '* Configuring environment'
 refreshenv
 $env:PATH=$env:PATH + ';C:\Program Files\Mozilla Firefox;C:\Program Files\Git\bin'
 [Environment]::SetEnvironmentVariable('PATH', $env:PATH, [EnvironmentVariableTarget]::Machine)
- 
+$env:workshop='C:\scm\docker-windows-workshop'
+[Environment]::SetEnvironmentVariable('workshop', $env:workshop, [EnvironmentVariableTarget]::Machine)
+
 New-ItemProperty -Path HKLM:\Software\Microsoft\ServerManager -Name DoNotOpenServerManagerAtLogon -PropertyType DWORD -Value "1" -Force
 New-ItemProperty -Path HKLM:\Software\Microsoft\ServerManager\Oobe -Name DoNotOpenInitialConfigurationTasksAtLogon -PropertyType DWORD -Value "1" -Force
-
-# turn off firewall and Defender *this is meant for short-lived lab VMs*
-Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
-Set-MpPreference -DisableRealtimeMonitoring $true
 
 Write-Output '* Cloning the workshop repo'
 mkdir C:\scm -ErrorAction Ignore
 cd C:\scm
 git clone https://github.com/sixeyed/docker-windows-workshop.git
+git checkout $branch
+$branch | Out-File C:\branch.txt
 
 Write-Output '-VM setup script done-'
