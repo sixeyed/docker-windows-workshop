@@ -10,7 +10,7 @@ When you sign up the web app will publish an event message on the queue, which a
 
 ## The save message handler
 
-The new component is a simple .NET Console app. You can browse the [source for the save message handler](./signup/src/SignUp.MessageHandlers.SaveProspect) - the work is all done in the `Program` class.
+The new component is a simple .NET Console app. You can browse the [source for the save message handler](./src/SignUp.MessageHandlers.SaveProspect) - the work is all done in the `Program` class.
 
 This is a full .NET Framework app, so it can continue to use the original Entity Framework logic from the monolith. It's a low-risk approach to updating the architecture.
 

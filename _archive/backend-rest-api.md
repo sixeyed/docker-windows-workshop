@@ -10,7 +10,7 @@ We're going to provide that reference data through an API instead.
 
 ## The reference data API
 
-The new component is a simple REST API. You can browse the [source for the Reference Data API](./signup/src/SignUp.Api.ReferenceData) - there's one controller to fetch countries, and another to fetch roles.
+The new component is a simple REST API. You can browse the [source for the Reference Data API](./src/SignUp.Api.ReferenceData) - there's one controller to fetch countries, and another to fetch roles.
 
 The API uses a new technology stack:
 

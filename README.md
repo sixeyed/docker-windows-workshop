@@ -8,7 +8,7 @@ The latest release is published at https://dwwx.space
 
 ```
 ├───app
-├───dockerfiles
+├───docker
 ├───slides
 ├───src
 ├───workshop
@@ -16,7 +16,7 @@ The latest release is published at https://dwwx.space
 ```
 
 * `app` - Docker Compose files covering the evolution of the demo app
-* `dockerfiles` - Dockerfiles for the container images
+* `docker` - Dockerfiles and content for the container images
 * `slides` - workshop content published with Reveal.js to [dwwx.space](https://dwwx.space)
 * `src` - source code for the .NET solution
 * `workshop` - logistics for in-person workshops

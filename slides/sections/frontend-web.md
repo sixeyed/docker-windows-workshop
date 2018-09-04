@@ -10,13 +10,13 @@ Right now the web app is a monolith. By the end of the workshop we'll have broke
 
 ## Build the web app image
 
-Check out the [Dockerfile](./frontend-web/web/Dockerfile) for the application. It uses Docker to compile the app from source, and package it into an image.
+Check out the [Dockerfile](./docker/frontend-web/v1/Dockerfile) for the application. It uses Docker to compile the app from source, and package it into an image.
 
 _Build the image:_
 
 ```
 docker image build -t dwwx/signup-web `
-  -f .\dockerfiles\frontend-web\v1\Dockerfile .
+  -f .\docker\frontend-web\v1\Dockerfile .
 ```
 
 ---

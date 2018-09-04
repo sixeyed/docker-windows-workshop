@@ -12,16 +12,16 @@ We'll do it incrementally instead, by breaking features out of the monolith and 
 
 ## The new application homepage
 
-Check out [the new homepage](./frontend-reverse-proxy/homepage/index.html). It's a static HTML site which uses Vue.js - it will run in its own container, so it can use a different technology stack from the main app.
+Check out [the new homepage](./docker/frontend-reverse-proxy/homepage/index.html). It's a static HTML site which uses Vue.js - it will run in its own container, so it can use a different technology stack from the main app.
 
-The [Dockerfile](./frontend-reverse-proxy/homepage/Dockerfile) is really simple - it just copies the HTML content into an IIS image.
+The [Dockerfile](./docker/frontend-reverse-proxy/homepage/Dockerfile) is really simple - it just copies the HTML content into an IIS image.
 
 _Build the homepage image:_
 
 ```
 docker image build `
   -t dwwx/homepage `
-  -f .\frontend-reverse-proxy\homepage\Dockerfile .
+  -f .\docker\frontend-reverse-proxy\homepage\Dockerfile .
 ```
 
 ---
@@ -67,14 +67,14 @@ To use the new homepage **without changing the original app** we can run a rever
 
 We're using [Nginx](http://nginx.org/en/). All requests come to Nginx, and it proxies content from the homepage container or the original app container, based on the requested route.
 
-Nginx can do a lot more than that - in the [nginx.conf configuration file](./frontend-reverse-proxy/reverse-proxy/conf/nginx.conf) we're setting up caching, and you can also use Nginx for SSL termination.
+Nginx can do a lot more than that - in the [nginx.conf configuration file](./docker/frontend-reverse-proxy/reverse-proxy/conf/nginx.conf) we're setting up caching, and you can also use Nginx for SSL termination.
 
 _Build the reverse proxy image:_
 
 ```
 docker image build `
   -t dwwx/reverse-proxy `
-  -f .\frontend-reverse-proxy\reverse-proxy\Dockerfile .
+  -f .\docker\frontend-reverse-proxy\reverse-proxy\Dockerfile .
 ```
 
 ---
