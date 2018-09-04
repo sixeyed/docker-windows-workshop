@@ -14,7 +14,7 @@ But before you go...
 
 - Try one of the [Play with Docker labs](http://training.play-with-docker.com/)
 
-- Follow [@EltonStoneman](https://twitter.com/EltonStoneman), [@steven_follis](https://twitter.com/steven_follis) and [@stefscherer](https://twitter.com/stefscherer) on Twitter
+- Follow [@EltonStoneman](https://twitter.com/EltonStoneman) and [@stefscherer](https://twitter.com/stefscherer) on Twitter
 
 - Read [Docker on Windows](https://www.amazon.co.uk/Docker-Windows-Elton-Stoneman/dp/1785281658), the book
 

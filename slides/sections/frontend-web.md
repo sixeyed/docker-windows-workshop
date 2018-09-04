@@ -16,7 +16,7 @@ _Build the image:_
 
 ```
 docker image build -t dwwx/signup-web `
-  -f .\frontend-web\web\Dockerfile .
+  -f .\dockerfiles\frontend-web\v1\Dockerfile .
 ```
 
 ---

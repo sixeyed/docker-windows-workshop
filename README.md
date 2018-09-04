@@ -1,3 +1,28 @@
+# THIS CONTENT IS IN TRANSITION
+
+The latest release is published at https://dwwx.space
+
+> Currently there are four sections to the workshop, it will be extended with additional sections covering CI/CD, monitoring and Docker Swarm.
+
+## Repo Structure
+
+```
+├───app
+├───dockerfiles
+├───slides
+├───src
+├───workshop
+└───_archive
+```
+
+* `app` - Docker Compose files covering the evolution of the demo app
+* `dockerfiles` - Dockerfiles for the container images
+* `slides` - workshop content published with Reveal.js to [dwwx.space](https://dwwx.space)
+* `src` - source code for the .NET solution
+* `workshop` - logistics for in-person workshops
+* `_archive` - all the old content, preserved during transition to Reveal.js
+
+
 # Docker on Windows Workshop: From 101 to Production
 
 Docker is a platform for running applications in lightweight units of compute called containers. You can run new and old apps in containers, and get increased portability, security and efficiency for your software. The platform supports the full development and deployment lifecycle - with Docker you can build, ship and run any app anywhere.
