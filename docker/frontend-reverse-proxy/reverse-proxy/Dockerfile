@@ -20,4 +20,4 @@ WORKDIR C:\nginx
 CMD "C:\nginx\nginx.exe"
 
 COPY --from=installer C:\nginx\ .
-COPY .\frontend-reverse-proxy\reverse-proxy\conf .\conf
+COPY .\docker\frontend-reverse-proxy\reverse-proxy\conf .\conf
