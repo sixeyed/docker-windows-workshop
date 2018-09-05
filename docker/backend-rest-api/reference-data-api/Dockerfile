@@ -2,10 +2,10 @@
 FROM microsoft/dotnet:2.0-sdk-nanoserver-sac2016 as builder
 
 WORKDIR C:\src\SignUp.Api.ReferenceData
-COPY signup\src\SignUp.Api.ReferenceData\SignUp.Api.ReferenceData.csproj .
+COPY src\SignUp.Api.ReferenceData\SignUp.Api.ReferenceData.csproj .
 RUN dotnet restore
 
-COPY signup\src C:\src
+COPY src C:\src
 RUN dotnet publish -c Release -o C:\out SignUp.Api.ReferenceData.csproj
 
 # app image

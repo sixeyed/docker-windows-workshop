@@ -172,7 +172,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
-    <Content Include="img\dockercon-us-2018.png" />
+    <Content Include="img\dockercon-eu-2018.png" />
     <Content Include="SignUp.aspx" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
