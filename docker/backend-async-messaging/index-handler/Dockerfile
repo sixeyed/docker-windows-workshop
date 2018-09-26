@@ -1,5 +1,5 @@
 # escape=`
-FROM microsoft/dotnet:2.0-sdk-nanoserver-sac2016 as builder
+FROM microsoft/dotnet:2.1-sdk-nanoserver-sac2016 as builder
 
 WORKDIR C:\src
 COPY src\SignUp.MessageHandler.IndexProspect\SignUp.MessageHandler.IndexProspect.csproj .
@@ -9,7 +9,7 @@ COPY src C:\src
 RUN dotnet publish -c Release -o C:\out SignUp.MessageHandler.IndexProspect.csproj
 
 # app image
-FROM microsoft/dotnet:2.0-runtime-nanoserver-sac2016
+FROM microsoft/dotnet:2.1-runtime-nanoserver-sac2016
 
 WORKDIR /index-prospect-handler
 ENTRYPOINT ["dotnet", "SignUp.MessageHandler.IndexProspect.dll"]

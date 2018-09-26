@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SignUp.Core;
-using SignUp.MessageHandler.IndexProspect.Indexer;
-using SignUp.MessageHandler.IndexProspect.Workers;
+using SignUp.MessageHandlers.IndexProspect.Indexer;
+using SignUp.MessageHandlers.IndexProspect.Workers;
 
-namespace SignUp.MessageHandler.IndexProspect
+namespace SignUp.MessageHandlers.IndexProspect
 {
     class Program
     {

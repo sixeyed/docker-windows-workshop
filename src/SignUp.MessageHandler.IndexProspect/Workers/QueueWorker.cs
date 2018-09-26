@@ -3,13 +3,13 @@ using NATS.Client;
 using Prometheus;
 using Prometheus.Advanced;
 using SignUp.Core;
-using SignUp.MessageHandler.IndexProspect.Indexer;
+using SignUp.MessageHandlers.IndexProspect.Indexer;
 using SignUp.Messaging;
 using SignUp.Messaging.Messages.Events;
 using System;
 using System.Threading;
 
-namespace SignUp.MessageHandler.IndexProspect.Workers
+namespace SignUp.MessageHandlers.IndexProspect.Workers
 {
     public class QueueWorker
     {
@@ -31,7 +31,7 @@ namespace SignUp.MessageHandler.IndexProspect.Workers
 
         public void Start()
         {
-            if (_config.GetValue<bool>("Metrics:Enabled"))
+            if (bool.Parse(_config["Metrics:Enabled"]))
             {
                 StartMetricServer();
             }            
@@ -82,8 +82,8 @@ namespace SignUp.MessageHandler.IndexProspect.Workers
         
         private void StartMetricServer()
         {
-            var metricsPort = Config.Current.GetValue<int>("Metrics:Port");
-            var server = new MetricServer(metricsPort, new IOnDemandCollector[] { new DotNetStatsCollector() });
+            var metricsPort = int.Parse(Config.Current["Metrics:Port"]);
+            var server = new MetricServer(metricsPort);
             server.Start();
             Console.WriteLine($"Metrics server listening on port ${metricsPort}");
         }

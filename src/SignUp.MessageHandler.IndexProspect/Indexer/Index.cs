@@ -1,9 +1,9 @@
 using Microsoft.Extensions.Configuration;
 using Nest;
-using SignUp.MessageHandler.IndexProspect.Documents;
+using SignUp.MessageHandlers.IndexProspect.Documents;
 using System;
 
-namespace SignUp.MessageHandler.IndexProspect.Indexer
+namespace SignUp.MessageHandlers.IndexProspect.Indexer
 {
     public class Index
     {

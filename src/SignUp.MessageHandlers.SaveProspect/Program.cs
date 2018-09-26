@@ -23,7 +23,7 @@ namespace SignUp.MessageHandlers.SaveProspect
 
         static void Main(string[] args)
         {
-            if (Config.Current.GetValue<bool>("Metrics:Enabled"))
+            if (bool.Parse(Config.Current["Metrics:Enabled"]))
             {
                 StartMetricServer();
             }
@@ -79,8 +79,8 @@ namespace SignUp.MessageHandlers.SaveProspect
 
         private static void StartMetricServer()
         {
-            var metricsPort = Config.Current.GetValue<int>("Metrics:Port");
-            var server = new MetricServer(metricsPort, new IOnDemandCollector[] { new DotNetStatsCollector() });
+            var metricsPort = int.Parse(Config.Current["Metrics:Port"]);
+            var server = new MetricServer(metricsPort);
             server.Start();
             Console.WriteLine($"Metrics server listening on port ${metricsPort}");
         }

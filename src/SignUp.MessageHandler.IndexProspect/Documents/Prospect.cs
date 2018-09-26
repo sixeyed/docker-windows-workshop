@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SignUp.MessageHandler.IndexProspect.Documents
+namespace SignUp.MessageHandlers.IndexProspect.Documents
 {
     public class Prospect
     {
