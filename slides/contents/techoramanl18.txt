@@ -1,10 +1,9 @@
 intro.md
-#setup.md
+#windows-101.md
 frontend-web.md
 frontend-reverse-proxy.md
 backend-rest-api.md
 backend-async-messaging.md
-#backend-analytics.md
 #metrics-runtime.md
 #metrics-application.md
 #metrics-dashboard.md

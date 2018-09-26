@@ -26,4 +26,12 @@ RUN Remove-Website -Name 'Default Web Site';`
     New-Website -Name 'web-app' -Port 80 -PhysicalPath $env:APP_ROOT; `
     New-WebApplication -Name 'app' -Site 'web-app' -PhysicalPath $env:APP_ROOT
 
+HEALTHCHECK --interval=5s `
+ CMD powershell -command `
+    try { `
+     $response = iwr http://localhost/app -UseBasicParsing; `
+     if ($response.StatusCode -eq 200) { return 0} `
+     else {return 1}; `
+    } catch { return 1 }
+
 COPY --from=builder C:\out\_PublishedWebsites\SignUp.Web .

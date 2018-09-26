@@ -24,7 +24,7 @@ Check out the [Dockerfile](./docker/backend-async-messaging/save-handler/Dockerf
 
 It uses the same principle to compile and package the app using containers, and the images use .NET Framework running on Windows Server Core. 
 
-_Build the API image:_
+_Build the message handler image:_
 
 ```
 docker image build `

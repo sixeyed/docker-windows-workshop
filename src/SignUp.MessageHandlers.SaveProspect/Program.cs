@@ -23,9 +23,10 @@ namespace SignUp.MessageHandlers.SaveProspect
 
         static void Main(string[] args)
         {
-            //var server = new MetricServer(50505, new IOnDemandCollector[] { new DotNetStatsCollector() });
-            //server.Start();
-            //Console.WriteLine($"Metrics server listening on port 50505");
+            if (Config.Current.GetValue<bool>("Metrics:Enabled"))
+            {
+                StartMetricServer();
+            }
 
             Console.WriteLine($"Connecting to message queue url: {Config.Current["MessageQueue:Url"]}");
             using (var connection = MessageQueue.CreateConnection())
@@ -74,6 +75,14 @@ namespace SignUp.MessageHandlers.SaveProspect
                 context.Prospects.Add(prospect);
                 context.SaveChanges();
             }
+        }
+
+        private static void StartMetricServer()
+        {
+            var metricsPort = Config.Current.GetValue<int>("Metrics:Port");
+            var server = new MetricServer(metricsPort, new IOnDemandCollector[] { new DotNetStatsCollector() });
+            server.Start();
+            Console.WriteLine($"Metrics server listening on port ${metricsPort}");
         }
     }
 }

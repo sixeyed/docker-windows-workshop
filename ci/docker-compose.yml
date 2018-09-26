@@ -1,0 +1,45 @@
+version: '3.1'
+
+services:
+  
+  signup-db:
+    image: microsoft/mssql-server-windows-express:2016-sp1
+    environment: 
+      - ACCEPT_EULA=Y
+    networks:
+      - app-net
+
+  signup-web:
+    image: dwwx/signup-web
+    networks:
+      - app-net
+
+  homepage:
+    image: dwwx/homepage
+    networks:
+      - app-net
+
+  proxy:
+    image: dwwx/reverse-proxy
+    networks:
+      - app-net
+
+  reference-data-api:
+    image: dwwx/reference-data-api
+    networks:
+      - app-net
+
+  message-queue:
+    image: nats:1.1.0-nanoserver
+    networks:
+      - app-net
+
+  signup-save-handler:
+    image: dwwx/save-handler
+    networks:
+      - app-net
+
+  signup-index-handler:
+    image: dwwx/index-handler
+    networks:
+      - app-net
