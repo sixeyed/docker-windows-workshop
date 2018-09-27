@@ -27,6 +27,11 @@ RUN New-WebApplication -Name 'app' -Site 'Default Web Site' -PhysicalPath $env:A
 ENTRYPOINT ["powershell"]
 CMD Start-Process -NoNewWindow -FilePath C:\ServiceMonitor.exe -ArgumentList w3svc; `
     Invoke-WebRequest http://localhost/app -UseBasicParsing | Out-Null; `
+    Start-Process -NoNewWindow C:\aspnet-exporter\aspnet-exporter.exe; `
     Get-Content -Path "C:\logs\SignUp.log" -Tail 1 -Wait 
+
+WORKDIR C:\aspnet-exporter
+COPY --from=dockersamples/aspnet-monitoring-exporter:4.7.2 C:\aspnet-exporter .
+ENV COLLECTOR_CONFIG_PATH="w3svc-collectors.json"
 
 COPY --from=builder C:\out\_PublishedWebsites\SignUp.Web ${APP_ROOT}

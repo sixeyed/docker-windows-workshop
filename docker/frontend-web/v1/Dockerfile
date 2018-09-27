@@ -11,8 +11,6 @@ FROM microsoft/aspnet:4.7.2-windowsservercore-ltsc2016
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop';"]
 
 WORKDIR C:\web-app
-RUN Remove-Website -Name 'Default Web Site';`
-    New-Website -Name 'web-app' -Port 80 -PhysicalPath C:\web-app; `
-    New-WebApplication -Name 'app' -Site 'web-app' -PhysicalPath C:\web-app
+RUN New-WebApplication -Name 'app' -Site 'Default Web Site' -PhysicalPath C:\web-app
 
 COPY --from=builder C:\out\_PublishedWebsites\SignUp.Web .

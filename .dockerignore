@@ -1,3 +1,7 @@
 **
 !src/
 !docker/
+src/.vs
+src/packages
+**/obj
+**/bin

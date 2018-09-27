@@ -11,7 +11,7 @@ services:
       - app-net
 
   signup-web:
-    image: dwwx/signup-web
+    image: dwwx/signup-web:v2
     ports:
       - "8020:80"
     environment: 

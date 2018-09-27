@@ -10,7 +10,7 @@ COPY src\SignUp.Model\SignUp.Model.csproj .\SignUp.Model\
 COPY src\SignUp.Model\packages.config .\SignUp.Model\
 COPY src\SignUp.MessageHandlers.SaveProspect\SignUp.MessageHandlers.SaveProspect.csproj .\SignUp.MessageHandlers.SaveProspect\
 COPY src\SignUp.MessageHandlers.SaveProspect\packages.config .\SignUp.MessageHandlers.SaveProspect\
-RUN nuget restore SignUp.sln
+RUN nuget restore .\SignUp.sln
 
 COPY src C:\src
 RUN msbuild SignUp.MessageHandlers.SaveProspect\SignUp.MessageHandlers.SaveProspect.csproj /p:OutputPath=c:\out\save-prospect\SaveProspectHandler

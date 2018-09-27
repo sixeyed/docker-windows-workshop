@@ -11,7 +11,7 @@ services:
       - app-net
 
   signup-web:
-    image: dwwx/signup-web:v2
+    image: dwwx/signup-web:v3
     environment: 
       - ConnectionStrings:SignUpDb=Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!
       - Dependencies:IReferenceDataLoader=SignUp.Web.ReferenceData.ApiReferenceDataLoader
@@ -57,6 +57,7 @@ services:
     image: dwwx/save-handler
     environment: 
       - ConnectionStrings:SignUpDb=Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!
+      - Metrics:Enabled=true
     depends_on:
       - signup-db
       - message-queue

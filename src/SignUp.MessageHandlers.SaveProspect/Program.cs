@@ -1,14 +1,14 @@
-﻿using NATS.Client;
+﻿using System;
+using System.Linq;
+using System.Threading;
+using Microsoft.Extensions.Configuration;
+using NATS.Client;
 using Prometheus;
-using Prometheus.Advanced;
 using SignUp.Core;
 using SignUp.Entities;
 using SignUp.Messaging;
 using SignUp.Messaging.Messages.Events;
 using SignUp.Model;
-using System;
-using System.Linq;
-using System.Threading;
 
 namespace SignUp.MessageHandlers.SaveProspect
 {
@@ -23,7 +23,7 @@ namespace SignUp.MessageHandlers.SaveProspect
 
         static void Main(string[] args)
         {
-            if (bool.Parse(Config.Current["Metrics:Enabled"]))
+            if (Config.Current.GetValue<bool>("Metrics:Enabled"))
             {
                 StartMetricServer();
             }
@@ -79,7 +79,7 @@ namespace SignUp.MessageHandlers.SaveProspect
 
         private static void StartMetricServer()
         {
-            var metricsPort = int.Parse(Config.Current["Metrics:Port"]);
+            var metricsPort = Config.Current.GetValue<int>("Metrics:Port");
             var server = new MetricServer(metricsPort);
             server.Start();
             Console.WriteLine($"Metrics server listening on port ${metricsPort}");

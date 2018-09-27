@@ -13,15 +13,16 @@ Write-Output '-VM setup script starting-'
 $images = 
 'microsoft/windowsservercore:ltsc2016',
 'microsoft/nanoserver:sac2016',
-'microsoft/dotnet-framework:4.7.2-sdk',
-'microsoft/dotnet-framework:4.7.2-runtime',
-'microsoft/dotnet:2.0-sdk-nanoserver-sac2016',
-'microsoft/dotnet:2.0-runtime-nanoserver-sac2016',
-'microsoft/aspnetcore:2.0-nanoserver-sac2016',
 'microsoft/iis:nanoserver-sac2016',
+'microsoft/dotnet-framework:4.7.2-runtime',
+'microsoft/dotnet-framework:4.7.2-sdk',
 'microsoft/aspnet:4.7.2-windowsservercore-ltsc2016',
+'microsoft/dotnet:2.1-runtime-nanoserver-sac2016',
+'microsoft/dotnet:2.1-sdk-nanoserver-sac2016',
+'microsoft/dotnet:2.1-aspnetcore-runtime-nanoserver-sac2016',
 'microsoft/mssql-server-windows-express:2016-sp1',
-'nats:1.1.0-nanoserver'
+'nats:1.3.0-nanoserver',
+'dockersamples/aspnet-monitoring-exporter:4.7.2'
 
 Write-Output '* Pulling  images'
 foreach ($tag in $images) {

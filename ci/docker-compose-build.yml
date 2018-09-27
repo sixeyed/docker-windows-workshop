@@ -5,7 +5,7 @@ services:
   signup-web:
     build:
       context: ..
-      dockerfile: ./docker/frontend-web/v2/Dockerfile
+      dockerfile: ./docker/frontend-web/Dockerfile
 
   homepage:
     build:
