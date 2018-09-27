@@ -22,7 +22,9 @@ $images =
 'microsoft/dotnet:2.1-aspnetcore-runtime-nanoserver-sac2016',
 'microsoft/mssql-server-windows-express:2016-sp1',
 'nats:1.3.0-nanoserver',
-'dockersamples/aspnet-monitoring-exporter:4.7.2'
+'dockersamples/aspnet-monitoring-exporter:4.7.2',
+'dockersamples/aspnet-monitoring-grafana:5.2.1',
+'dockersamples/aspnet-monitoring-prometheus:2.3.1'
 
 Write-Output '* Pulling  images'
 foreach ($tag in $images) {

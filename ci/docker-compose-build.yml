@@ -31,3 +31,13 @@ services:
     build:
       context: ..
       dockerfile: ./docker/backend-async-messaging/index-handler/Dockerfile
+
+  prometheus:
+    build:
+      context: ..
+      dockerfile: ./docker/metrics-dashboard/prometheus/Dockerfile
+
+  grafana:
+    build:
+      context: ..
+      dockerfile: ./docker/metrics-dashboard/grafana/Dockerfile

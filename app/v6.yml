@@ -1,4 +1,4 @@
-# V5 adds /metrics endpoints to the web & handler containers
+# V6 adds prometheus & grafana containers
 version: '3.1'
 
 services:
@@ -61,6 +61,16 @@ services:
     depends_on:
       - signup-db
       - message-queue
+    networks:
+      - app-net
+
+  prometheus:
+    image: dwwx/prometheus:v2.3.1
+    networks:
+      - app-net
+
+  grafana:
+    image: dwwx/grafana:5.2.1
     networks:
       - app-net
 

@@ -6,4 +6,4 @@ services:
     image: dwwx/signup-web:v3
     build:
       context: ..
-      dockerfile: ./docker/frontend-web/v3/Dockerfile
+      dockerfile: ./docker/metrics-runtime/signup-web/Dockerfile

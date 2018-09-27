@@ -42,4 +42,14 @@ services:
   signup-index-handler:
     image: dwwx/index-handler
     networks:
+      - app-net  
+
+  prometheus:
+    image: dwwx/prometheus:v2.3.1
+    networks:
+      - app-net
+
+  grafana:
+    image: dwwx/grafana:5.2.1
+    networks:
       - app-net
