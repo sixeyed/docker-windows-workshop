@@ -1,5 +1,5 @@
 param(    
-    [string] $version = 'v3'
+    [string] $version = 'v4'
 )
 
 Write-Host "Building version: $version"

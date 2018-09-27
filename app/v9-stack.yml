@@ -1,0 +1,56 @@
+# v8-stack adds swarm deployment properties
+version: '3.3'
+
+services:
+  
+  signup-db:
+    deploy:
+      endpoint_mode: dnsrr
+
+  signup-web:
+    deploy:
+      endpoint_mode: dnsrr
+
+  homepage:
+    deploy:
+      endpoint_mode: dnsrr
+
+  proxy:
+    ports:
+      - mode: host
+        target: 80
+        published: 8087
+    deploy:
+      endpoint_mode: dnsrr  
+
+  reference-data-api:
+    deploy:
+      endpoint_mode: dnsrr 
+
+  message-queue:
+    deploy:
+      endpoint_mode: dnsrr 
+
+  signup-save-handler:
+    deploy:
+      endpoint_mode: dnsrr
+      replicas: 3
+
+  prometheus:
+    ports:
+      - mode: host
+        target: 9090
+        published: 9090
+    deploy:
+      endpoint_mode: dnsrr
+
+  grafana:
+    ports:
+      - mode: host
+        target: 3000
+        published: 3000
+    deploy:
+      endpoint_mode: dnsrr
+
+networks:
+  app-net:

@@ -3,8 +3,7 @@ FROM microsoft/dotnet-framework:4.7.2-sdk AS builder
 
 WORKDIR C:\src
 COPY src .
-RUN nuget restore SignUp.sln; `
-    msbuild SignUp.Web\SignUp.Web.csproj /p:OutputPath=c:\out /p:Configuration=Release
+RUN .\build-web.bat
 
 # app image
 FROM microsoft/aspnet:4.7.2-windowsservercore-ltsc2016

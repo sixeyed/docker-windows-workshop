@@ -1,13 +1,12 @@
-# V6 adds prometheus & grafana containers
+# V7 uses volumes for storage
 version: '3.1'
 
 services:
   
   signup-db:
-    image: microsoft/mssql-server-windows-express:2016-sp1
-    environment: 
-      - ACCEPT_EULA=Y
-      - sa_password=DockerCon!!!
+    image: dwwx/signup-db:v1
+    volumes:
+      - C:\mssql:C:\data
     networks:
       - app-net
 
@@ -57,7 +56,7 @@ services:
   signup-save-handler:
     image: dwwx/save-handler:v2
     environment: 
-      - ConnectionStrings:SignUpDb=Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!      
+      - ConnectionStrings:SignUpDb=Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!
     depends_on:
       - signup-db
       - message-queue
@@ -66,6 +65,8 @@ services:
 
   prometheus:
     image: dwwx/prometheus:v2.3.1
+    volumes:
+      - C:\prom:C:\prometheus
     networks:
       - app-net
 

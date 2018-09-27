@@ -2,8 +2,14 @@ version: '3.1'
 
 services:
 
+  signup-db:
+    image: dwwx/signup-db:v1
+    build:
+      context: ..
+      dockerfile: ./docker/nfr-storage/signup-db/Dockerfile
+
   signup-web:
     image: dwwx/signup-web:v1
     build:
       context: ..
-      dockerfile: ./docker/frontend-web/v2/Dockerfile
+      dockerfile: ./docker/frontend-web/v1/Dockerfile

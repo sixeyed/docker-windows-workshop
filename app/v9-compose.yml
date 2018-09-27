@@ -1,27 +1,20 @@
-# V6 adds prometheus & grafana containers
-version: '3.1'
+# v8 adds restart policies
+version: '3.3'
 
 services:
   
   signup-db:
-    image: microsoft/mssql-server-windows-express:2016-sp1
-    environment: 
-      - ACCEPT_EULA=Y
-      - sa_password=DockerCon!!!
+    image: dwwx/signup-db:v1
     networks:
       - app-net
 
   signup-web:
-    image: dwwx/signup-web:v3
+    image: dwwx/signup-web:v4
     environment: 
       - ConnectionStrings:SignUpDb=Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!
       - Dependencies:IReferenceDataLoader=SignUp.Web.ReferenceData.ApiReferenceDataLoader
       - ReferenceDataApi:Url=http://reference-data-api/api
       - Dependencies:IProspectSaveHandler=SignUp.Web.ProspectSave.AsynchronousProspectSaveHandler
-    depends_on:
-      - signup-db
-      - reference-data-api
-      - message-queue
     networks:
       - app-net
 
@@ -32,11 +25,6 @@ services:
 
   proxy:
     image: dwwx/reverse-proxy
-    ports:
-      - "8020:80"
-    depends_on:
-      - signup-web
-      - homepage
     networks:
       - app-net
 
@@ -44,8 +32,6 @@ services:
     image: dwwx/reference-data-api
     environment: 
       - ConnectionStrings:SignUpDb=Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!
-    depends_on:
-      - signup-db
     networks:
       - app-net
 
@@ -57,10 +43,7 @@ services:
   signup-save-handler:
     image: dwwx/save-handler:v2
     environment: 
-      - ConnectionStrings:SignUpDb=Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!      
-    depends_on:
-      - signup-db
-      - message-queue
+      - ConnectionStrings:SignUpDb=Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!
     networks:
       - app-net
 
@@ -71,12 +54,8 @@ services:
 
   grafana:
     image: dwwx/grafana:5.2.1
-    depends_on:
-      - prometheus
     networks:
       - app-net
 
 networks:
   app-net:
-    external:
-      name: nat
