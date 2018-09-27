@@ -30,7 +30,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignUp.Api.ReferenceData", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MessageHandler", "MessageHandler", "{3BD12D5F-431F-4C27-B5EC-5C7633A47BE1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignUp.MessageHandlers.IndexProspect", "SignUp.MessageHandler.IndexProspect\SignUp.MessageHandlers.IndexProspect.csproj", "{A9BAD5C3-B9F9-45C5-9B70-4908931CD612}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignUp.MessageHandlers.IndexProspect", "SignUp.MessageHandlers.IndexProspect\SignUp.MessageHandlers.IndexProspect.csproj", "{A9BAD5C3-B9F9-45C5-9B70-4908931CD612}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignUp.Core", "SignUp.Core\SignUp.Core.csproj", "{194EA1BB-5CB0-4240-88C8-5CFFB1C18CF5}"
 EndProject

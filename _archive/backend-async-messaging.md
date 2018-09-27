@@ -121,4 +121,4 @@ You can easily extend the ap now by adding new message handlers which subscribe 
 
 A new message handler could insert data into Elasticsearch and let users run their own analytics with Kibana. That's something you can try out yourself.
 
-> Hint: The code for that is in the workshop repo - `SignUp.MessageHandler.IndexProspect` is the place to start.
+> Hint: The code for that is in the workshop repo - `SignUp.MessageHandlers.IndexProspect` is the place to start.
