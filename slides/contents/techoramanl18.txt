@@ -1,9 +1,12 @@
 intro.md
-#windows-101.md
+101-container-basics.md
+#101-dockerfiles-and-images.md
+#101-image-registries.md
 frontend-web.md
 frontend-reverse-proxy.md
 backend-rest-api.md
 backend-async-messaging.md
+#backend-analytics.md        | EL-K
 #metrics-runtime.md          | web:v3, using exporter
 #metrics-application.md      | handler:v2, using NuGet
 #metrics-dashboard.md        | prom then grafana

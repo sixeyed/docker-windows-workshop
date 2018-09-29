@@ -30,7 +30,12 @@ services:
   signup-index-handler:
     build:
       context: ..
-      dockerfile: ./docker/backend-async-messaging/index-handler/Dockerfile
+      dockerfile: ./docker/backend-analytics/index-handler/Dockerfile    
+
+  kibana:
+    build:
+      context: ..
+      dockerfile: ./docker/backend-analytics/kibana/Dockerfile 
 
   prometheus:
     build:
@@ -40,4 +45,4 @@ services:
   grafana:
     build:
       context: ..
-      dockerfile: ./docker/metrics-dashboard/grafana/Dockerfile
+      dockerfile: ./docker/metrics-dashboard/grafana/Dockerfile  

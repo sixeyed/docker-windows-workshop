@@ -53,3 +53,13 @@ services:
     image: dwwx/grafana:5.2.1
     networks:
       - app-net
+
+  elasticsearch:
+    image: sixeyed/elasticsearch:5.6.11-nanoserver-sac2016
+    networks:
+      - app-net
+
+  kibana:
+    image: dwwx/kibana
+    networks:
+      - app-net
