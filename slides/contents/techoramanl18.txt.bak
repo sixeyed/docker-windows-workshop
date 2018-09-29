@@ -1,0 +1,19 @@
+intro.md
+101-container-basics.md
+101-dockerfiles-and-images.md
+#101-image-registries.md
+frontend-web.md
+frontend-reverse-proxy.md
+backend-rest-api.md
+backend-async-messaging.md
+#backend-analytics.md        | EL-K
+#metrics-runtime.md          | web:v3, using exporter
+#metrics-application.md      | handler:v2, using NuGet
+#metrics-dashboard.md        | prom then grafana
+#nfr-storage.md              | volume for sql
+#nfr-restart.md              | restart demo
+#nfr-scale.md                | scale handlers `docker-compose -f .\app\v8.yml up -d --scale signup-save-handler=3`
+#swarm-setup.md
+#swarm-services.md
+#swarm-stack.md
+thankyou.md
