@@ -26,7 +26,7 @@ body {
 
 .reveal h2 {
   text-transform: none;
-  font-size: 2em;  
+  font-size: 1.8em;  
 }
 
 .reveal p, .reveal li {
@@ -40,12 +40,13 @@ body {
 }
 
 .reveal pre {
-  width: 95%;
-  font-size: 0.8em;
+  width: 97%;
+  font-size: 0.6em;
 }
 
 .reveal blockquote {
-  width: 80%;
+  width: 90%;
+  font-size: 0.85em;
 }
 
 .reveal .slides {

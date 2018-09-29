@@ -63,7 +63,7 @@ Get-WindowsFeature
 
 ---
 
-## Run a background SQL Server container
+## Run a background SQL container
 
 Background or "detached" containers are how you'll run most applications. They start in the background and keep running, like a Windows Service.
 
@@ -93,7 +93,7 @@ docker container top sql
 
 ---
 
-## Running SQL commands inside the container
+## Running SQL commands
 
 You can't connect to this SQL container, because you started it without making ports accessible.
 
@@ -134,7 +134,9 @@ cd 'C:\Program Files\Microsoft SQL Server'
 ls .\MSSQL13.SQLEXPRESS\MSSQL\data
 ```
 
-## Processes in the SQL Server container
+---
+
+## Processes in the SQL container
 
 Processes in a Windows Server container are actually running on the server. 
 
@@ -148,7 +150,7 @@ Get-Process
 
 ---
 
-## Windows users in the SQL Server container
+## Windows users in the SQL container
 
 Processes in containers run as standard Windows user accounts. 
 
@@ -164,7 +166,7 @@ Get-Process -Name sqlservr,powershell -IncludeUser
 
 ## Check processes on the Windows host
 
-ON the Windows Serevr host, you can see the container processes.
+On the Windows Serevr host, you can see the container processes.
 
 _ Open **another PowerShell terminal** and run:_
 
@@ -172,7 +174,9 @@ _ Open **another PowerShell terminal** and run:_
 Get-Process -Name powershell -IncludeUserName
 ```
 
-> You'll see the PowerShell sessions from the container processes - with the same process IDs but with a blank username. The container user doesn't map to any user on the host.
+> You'll see the PowerShell sessions from the container - with the same IDs but with a blank username. The container user doesn't map to any user on the host.
+
+---
 
 ## Things to remember about Windows Server containers
 
@@ -190,13 +194,15 @@ Close the second PowerShell window, and exit the interactive Docker session in t
 exit
 ```
 
-The container is still running.
+> The container is still running.
+
+---
 
 ## Clean up all containers
 
 We don't need any of these containers, so you can remove them all
 
-_ THe `-force` flag removes containers even if they;re still running:
+_ The `-force` flag removes containers even if they;re still running: _
 
 ```
 docker container rm --force `
@@ -209,4 +215,4 @@ docker container rm --force `
 
 Now you should understand different ways of running containers and connecting to containers, and how container processes run natively on the server.
 
-So far we'cve used Microsoft's container images. Next you'll learn how to build your own.
+So far we've used Microsoft's container images. Next you'll learn how to build your own.

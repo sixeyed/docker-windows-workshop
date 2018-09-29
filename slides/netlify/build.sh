@@ -7,10 +7,12 @@ markdownList=$(<"./contents/$BRANCH.txt")
 html=""
 for markdownFile in $markdownList
 do
-    echo "Adding content from: $markdownFile"    
-    sed -i '' -e "s#](./#]($repoUrl#g" "./sections/$markdownFile"
-    section="<section data-markdown="\""sections/$markdownFile"\""></section>"
-    html=$html$section
+    if [ ${markdownFile:0:1} != '#']; then
+        echo "Adding content from: $markdownFile"    
+        sed -i '' -e "s#](./#]($repoUrl#g" "./sections/$markdownFile"
+        section="<section data-markdown="\""sections/$markdownFile"\""></section>"
+        html=$html$section
+    fi
 done
 
 placeholder='${content}'

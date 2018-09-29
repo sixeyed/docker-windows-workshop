@@ -7,7 +7,7 @@ ARG BRANCH="master"
 WORKDIR /slides
 COPY . .
 RUN Write-Host "Running build script for branch: $env:BRANCH"; `
-    ./docker/local/build.ps1
+    ./docker/windows/build.ps1
 
 FROM sixeyed/nginx
 COPY --from=build /slides /nginx/html

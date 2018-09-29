@@ -19,6 +19,8 @@ $images =
 'microsoft/dotnet-framework:4.7.2-runtime',
 'microsoft/dotnet-framework:4.7.2-sdk',
 'microsoft/aspnet:4.7.2-windowsservercore-ltsc2016',
+'microsoft/aspnet',
+'microsoft/iis:windowsservercore',
 'microsoft/dotnet:2.1-runtime-nanoserver-sac2016',
 'microsoft/dotnet:2.1-sdk-nanoserver-sac2016',
 'microsoft/dotnet:2.1-aspnetcore-runtime-nanoserver-sac2016',
