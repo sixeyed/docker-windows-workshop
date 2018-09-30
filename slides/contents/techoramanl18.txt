@@ -12,4 +12,5 @@ metrics-application.md
 metrics-dashboard.md 
 nfr-storage.md
 nfr-restart.md
+nfr-scale.md
 thankyou.md
