@@ -6,4 +6,5 @@ frontend-web.md
 frontend-reverse-proxy.md
 backend-rest-api.md
 backend-async-messaging.md
+backend-analytics.md
 thankyou.md

@@ -116,6 +116,4 @@ Now we've got an event driven architecture! Well, not completely - but for one k
 
 You can easily extend the app now by adding new message handlers which subscribe to the same event.
 
-A new message handler could insert data into Elasticsearch and let users run their own analytics with Kibana. That's something you can try out yourself.
-
-> The code for that is in the workshop repo - search for `IndexProspect`.
+A new message handler could insert data into Elasticsearch and let users run their own analytics with Kibana.

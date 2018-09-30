@@ -60,6 +60,6 @@ services:
       - app-net
 
   kibana:
-    image: dwwx/kibana
+    image: sixeyed/kibana:5.6.11-windowsservercore-ltsc2016
     networks:
       - app-net

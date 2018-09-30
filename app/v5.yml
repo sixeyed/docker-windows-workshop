@@ -12,7 +12,7 @@ services:
       - app-net
 
   signup-web:
-    image: dwwx/signup-web:v3
+    image: dwwx/signup-web:v2
     environment: 
       - ConnectionStrings:SignUpDb=Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!
       - Dependencies:IReferenceDataLoader=SignUp.Web.ReferenceData.ApiReferenceDataLoader
@@ -55,12 +55,30 @@ services:
       - app-net
 
   signup-save-handler:
-    image: dwwx/save-handler:v2
+    image: dwwx/save-handler
     environment: 
-      - ConnectionStrings:SignUpDb=Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!      
+      - ConnectionStrings:SignUpDb=Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!
     depends_on:
       - signup-db
       - message-queue
+    networks:
+      - app-net
+
+  signup-index-handler:
+    image: dwwx/index-handler: 
+    depends_on:
+      - elasticsearch
+      - message-queue
+    networks:
+      - app-net
+
+  elasticsearch:
+    image: sixeyed/elasticsearch:5.6.11-nanoserver-sac2016
+    networks:
+      - app-net
+
+  kibana:
+    image: sixeyed/kibana:5.6.11-windowsservercore-ltsc2016
     networks:
       - app-net
 

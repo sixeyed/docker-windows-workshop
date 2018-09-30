@@ -1,13 +1,13 @@
-# V5 adds /metrics endpoints to the web & handler containers
+# v8 adds restart policies
 version: '3.1'
 
 services:
   
   signup-db:
-    image: microsoft/mssql-server-windows-express:2016-sp1
-    environment: 
-      - ACCEPT_EULA=Y
-      - sa_password=DockerCon!!!
+    image: dwwx/signup-db:v1
+    volumes:
+      - C:\mssql:C:\data
+    restart: always
     networks:
       - app-net
 
@@ -22,11 +22,13 @@ services:
       - signup-db
       - reference-data-api
       - message-queue
+    restart: always
     networks:
       - app-net
 
   homepage:
     image: dwwx/homepage
+    restart: always
     networks:
       - app-net
 
@@ -37,6 +39,7 @@ services:
     depends_on:
       - signup-web
       - homepage
+    restart: always
     networks:
       - app-net
 
@@ -46,39 +49,40 @@ services:
       - ConnectionStrings:SignUpDb=Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!
     depends_on:
       - signup-db
+    restart: always
     networks:
       - app-net
 
   message-queue:
     image: nats:1.3.0-nanoserver
+    restart: always
     networks:
       - app-net
 
   signup-save-handler:
     image: dwwx/save-handler:v2
     environment: 
-      - ConnectionStrings:SignUpDb=Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!      
+      - ConnectionStrings:SignUpDb=Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!
     depends_on:
       - signup-db
       - message-queue
+    restart: always
     networks:
       - app-net
 
-  signup-index-handler:
-    image: dwwx/index-handler:v2    
+  prometheus:
+    image: dwwx/prometheus:v2.3.1
+    volumes:
+      - C:\prom:C:\prometheus
+    restart: unless-stopped
+    networks:
+      - app-net
+
+  grafana:
+    image: dwwx/grafana:5.2.1
     depends_on:
-      - elasticsearch
-      - message-queue
-    networks:
-      - app-net
-
-  elasticsearch:
-    image: sixeyed/elasticsearch:5.6.11-nanoserver-sac2016
-    networks:
-      - app-net
-
-  kibana:
-    image: dwwx/kibana
+      - prometheus
+    restart: unless-stopped
     networks:
       - app-net
 
