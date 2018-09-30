@@ -6,7 +6,7 @@ frontend-web.md
 frontend-reverse-proxy.md
 backend-rest-api.md
 backend-async-messaging.md
-#backend-analytics.md        | EL-K
+backend-analytics.md
 #metrics-runtime.md          | web:v3, using exporter
 #metrics-application.md      | handler:v2, using NuGet
 #metrics-dashboard.md        | prom then grafana

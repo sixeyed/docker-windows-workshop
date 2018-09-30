@@ -1,5 +1,7 @@
 # Dockerfiles and Docker Images
 
+---
+
 You package your own Windows apps as Docker images, using a [Dockerfile](https://docs.docker.com/engine/reference/builder/). 
 
 The Dockerfile syntax is straightforward. In this section you'll walk through two Dockerfiles which package websites to run in Windows Docker containers. 
