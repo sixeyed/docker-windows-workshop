@@ -1,4 +1,4 @@
-# V5 adds /metrics endpoints to the web & handler containers
+# v5 adds self-service analytics with Elastcisearch and Kibana
 version: '3.1'
 
 services:

@@ -1,4 +1,4 @@
-# V5 adds /metrics endpoints to the web & handler containers
+# v6 adds metrics with Prometheus and Grafana
 version: '3.1'
 
 services:

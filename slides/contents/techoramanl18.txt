@@ -9,4 +9,5 @@ backend-async-messaging.md
 backend-analytics.md
 metrics-runtime.md
 metrics-application.md
+metrics-dashboard.md 
 thankyou.md
