@@ -1,182 +1,105 @@
-# Part 5 - Resilience and Scalability with Docker Compose
-# Part 5 - Resilience and Scalability with Docker Compose
+# NFR #2 - Always On
 
-In this part we'll see how to use Docker Compose to scale our app and make the containers, and data, resilient to hardware failure. Compose is a client-side tool that works against a single Docker engine. At the end of the workshop we'll look at resilience and scale across multiple nodes in a Docker swarm.
+---
 
-## Steps
+Containers stop when the process inside them stops, or when the Docker Windows Service stops.
 
-* [1. Add persistent storage to SQL Server](#1)
-* [2. Set application services to restart when Docker starts](#2)
-* [3. Scale message handlers up to increase throughput](#3)
+For single-node environments you can set up containers to automatically restart if the application ends, and to restart when the Docker Windows Service starts.
 
-## <a name="1"></a>Step 1. Add persistent storage to SQL Server
+---
 
-Every time we restart the SQL Server container, any data stored in the database is lost. Docker images are read-only so they can be shared - writing data in a container doesn' affect the image. Each container adds a writeable layer on top of the image layers for its own data. When you remove the container you lose the data.
+## Run a restarting container
 
-Docker provides [volumes](https://docs.docker.com/engine/admin/volumes/volumes/) for storing data outside of containers. A volume can simply be a mount, where a directory in the container is actually mapped to a directory on the host.
+You use the `restart` option to specify how containers should behave when they stop.
 
-As a simple example, create a new IIS container with the log directory mapped to a new path on the host:
+_ Start by running a simple example with IIS: _
 
 ```
-mkdir C:\iis-logs
-
-docker container run --detach --name iis --publish-all `
- --volume "C:\iis-logs:C:\inetpub\logs" `
- microsoft/iis:nanoserver
-```
-
-Make a web request to the container, and check the contents of the log folder on the host:
-
-```
-$ip = docker inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' iis
-
-iwr -useb http://$ip
-
-ls C:\iis-logs\LogFiles\W3SVC1
-```
-
-IIS running inside the container has created a log file in the `LogFiles` directory, which is actually mapped to the host. You can do the same with SQL Server to store the data and log files on the host.
-
-> It's slightly more complicated with SQL Server because you can't mount a directory from the host if the directory on the image already contains data. You can't override the existing SQL Server data directory, so instead we'll make a custom SQL Server image.
-
-The [Dockerfile](part-5/db/Dockerfile) for the database image is based from Microsoft' SQL Server image. It adds an [initialization script](part-5/db/Initialize-Database.ps1) as the entrypoint. That script creates the SignUp database a known file location.
-
-Build the image, which is now suited to using data volumes:
-
-```
-cd "$env:workshop\part-5\db"
-
-docker image build --tag "$env:dockerId/signup-db" .
-```
-
-I've added a volume mount to the database service definition in [docker-compose-1.7.yml](app/docker-compose-1.7.yml). Create a directory on the host for the SQL Server data, and bring up the application: 
-
-```
-mkdir C:\mssql
-
-cd "$env:workshop\app"
-
-docker-compose -f docker-compose-1.7.yml up -d
-```
-
-The database container is replaced, as the definition has changed. The web app and save handler containers are replaced too, because the database dependency has been updated. Browse to the app:
-
-```
-$ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_signup-web_1
-
-firefox "http://$ip"
-```
-
-Add a new prospect in the website, and then check the data is saved to SQL Server:
-
-```
-docker container exec app_signup-db_1 powershell `
- "Invoke-SqlCmd -Query 'SELECT * FROM Prospects' -Database SignUp"
-```
-
-Also look at the contents of `C:\mssql` on the host, and you'll see the `.mdf` and `.ldf` SQL files there:
-
-```
-ls C:\mssql
-```
-
-The data is now persisted outside of the SQL container. When you replace the database container (for a Windows update or a schema update), the new container will attach the data from the old container.
-
-Remove the SQL Server container, and then bring the app up again, to create new containers for the database and its dependencies:
-
-```
-docker container rm -f app_signup-db_1
-
-cd "$env:workshop\app"
-
-docker-compose -f docker-compose-1.7.yml up -d
-```
-
-The new SQL container attaches the database files on the host, so the existing data is intact. Repeat the SQL query and you'll see your prospect data is still there:
-
-```
-docker container exec app_signup-db_1 powershell `
- "Invoke-SqlCmd -Query 'SELECT * FROM Prospects' -Database SignUp"
-```
-
-## <a name="2"></a>2. Set application services to restart when Docker starts
-
-Docker volumes allow data to persist outside of the container lifecycle. That provides resilience for your data. You also need resilience for your applications. 
-
-Containers stop when the process inside them stops - but you can set up containers to automatically restart if the application ends. We'll run a simple example with IIS:
-
-```
-docker container run -d -P --name iis-restart `
+docker container run -d --name iis-restart `
  --restart always `
  microsoft/iis:windowsservercore
 ```
 
-The `restart` option means that if the IIS Windows Service stops and the container exits, it will be automatically restarted. Check the site by grabbing the container's IP address:
+> This setup means that if IIS stops and the container exits, it will be automatically restarted.
+
+---
+
+## Check the container is working
+
+Check the application is actually running.
+
+_ Make an HTTP request to the container: _
 
 ```
-$ip = docker inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' iis-restart
+$ip = docker inspect `
+ --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' iis-restart
 
 iwr -useb http://$ip
 ```
+
+> You should get status code 200, so the web server is working.
+
+---
+
+## Kill IIS!
 
 Now check on the state of the application container, kill the IIS Windows Service and check the container again:
 
 ```
 docker container ls --last 1
+```
 
+```
 docker exec iis-restart powershell Stop-Service w3svc
+```
 
+```
 docker container ls --last 1
 ```
 
-If you compare the two container listings, you'll see the container has been restarted, it has only been running for a few seconds in the second list. **It's the same container**, but Docker executed the startup command again when the container exited.
+> You'll see the container has been restarted, it has only been running for a few seconds in the second list. 
 
-In [docker-compose-1.8.yml](app/docker-compose-1.8.yml) I've added the `restart` option to all the application services. It works in the same way with Docker Compose:
+---
 
-```
-cd "$env:workshop\app"
+## Understanding restarts
 
-docker-compose -f docker-compose-1.8.yml up -d
-```
+The `restart` option comes into action when the container stops, or when the Docker service is restarted or the machine is rebooted.
 
-This will recreate all the application containers, and now they are resilient to failure. If the application process fails, Docker will restart the container.
+Containers aren't removed when they stop, and Docker just restarts them by running the container startup command again.
 
-## <a name="3"></a>3. Scale message handlers up to increase throughput
+**It's the same container**, but it's been rebooted.
 
-Compose is a management tool for distributed solutions running on a single Docker host. You define services rather than individual containers, so that you can run multiple instances of the same workload.
+---
 
-The message handlers are good candidates for scaling up - multiple containers will share the workload. Scale up the SQL Server handler to 3 instances:
+## Defining restart policies
 
-```
-cd "$env:workshop\app"
+[v8 of the app manifest](./app/v8.yml) adds restart policies to all the containers:
 
-docker-compose -f docker-compose-1.8.yml scale signup-save-handler=3
+- functional containers all use `restart: always`
+- the monitoring containers use `restart: unless-stopped`
 
-docker container ls
-```
+`unless-stopped` is good for optional components. If you explicitly stop them, they don't get restarted. The other options are `no` and `on-failure`.
 
-The output from Compose shows new containers starting to meet the scale request. Now browse to the site and enter some prospects:
+---
 
-```
-$ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_signup-web_1
+## Run the app with always-on containers
 
-firefox "http://$ip"
-```
+All the service definitions have changed, so when you redeploy you'll get all new containers - but your data will still be there from the volumes.
 
-Check the container logs, and you'll see the prospect signup messages have been distributed among the three containers:
+_ Run the new stack: _
 
 ```
-docker container logs app_signup-save-handler_1
-docker container logs app_signup-save-handler_2
-docker container logs app_signup-save-handler_3
+cd $env:workshop
+
+docker-compose -f v8.yml up -d
 ```
 
-> Docker isn't magic. It will run multiple containers for a service, but your application needs to work correctly when it scales. In this case the message handler uses [NATS queueing](http://nats.io/documentation/concepts/nats-queueing/) to share the load across multiple instances.
+> It's the same app, but the containers will all come back online when Azure reboots your VM :)
 
-Compose is a useful tool for verifying distributed solutions on a single machine. It's a client-side tool; when it creates services Docker only sees them as a set of unrelated containers, you need to manage the app through compose. 
+---
 
-At the end of the workshop we'll see how to use the Compose file format with [Docker swarm mode](https://docs.docker.com/engine/swarm/), which lets you manage solutions as a whole unit.
+## Resilience beyond single-node environments
 
-## Next Up
+The `restart` policy only applies to single-node Docker environments. It's useful for test environments or even for non-critical production workloads.
 
-We'll make more use of compose in [Part 6](part-6.md), when we build out a full CI pipeline, with all the parts running in Docker containers on Windows.
+For real high availability and scale you'll run a cluster of machines all running Docker. The cluster orchestrator - Docker Swarm or Kubernetes - takes care of high availability for your services.

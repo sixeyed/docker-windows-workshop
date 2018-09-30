@@ -11,4 +11,5 @@ metrics-runtime.md
 metrics-application.md
 metrics-dashboard.md 
 nfr-storage.md
+nfr-restart.md
 thankyou.md
