@@ -41,7 +41,7 @@ _ Run a detached container with the HTTP port published:_
 
 ```
 docker container run --detach --publish 80:80 `
-  --name app hostname-app"
+  --name app hostname-app
 ```
 
 > Any traffic coming into the server on port 80 will be managed by Docker and processed by the container.
