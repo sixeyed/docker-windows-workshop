@@ -1,13 +1,12 @@
-# V6 adds prometheus & grafana containers
+# v7 uses volumes for data storage
 version: '3.1'
 
 services:
   
   signup-db:
-    image: microsoft/mssql-server-windows-express:2016-sp1
-    environment: 
-      - ACCEPT_EULA=Y
-      - sa_password=DockerCon!!!
+    image: dwwx/signup-db
+    volumes:
+      - C:\mssql:C:\data
     networks:
       - app-net
 
@@ -64,13 +63,35 @@ services:
     networks:
       - app-net
 
+  signup-index-handler:
+    image: dwwx/index-handler:v2
+    depends_on:
+      - elasticsearch
+      - message-queue
+    networks:
+      - app-net
+
+  elasticsearch:
+    image: sixeyed/elasticsearch:5.6.11-nanoserver-sac2016
+    volumes:
+      - C:\es:C:\elasticsearch
+    networks:
+      - app-net
+
+  kibana:
+    image: sixeyed/kibana:5.6.11-windowsservercore-ltsc2016
+    networks:
+      - app-net
+
   prometheus:
-    image: dwwx/prometheus:v2.3.1
+    image: dwwx/prometheus
+    volumes:
+      - C:\prom:C:\prometheus
     networks:
       - app-net
 
   grafana:
-    image: dwwx/grafana:5.2.1
+    image: dwwx/grafana
     depends_on:
       - prometheus
     networks:

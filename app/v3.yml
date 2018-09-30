@@ -1,3 +1,4 @@
+# v3 adds the reference data API
 version: '3.1'
 
 services:

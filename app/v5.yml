@@ -65,7 +65,7 @@ services:
       - app-net
 
   signup-index-handler:
-    image: dwwx/index-handler: 
+    image: dwwx/index-handler
     depends_on:
       - elasticsearch
       - message-queue

@@ -1,4 +1,4 @@
-# Exposing Application Metrics
+# Exporting Application Metrics
 
 ---
 
@@ -42,7 +42,7 @@ docker image build -t dwwx/index-handler:v2 -f .\docker\metrics-application\inde
 
 ---
 
-## Run new save message handler
+## Run the new save message handler
 
 You can run containers with the new message handler apps to see what sort of metrics they expose.
 
@@ -70,7 +70,7 @@ firefox "http://$($ip):50505/metrics"
 
 ---
 
-## Run new index message handler
+## Run the new index message handler
 
 The index message handler records similar metrics about messages handled, and the processing status.
 
@@ -95,6 +95,16 @@ firefox "http://$($ip):50505/metrics"
 ```
 
 > The raw data is very basic. Prometheus will make it more useful.
+
+---
+
+## Tidy up
+
+Now we know how the metrics look, let's remove the new containers:
+
+```
+@('save-v2', 'index-v2') | foreach { docker container rm -f $_ }
+```
 
 ---
 

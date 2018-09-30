@@ -1,3 +1,4 @@
+# v2 adds the reverse proxy and new homepage
 version: '3.1'
 
 services:

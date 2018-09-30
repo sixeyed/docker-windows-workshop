@@ -16,6 +16,7 @@ $images =
 'microsoft/nanoserver:sac2016',
 'microsoft/nanoserver',
 'microsoft/iis:nanoserver-sac2016',
+'microsoft/iis:nanoserver',
 'microsoft/dotnet-framework:4.7.2-runtime',
 'microsoft/dotnet-framework:4.7.2-sdk',
 'microsoft/aspnet:4.7.2-windowsservercore-ltsc2016',

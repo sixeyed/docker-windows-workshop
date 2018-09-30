@@ -1,8 +1,8 @@
-# Exposing Runtime Metrics
+# Exporting Runtime Metrics
 
 ---
 
-Containerized applications give you new opportunities for monitoring. You expose metrics from each container, collect them centrally and showyour whole application health in a dashboard.
+Containerized applications give you new opportunities for monitoring. You export metrics from each container, collect them centrally and showyour whole application health in a dashboard.
 
 The metrics collector and dashboard run in containers too, so now you can run the exact same metrics stack in dev that you use in production.
 
@@ -74,6 +74,16 @@ firefox "http://$($ip):50505/metrics"
 ```
 
 > The metrics API uses the Prometheus format. Prometheus is the most popular metrics server for cloud-native apps, and the format is widely used.
+
+---
+
+## Tidy up
+
+Now we know how the metrics look, let's remove the new container:
+
+```
+docker rm -f web-v3
+```
 
 ---
 
