@@ -141,6 +141,6 @@ docker stack ps signup
 
 ## High availability and scale in swarm mode
 
-The swarm keeps your app running at the desired service level. You can mannualy remove containers from worker nodes, have workers leave the swarm, or even stop the worker VMs - Docker will keep the app running.
+The swarm keeps your app running at the desired service level. You can manualy remove containers from worker nodes, have workers leave the swarm, or even stop the worker VMs - Docker will keep the app running.
 
 You can add more nodes to the swarm just by running the `swarm join` command, and immediately add capacity.
