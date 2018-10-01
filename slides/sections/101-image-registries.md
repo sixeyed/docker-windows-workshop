@@ -81,7 +81,7 @@ docker image push $env:dockerId/tweet-app
 Open your user page on Docker Hub and you'll see the images are there.
 
 ```
-firefox "https://hub.docker.com/r/$env:dockerId/"
+firefox "https://hub.docker.com/r/$env:dockerId/hostname-app"
 ```
 
 > These are public images, so anyone can run containers from your images - and the apps will work in exactly the same way everywhere.
@@ -95,6 +95,17 @@ The logical size of those images is over 10GB each, but the bulk of that is in t
 Those layers are already stored in Docker Hub, so they don't get uploaded - only the new parts of the image get pushed. 
 
 Docker shares layers between images, so every image that uses Windows Server Core will share the cached layers for that image.
+
+---
+
+## Tidy up
+
+Remove all containers:
+
+```
+docker container rm --force `
+  $(docker container ls --quiet --all)
+```
 
 ---
 

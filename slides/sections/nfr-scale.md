@@ -25,9 +25,9 @@ You can use Docker Compose to scale running services up or down.
 _ Scale up the save handlers to 3 instances: _
 
 ```
-cd $env:workshop"
+cd $env:workshop
 
-docker-compose -f v8.yml scale signup-save-handler=3
+docker-compose -f ./app/v8.yml scale signup-save-handler=3
 ```
 
 > Compose shows new containers starting to meet the scale request.
@@ -39,9 +39,9 @@ docker-compose -f v8.yml scale signup-save-handler=3
 _ Scale up the index handlers to 2 instances: _
 
 ```
-cd $env:workshop"
+cd $env:workshop
 
-docker-compose -f v8.yml scale signup-index-handler=2
+docker-compose -f ./app/v8.yml scale signup-index-handler=2
 ```
 
 > Compose shows new containers starting to meet the scale request.

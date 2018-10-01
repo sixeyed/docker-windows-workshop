@@ -30,7 +30,7 @@ services:
       - app-net
 
   message-queue:
-    image: nats:1.1.0-nanoserver
+    image: nats:1.3.0-nanoserver
     networks:
       - app-net
 
@@ -45,12 +45,12 @@ services:
       - app-net  
 
   prometheus:
-    image: dwwx/prometheus:v2.3.1
+    image: dwwx/prometheus
     networks:
       - app-net
 
   grafana:
-    image: dwwx/grafana:5.2.1
+    image: dwwx/grafana
     networks:
       - app-net
 

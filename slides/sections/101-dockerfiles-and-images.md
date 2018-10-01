@@ -58,9 +58,7 @@ _Get the container IP address and browse to it: _
 
 ```
 $ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app
-```
 
-```
 firefox "http://$ip"
 ```
 

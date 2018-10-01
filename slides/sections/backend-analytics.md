@@ -29,7 +29,7 @@ _ Build the image in the usual way: _
 ```
 cd $env:workshop; `
 
-docker image build --tag dwwx/signup-index-handler `
+docker image build --tag dwwx/index-handler `
   --file .\docker\backend-analytics\index-handler\Dockerfile .
 ```
 

@@ -91,7 +91,19 @@ _ Run the new stack: _
 ```
 cd $env:workshop
 
-docker-compose -f v8.yml up -d
+docker-compose -f ./app/v8.yml up -d
+```
+
+---
+
+## Try out the app
+
+There's a new proxy container, so you'll need to get the IP address and browse to open the app.
+
+```
+$ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_proxy_1
+
+firefox "http://$ip"
 ```
 
 > It's the same app, but the containers will all come back online when Azure reboots your VM :)

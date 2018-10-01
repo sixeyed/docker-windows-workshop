@@ -15,8 +15,25 @@ Check out the [Dockerfile](./docker/frontend-web/v1/Dockerfile) for the applicat
 _Build the image:_
 
 ```
+cd $env:workshop
+
 docker image build -t dwwx/signup-web `
   -f .\docker\frontend-web\v1\Dockerfile .
+```
+
+---
+
+## Build a better image
+
+The v1 Dockerfile is simple, but inefficient. The [v2 Dockerfile](./docker/frontend-web/v2/Dockerfile) splits the NuGet restore and MSBuild parts - which makes repeated builds faser. And it relays the application log file.
+
+_Build the image:_
+
+```
+cd $env:workshop
+
+docker image build -t dwwx/signup-web:v2 `
+  -f .\docker\frontend-web\v2\Dockerfile .
 ```
 
 ---
@@ -32,14 +49,14 @@ _Try running the app in a container:_
 ```
 docker container run `
   -d -p 8020:80 --name app `
-  dwwx/signup-web
+  dwwx/signup-web:v2
 ```
 
 ---
 
 ## Try it out
 
-You can browse to port `8020` on your Docker host (that's your Windows Server 2016 VM or your Windows 10 laptop). Or you can browse direct to the container:
+You can browse to port `8020` on your Docker host (that's your Windows Server 2016 VM). Or you can browse direct to the container:
 
 _Get the container's IP address and launch the browser:_
 
@@ -47,7 +64,7 @@ _Get the container's IP address and launch the browser:_
 $ip = docker container inspect `
   --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app
 
-firefox "http://$ip"
+firefox "http://$ip/app"
 ```
 
 ---
@@ -98,7 +115,7 @@ As before, browse to port `8020` on your Docker host or browse direct to the con
 $ip = docker container inspect `
   --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_signup-web_1
 
-firefox "http://$ip"
+firefox "http://$ip/app"
 ```
 
 ---

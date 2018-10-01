@@ -74,12 +74,14 @@ services:
   elasticsearch:
     image: sixeyed/elasticsearch:5.6.11-nanoserver-sac2016
     volumes:
-      - C:\es:C:\elasticsearch
+      - C:\es:C:\data
     networks:
       - app-net
 
   kibana:
     image: sixeyed/kibana:5.6.11-windowsservercore-ltsc2016
+    depends_on:
+      - elasticsearch
     networks:
       - app-net
 

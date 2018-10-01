@@ -79,6 +79,8 @@ services:
 
   kibana:
     image: sixeyed/kibana:5.6.11-windowsservercore-ltsc2016
+    depends_on:
+      - elasticsearch
     networks:
       - app-net
 

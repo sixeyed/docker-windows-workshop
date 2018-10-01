@@ -34,13 +34,17 @@ docker image build `
 
 ---
 
-## Upgrade to use asynchronous messaging
+## Using asynchronous messaging
 
 Check out the [v4 manifest](./app/v4.yml) - it adds services for the message handler and the message queue.
 
 The message queue is [NATS](https://nats.io), a high-performance in-memory queue which is ideal for communication between containers.
 
 The manifest also configures the web app to use messaging - using Dependency Injection to load a different implementation of the prospect save handler.
+
+---
+
+## Upgrade to use the message handler
 
 _Upgrade to v4:_
 
@@ -62,7 +66,7 @@ _Check the handler logs:_
 docker container logs app_signup-save-handler_1
 ```
 
-> You should see that the handler is connected and listening
+> You should see that the handler is connected and listening.
 
 ---
 

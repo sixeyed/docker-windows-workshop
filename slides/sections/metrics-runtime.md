@@ -20,7 +20,7 @@ You can export IIS Performance Counters from web containers to get key metrics w
 
 Here's a new version of the [web application Dockerfile](./docker/metrics-runtime/signup-web/Dockerfile). It packages a metrics exporter utility.
 
-The utilit app reads from Windows Performance Counters and publishes them as an API on port `50505`.
+The utility app reads from Windows Performance Counters and publishes them as an API on port `50505`.
 
 > The web code is unchanged. The exporter comes from the [dockersamples/aspnet-monitoring](TODO) sample app.
 
@@ -44,7 +44,9 @@ docker image build --tag dwwx/signup-web:v3 `
 You can run the new version in a container just to check the metrics you get out.
 
 ```
-docker container run -d -P --name web-v3 dwwx/signup-web:v3
+docker container run -d -P `
+  -e ConnectionStrings:SignUpDb='Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!' `
+  --name web-v3 dwwx/signup-web:v3
 ```
 
 > Windows containers connect to the same default Docker network, so this container will use the existing database and message queue.
@@ -58,7 +60,7 @@ Browse to the app and refresh the page a few times:
 ```
 $ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' web-v3; `
 
-firefox "http://$ip"
+firefox "http://$ip/app/SignUp"
 ```
 
 > This starts the `w3wp` worker process, which will start recording metrics in IIS and .NET Performance Counters.

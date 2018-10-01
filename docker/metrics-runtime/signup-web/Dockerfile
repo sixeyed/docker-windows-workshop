@@ -26,6 +26,7 @@ RUN New-WebApplication -Name 'app' -Site 'Default Web Site' -PhysicalPath $env:A
 
 ENTRYPOINT ["powershell"]
 CMD Start-Process -NoNewWindow -FilePath C:\ServiceMonitor.exe -ArgumentList w3svc; `
+    mkdir C:\logs; echo '--init' > C:\logs\SignUp.log; `
     Invoke-WebRequest http://localhost/app -UseBasicParsing | Out-Null; `
     Start-Process -NoNewWindow C:\aspnet-exporter\aspnet-exporter.exe; `
     Get-Content -Path "C:\logs\SignUp.log" -Tail 1 -Wait 

@@ -1,15 +1,15 @@
-# v8 adds restart policies
+# v9 defines core solution services
 version: '3.3'
 
 services:
   
   signup-db:
-    image: dwwx/signup-db:v1
+    image: dwwx/signup-db
     networks:
       - app-net
 
   signup-web:
-    image: dwwx/signup-web:v4
+    image: dwwx/signup-web:v3
     environment: 
       - ConnectionStrings:SignUpDb=Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!
       - Dependencies:IReferenceDataLoader=SignUp.Web.ReferenceData.ApiReferenceDataLoader
@@ -47,13 +47,28 @@ services:
     networks:
       - app-net
 
+  signup-index-handler:
+    image: dwwx/index-handler:v2
+    networks:
+      - app-net
+
+  elasticsearch:
+    image: sixeyed/elasticsearch:5.6.11-nanoserver-sac2016
+    networks:
+      - app-net
+
+  kibana:
+    image: sixeyed/kibana:5.6.11-windowsservercore-ltsc2016
+    networks:
+      - app-net
+
   prometheus:
-    image: dwwx/prometheus:v2.3.1
+    image: dwwx/prometheus
     networks:
       - app-net
 
   grafana:
-    image: dwwx/grafana:5.2.1
+    image: dwwx/grafana
     networks:
       - app-net
 

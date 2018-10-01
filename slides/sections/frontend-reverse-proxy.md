@@ -83,7 +83,7 @@ docker image build `
 
 Check out the [v2 manifest](./app/v2.yml) - it adds services for the homepage and the proxy. 
 
-Only the proxy has `ports` specified. It's the public entrypoint to the app, all other containers are internal - they can access each other, but the outside world can't get to them.
+Only the proxy has `ports` specified. It's the public entrypoint to the app, the other containers can access each other, but the outside world can't get to them.
 
 _Upgrade to v2:_
 

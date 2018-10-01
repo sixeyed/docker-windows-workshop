@@ -33,12 +33,14 @@ There's a new [Dockerfile for the save handler](./docker/metrics-application/sav
 ```
 cd $env:workshop; `
 
-docker image build -t dwwx/save-handler:v2 -f .\docker\metrics-application\save-handler\Dockerfile; `
+docker image build -t dwwx/save-handler:v2 `
+  -f .\docker\metrics-application\save-handler\Dockerfile . ; `
 
-docker image build -t dwwx/index-handler:v2 -f .\docker\metrics-application\index-handler\Dockerfile
+docker image build -t dwwx/index-handler:v2 `
+  -f .\docker\metrics-application\index-handler\Dockerfile .
 ```
 
-> The build should be super-fast, because almost every layer comes from the cache.
+> The build should be super-fast, because of the cache.
 
 ---
 
@@ -49,7 +51,9 @@ You can run containers with the new message handler apps to see what sort of met
 _ Run the new version of the SQL Server handler:_
 
 ```
-docker container run -d -P --name save-v2 dwwx/save-handler:v2
+docker container run -d  `
+  -e ConnectionStrings:SignUpDb='Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!' `
+  --name save-v2 dwwx/save-handler:v2
 ```
 
 ---

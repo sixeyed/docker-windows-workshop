@@ -1,4 +1,4 @@
-# v8-stack adds swarm deployment properties
+# v9-prod adds swarm deployment properties
 version: '3.3'
 
 services:
@@ -19,8 +19,9 @@ services:
     ports:
       - mode: host
         target: 80
-        published: 8087
+        published: 80
     deploy:
+      mode: global
       endpoint_mode: dnsrr  
 
   reference-data-api:
@@ -36,11 +37,25 @@ services:
       endpoint_mode: dnsrr
       replicas: 3
 
-  prometheus:
+  signup-index-handler:
+    deploy:
+      endpoint_mode: dnsrr
+      replicas: 4
+
+  elasticsearch:
+    deploy:
+      endpoint_mode: dnsrr
+
+  kibana:
     ports:
       - mode: host
-        target: 9090
-        published: 9090
+        target: 5601
+        published: 5601
+    deploy:
+      mode: global
+      endpoint_mode: dnsrr
+
+  prometheus:
     deploy:
       endpoint_mode: dnsrr
 
@@ -50,6 +65,7 @@ services:
         target: 3000
         published: 3000
     deploy:
+      mode: global
       endpoint_mode: dnsrr
 
 networks:

@@ -87,8 +87,11 @@ You can check what's happening inside a container from the host, using the Docke
 _ Check the logs and processes in the SQL container: _
 
 ```
-docker container logs sql
 docker container top sql
+```
+
+```
+docker container logs sql
 ```
 
 ---
@@ -166,7 +169,7 @@ Get-Process -Name sqlservr,powershell -IncludeUser
 
 ## Check processes on the Windows host
 
-On the Windows Serevr host, you can see the container processes.
+On the Windows Server host, you can see the container processes.
 
 _ Open **another PowerShell terminal** and run:_
 

@@ -13,4 +13,7 @@ metrics-dashboard.md
 nfr-storage.md
 nfr-restart.md
 nfr-scale.md
+swarm-setup.md
+swarm-services.md
+swarm-stack.md
 thankyou.md

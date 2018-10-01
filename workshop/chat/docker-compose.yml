@@ -9,17 +9,15 @@ services:
 
   rocketchat:
     image: rocketchat/rocket.chat:0.65.2
+    publish:
+      - "3000:3000"
     depends_on:
       - db
     environment:
       - MONGO_URL=mongodb://db:27017/rocketchat
-      - ROOT_URL=http://chat.dwwx.space
+      - ROOT_URL=http://chat.dwwx.space:3000
     networks:
       - chat-net
-    deploy:
-      labels:
-        com.docker.lb.hosts: chat.dwwx.space
-        com.docker.lb.port: 3000
 
 networks:
   chat-net:

@@ -49,7 +49,7 @@ _Open a PowerShell prompt from the start menu and run:_
 ```
 cd C:\scm\docker-windows-workshop
 
-.\lab-vm\update.ps1
+.\workshop\lab-vm\update.ps1
 ```
 
 > **Do not use PowerShell ISE for the workshop!** It has a strange relationship with some `docker` commands.
