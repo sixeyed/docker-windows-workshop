@@ -112,4 +112,4 @@ firefox "http://$($ip):5601"
 
 The new event-driven architecture lets you add powerful features without updating the original monolith.
 
-There's no regresison testing to do for this release, the new analytics fuinctionality won't impact the original app, and power users can build their own Kibana dashboards.
+There's no regresison testing to do for this release, the new analytics functionality won't impact the original app, and power users can build their own Kibana dashboards.

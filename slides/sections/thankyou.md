@@ -10,7 +10,7 @@ But before you go...
 
 ## Continuing your Docker journey
 
-- Use [Play with Docker](https://labs.play-with-docker.com/)and the [Play with Docker labs](http://training.play-with-docker.com/)
+- Use [Play with Docker](https://labs.play-with-docker.com/) and the [Play with Docker labs](http://training.play-with-docker.com/)
 
 - Follow [@EltonStoneman](https://twitter.com/EltonStoneman) and [@stefscherer](https://twitter.com/stefscherer) on Twitter
 

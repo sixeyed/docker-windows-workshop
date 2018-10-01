@@ -33,7 +33,7 @@ $images =
 'sixeyed/elasticsearch:5.6.11-nanoserver-sac2016',
 'sixeyed/kibana:5.6.11-windowsservercore-ltsc2016'
 
-Write-Output '* Pulling  images'
+Write-Output '* Pulling images'
 foreach ($tag in $images) {
     Write-Output "** Processing tag: $tag"
     & docker image pull $tag
