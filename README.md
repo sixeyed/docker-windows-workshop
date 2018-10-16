@@ -1,29 +1,10 @@
-# THIS CONTENT IS IN TRANSITION
+# Docker Windows Workshop
 
 The latest release is published at https://dwwx.space
 
-> Currently there are four sections to the workshop, it will be extended with additional sections covering CI/CD, monitoring and Docker Swarm.
+> This is the full workshop content, which can be tailored for individual deliveries.
 
-## Repo Structure
-
-```
-├───app
-├───docker
-├───slides
-├───src
-├───workshop
-└───_archive
-```
-
-* `app` - Docker Compose files covering the evolution of the demo app
-* `docker` - Dockerfiles and content for the container images
-* `slides` - workshop content published with Reveal.js to [dwwx.space](https://dwwx.space)
-* `src` - source code for the .NET solution
-* `workshop` - logistics for in-person workshops
-* `_archive` - all the old content, preserved during transition to Reveal.js
-
-
-# Docker on Windows Workshop: From 101 to Production
+## Docker on Windows Workshop: From 101 to Production
 
 Docker is a platform for running applications in lightweight units of compute called containers. You can run new and old apps in containers, and get increased portability, security and efficiency for your software. The platform supports the full development and deployment lifecycle - with Docker you can build, ship and run any app anywhere.
 
@@ -46,44 +27,51 @@ For full-day workshops, in the afternoon you'll carry on and learn:
 
 _* - you don't need your own Windows Server machine, you'll be provided with a VM in the cloud. You just need a Remote Desktop client so you can connect._
 
-## Agenda
-
-The workshop starts with an overview presentation. I'll talk about Docker and Windows containers, and tailor the content to the group - it can be a Docker 101 for folks new to containers, or a comparison of Windows and Linux containers for folks already comfortable with Docker on Linux.
-
-> During the presentation is a good time to make sure your environment is set up correctly
-
-- [Check your setup](setup.md)
-
-Then we'll work together through the tasks in the workshop.
-
-The morning workshop covers Parts 1-4:
-
-- [Part 1](part-1.md) - running Docker on Windows
-- [Part 2](part-2.md) - packaging an existing ASP.NET app in Docker
-- [Part 3](part-3.md) - modernizing the ASP.NET app with Docker
-- [Part 4](part-4.md) - preparing for production with instrumentation
-
-The full day workshop continues in the afternoon with parts 5-7.
-
-- [Part 5](part-5.md) - resilience and scalability with Docker Compose
-- [Part 6](part-6.md) - containerized CI (and CD) with Docker
-- [Part 7](part-7.md) - production-ready orchestration with Docker swarm mode
-
-
 ### Previous versions
 
-This workshop is a living thing. There are tags for previous versions:
+This workshop is a living thing. There are tags or branches for previous versions.
 
-- [docker-bangalore-18](https://github.com/sixeyed/docker-windows-workshop/tree/docker-bangalore-18) - From the [Docker Bangalore MeetUp, April 2018](https://www.meetup.com/Docker-Bangalore/events/249634763/)
+#### 2018
 
-- [winops-feb18](https://github.com/sixeyed/docker-windows-workshop/tree/winops-feb18) - From the [London WinOps MeetUp #19](https://www.meetup.com/WinOps/events/247873979/), February 2018
+- [techoramanl18](https://github.com/sixeyed/docker-windows-workshop/tree/techoramanl18) - Techorama NL 2018, hosted [here](https://techoramanl18--dwwx.netlify.com) 
 
-- [xpirit-17](https://github.com/sixeyed/docker-windows-workshop/tree/xpirit-17) - From Xpirit's [Docker on Microsoft MeetUp](https://www.meetup.com/Docker-with-Microsoft-Technologies/events/244448740), 2017
+- [slcnet](https://github.com/sixeyed/docker-windows-workshop/tree/slcnet) - Salt Lake City .NET user group, hosted [here](https://slcnet--dwwx.netlify.com) 
 
-- [dockercon-eu-17](https://github.com/sixeyed/docker-windows-workshop/tree/dockercon-eu-17) - from [DockerCon EU](https://europe-2017.dockercon.com), 2017
+- [dcus18](https://github.com/sixeyed/docker-windows-workshop/tree/dcus18) - DockerCon 2018, hosted [here](https://dcus18--dwwx.netlify.com) 
 
-- [winops-17](https://github.com/sixeyed/docker-windows-workshop/tree/winops-17) - from [WinOps Conference](https://www.winops.org/london/#dockerWS), 2017
+- [devsum18](https://github.com/sixeyed/docker-windows-workshop/tree/devsum18) - DevSum 2018, hosted [here](https://devsum18--dwwx.netlify.com) 
 
-- [containercamp-17](https://github.com/sixeyed/docker-windows-workshop/tree/containercamp-17) - from [Container Camp](https://2017.container.camp/uk/) London, 2017
+- [docker-bangalore-18](https://github.com/sixeyed/docker-windows-workshop/tree/docker-bangalore-18) - From the [Docker Bangalore MeetUp](https://www.meetup.com/Docker-Bangalore/events/249634763/), April
 
-- [devsum-17](https://github.com/sixeyed/docker-windows-workshop/tree/devsum-17) - from the [DevSum Conference](http://www.devsum.se/), 2017
+- [winops-feb18](https://github.com/sixeyed/docker-windows-workshop/tree/winops-feb18) - From the [London WinOps MeetUp #19](https://www.meetup.com/WinOps/events/247873979/), February
+
+#### 2017
+
+- [xpirit-17](https://github.com/sixeyed/docker-windows-workshop/tree/xpirit-17) - From Xpirit's [Docker on Microsoft MeetUp](https://www.meetup.com/Docker-with-Microsoft-Technologies/events/244448740)
+
+- [dockercon-eu-17](https://github.com/sixeyed/docker-windows-workshop/tree/dockercon-eu-17) - from [DockerCon EU](https://europe-2017.dockercon.com)
+
+- [winops-17](https://github.com/sixeyed/docker-windows-workshop/tree/winops-17) - from [WinOps Conference](https://www.winops.org/london/#dockerWS)
+
+- [containercamp-17](https://github.com/sixeyed/docker-windows-workshop/tree/containercamp-17) - from [Container Camp](https://2017.container.camp/uk/) London
+
+- [devsum-17](https://github.com/sixeyed/docker-windows-workshop/tree/devsum-17) - from [DevSum 2017](http://www.devsum.se/)
+
+
+### Repo Structure
+
+```
+├───app
+├───docker
+├───slides
+├───src
+├───workshop
+└───_archive
+```
+
+* `app` - Docker Compose files covering the evolution of the demo app
+* `docker` - Dockerfiles and content for the container images
+* `slides` - workshop content published with Reveal.js to [dwwx.space](https://dwwx.space)
+* `src` - source code for the .NET solution
+* `workshop` - logistics for in-person workshops
+* `_archive` - all the old content, preserved during transition to Reveal.js
