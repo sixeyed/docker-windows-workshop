@@ -10,7 +10,7 @@ namespace SignUp.Messaging.Endpoints
         public static TransportExtensions SetTransport(EndpointConfiguration endpointConfiguration)
         {            
             var transport = endpointConfiguration.UseTransport<LearningTransport>();
-            //transport.StorageDirectory("C:\nsb");
+            transport.StorageDirectory("/nsb");
             return transport;
         }
     }

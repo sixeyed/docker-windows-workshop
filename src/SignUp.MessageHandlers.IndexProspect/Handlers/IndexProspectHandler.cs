@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using NServiceBus;
 using Prometheus;
+using SignUp.MessageHandlers.IndexProspect.Indexer;
 using SignUp.Messaging.Messages.Events;
 
 namespace SignUp.MessageHandlers.IndexProspect.Handlers
@@ -11,6 +13,15 @@ namespace SignUp.MessageHandlers.IndexProspect.Handlers
         private static Counter _EventCounter = Metrics.CreateCounter("IndexHandler_Events", "Event count", "host", "status");
         private static string _Host = Environment.MachineName;
 
+        private readonly IConfiguration _config;
+        private readonly Index _index;
+
+        public IndexProspectHandler(IConfiguration config, Index index)
+        {
+            _config = config;
+            _index = index;
+        }
+        
         public async Task Handle(ProspectCreated message, IMessageHandlerContext context)
         {
             Console.WriteLine($"Received ProspectCreated message, MessageId: {context.MessageId}");
@@ -30,8 +41,7 @@ namespace SignUp.MessageHandlers.IndexProspect.Handlers
 
             try
             {
-                //TODO
-                //_index.CreateDocument(prospect);
+                await _index.CreateDocumentAsync(prospect);
                 Console.WriteLine($"Prospect indexed; MessageId: {context.MessageId}");
                 _EventCounter.Labels(_Host, "processed").Inc();
             }

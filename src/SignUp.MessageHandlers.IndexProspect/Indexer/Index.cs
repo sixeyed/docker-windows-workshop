@@ -1,29 +1,35 @@
+using System;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Nest;
 using SignUp.MessageHandlers.IndexProspect.Documents;
-using System;
 
 namespace SignUp.MessageHandlers.IndexProspect.Indexer
 {
     public class Index
     {
         private readonly IConfiguration _config;
+        private static bool _IndexCreated;
 
         public Index(IConfiguration config)
         {
             _config = config;
-            EnsureIndex();
         }
 
-        private void EnsureIndex()
-        {            
-            Console.WriteLine($"Initializing Elasticsearch. url: {_config["Elasticsearch:Url"]}");
-            GetClient().CreateIndex("prospects");
-        }
-
-        public void CreateDocument(Prospect prospect)
+        private async Task EnsureIndexAsync()
         {
-            GetClient().Index(prospect, idx => idx.Index("prospects"));
+            if (!_IndexCreated)
+            {
+                Console.WriteLine($"Initializing Elasticsearch. url: {_config["Elasticsearch:Url"]}");
+                await GetClient().CreateIndexAsync("prospects");
+                _IndexCreated = true;
+            }
+        }
+
+        public async Task CreateDocumentAsync(Prospect prospect)
+        {
+            await EnsureIndexAsync();
+            await GetClient().IndexAsync(prospect, idx => idx.Index("prospects"));
         }
 
         private ElasticClient GetClient()

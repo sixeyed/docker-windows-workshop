@@ -1,0 +1,68 @@
+# v5 adds self-service analytics with Elastcisearch and Kibana
+version: '3.1'
+
+services:
+  
+  signup-db:
+    image: microsoft/mssql-server-windows-express:2016-sp1
+    environment: 
+      - ACCEPT_EULA=Y
+      - sa_password=DockerCon!!!
+    networks:
+      - app-net
+
+  signup-web:
+    image: dwwx/signup-web:nsb
+    ports:
+      - "8020:80"
+    environment: 
+      - ConnectionStrings:SignUpDb=Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!
+      - Dependencies:IProspectSave=SignUp.Web.ProspectSave.NServiceBusProspectSave
+      - NServiceBus:Transport=LearningTransport
+    volumes:
+      - C:\nsb-data:C:\nsb
+      - C:\nsb-logs:C:\web-app\App_Data
+    depends_on:
+      - signup-db
+    networks:
+      - app-net
+
+  signup-save-handler:
+    image: dwwx/save-handler:nsb
+    environment: 
+      - ConnectionStrings:SignUpDb=Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!
+      - NServiceBus:Transport=LearningTransport
+    volumes:
+      - C:\nsb-data:C:\nsb
+    depends_on:
+      - signup-db
+    networks:
+      - app-net
+
+  signup-index-handler:
+    image: dwwx/index-handler:nsb
+    environment:       
+      - NServiceBus:Transport=LearningTransport
+    volumes:
+      - C:\nsb-data:C:\nsb
+    depends_on:
+      - elasticsearch
+    networks:
+      - app-net
+
+  elasticsearch:
+    image: sixeyed/elasticsearch:5.6.11-nanoserver-sac2016
+    networks:
+      - app-net
+
+  kibana:
+    image: sixeyed/kibana:5.6.11-windowsservercore-ltsc2016
+    depends_on:
+      - elasticsearch
+    networks:
+      - app-net
+
+networks:
+  app-net:
+    external:
+      name: nat
