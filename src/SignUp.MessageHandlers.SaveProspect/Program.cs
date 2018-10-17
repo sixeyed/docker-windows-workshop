@@ -1,80 +1,36 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using NATS.Client;
+using NServiceBus;
 using Prometheus;
 using SignUp.Core;
-using SignUp.Entities;
-using SignUp.Messaging;
-using SignUp.Messaging.Messages.Events;
-using SignUp.Model;
+using SignUp.Messaging.Endpoints;
 
 namespace SignUp.MessageHandlers.SaveProspect
 {
     class Program
     {
         private static ManualResetEvent _ResetEvent = new ManualResetEvent(false);
-
-        private const string QUEUE_GROUP = "save-handler";
-
-        private static Counter _EventCounter = Metrics.CreateCounter("SaveHandler_Events", "Event count", "host", "status");
-        private static string _Host = Environment.MachineName;
-
-        static void Main(string[] args)
+                
+        static async Task Main(string[] args)
         {
             if (Config.Current.GetValue<bool>("Metrics:Enabled"))
             {
                 StartMetricServer();
             }
 
-            Console.WriteLine($"Connecting to message queue url: {Config.Current["MessageQueue:Url"]}");
-            using (var connection = MessageQueue.CreateConnection())
-            {
-                var subscription = connection.SubscribeAsync(ProspectSignedUpEvent.MessageSubject, QUEUE_GROUP);
-                subscription.MessageHandler += SaveProspect;
-                subscription.Start();
-                Console.WriteLine($"Listening on subject: {ProspectSignedUpEvent.MessageSubject}, queue: {QUEUE_GROUP}");
+            var transportType = Config.Current["NServiceBus:Transport"];
+            Console.WriteLine($"Connecting to NServiceBus, transport: {transportType}");
 
-                _ResetEvent.WaitOne();
-                connection.Close();
-            }
-        }
+            var endpointConfiguration = new EndpointConfiguration("ProspectSave");
+            var transport = TransportConfigurationFactory.SetTransport(endpointConfiguration, transportType);
+            var endpointInstance = await Endpoint.Start(endpointConfiguration).ConfigureAwait(false);
 
-        private static void SaveProspect(object sender, MsgHandlerEventArgs e)
-        {
-            _EventCounter.Labels(_Host, "received").Inc();
+            Console.WriteLine($"Listening.");
 
-            Console.WriteLine($"Received message, subject: {e.Message.Subject}");
-            var eventMessage = MessageHelper.FromData<ProspectSignedUpEvent>(e.Message.Data);
-            Console.WriteLine($"Saving new prospect, signed up at: {eventMessage.SignedUpAt}; event ID: {eventMessage.CorrelationId}");
-
-            var prospect = eventMessage.Prospect;
-
-            try
-            {
-                SaveProspect(prospect);
-                Console.WriteLine($"Prospect saved. Prospect ID: {eventMessage.Prospect.ProspectId}; event ID: {eventMessage.CorrelationId}");
-                _EventCounter.Labels(_Host, "processed").Inc();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Save prospect FAILED, email address: {prospect.EmailAddress}, ex: {ex}");
-                _EventCounter.Labels(_Host, "failed").Inc();
-            }
-        }
-
-        private static void SaveProspect(Prospect prospect)
-        {
-            using (var context = new SignUpContext())
-            {
-                //reload child objects:
-                prospect.Country = context.Countries.Single(x => x.CountryCode == prospect.Country.CountryCode);
-                prospect.Role = context.Roles.Single(x => x.RoleCode == prospect.Role.RoleCode);
-
-                context.Prospects.Add(prospect);
-                context.SaveChanges();
-            }
+            _ResetEvent.WaitOne();
+            await endpointInstance.Stop().ConfigureAwait(false);
         }
 
         private static void StartMetricServer()

@@ -1,16 +1,12 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using SignUp.Core;
-using SignUp.Entities;
-using SignUp.Messaging;
-using SignUp.Messaging.Messages.Events;
-using SignUp.Model;
-using SignUp.Web.ProspectSave;
-using SignUp.Web.ReferenceData;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using SignUp.Core;
+using SignUp.Entities;
+using SignUp.Web.ProspectSave;
+using SignUp.Web.ReferenceData;
 
 namespace SignUp.Web
 {
@@ -18,6 +14,13 @@ namespace SignUp.Web
     {
         private static Dictionary<string, Country> _Countries = new Dictionary<string, Country>();
         private static Dictionary<string, Role> _Roles = new Dictionary<string, Role>();
+        private static Type _ProspectSaveType;
+
+        static SignUp()
+        {
+            var prospectSaveType = Config.Current["Dependencies:IProspectSave"];
+            _ProspectSaveType = Type.GetType(prospectSaveType);
+        }
 
         public static void PreloadStaticDataCache()
         {
@@ -75,11 +78,9 @@ namespace SignUp.Web
                 Country = country,
                 Role = role
             };
-
-            var handlerType = Config.Current["Dependencies:IProspectSaveHandler"];
-            var type = Type.GetType(handlerType);
-            var handler = (IProspectSaveHandler)Global.ServiceProvider.GetService(type);
-            handler.SaveProspect(prospect);
+                        
+            var persister = (IProspectSave)Global.ServiceProvider.GetService(_ProspectSaveType);
+            persister.SaveProspect(prospect);
 
             Server.Transfer("ThankYou.aspx");
         }

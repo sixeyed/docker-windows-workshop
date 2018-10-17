@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace SignUp.Web.ProspectSave
 {
-    public class SynchronousProspectSaveHandler : IProspectSaveHandler
+    public class SynchronousProspectSave : IProspectSave
     {
         public void SaveProspect(Prospect prospect)
         {

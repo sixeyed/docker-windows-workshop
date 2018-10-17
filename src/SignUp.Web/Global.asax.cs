@@ -6,7 +6,10 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NServiceBus;
 using SignUp.Core;
+using SignUp.Messaging.Endpoints;
+using SignUp.Messaging.Messages.Commands;
 using SignUp.Model;
 using SignUp.Model.Initializers;
 using SignUp.Web.Logging;
@@ -21,11 +24,14 @@ namespace SignUp.Web
 
         static Global()
         {
+            var endpointInstance = InitializeEndpoint();
+
             ServiceProvider = new ServiceCollection()
+                .AddSingleton(endpointInstance)
                 .AddTransient<DatabaseReferenceDataLoader>()
                 .AddTransient<ApiReferenceDataLoader>()
-                .AddTransient<SynchronousProspectSaveHandler>()
-                .AddTransient<AsynchronousProspectSaveHandler>()
+                .AddTransient<SynchronousProspectSave>()
+                .AddTransient<NServiceBusProspectSave>()
                 .BuildServiceProvider();
         }
 
@@ -58,6 +64,17 @@ namespace SignUp.Web
             {
                 Log.Fatal($"Database connection failed, exception: {ex}");
             }            
+        }
+
+        private static IEndpointInstance InitializeEndpoint()
+        {
+            var endpointConfiguration = new EndpointConfiguration("SignUp.Web");
+            var transport = TransportConfigurationFactory.SetTransport(endpointConfiguration, Config.Current["NServiceBus:Transport"]);
+
+            var routing = transport.Routing();
+            routing.RouteToEndpoint(typeof(CreateNewProspect), "ProspectSave");
+
+            return Endpoint.Start(endpointConfiguration).GetAwaiter().GetResult();
         }
     }
 }

@@ -3,5 +3,6 @@
 !docker/
 src/.vs
 src/packages
+src/.learningtransport/
 **/obj
 **/bin

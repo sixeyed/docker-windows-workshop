@@ -102,11 +102,11 @@
     <Reference Include="Microsoft.Extensions.Primitives, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Primitives.2.1.1\lib\netstandard2.0\Microsoft.Extensions.Primitives.dll</HintPath>
     </Reference>
-    <Reference Include="NATS.Client, Version=0.8.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NATS.Client.0.8.1\lib\net45\NATS.Client.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NServiceBus.Core, Version=7.0.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NServiceBus.7.1.4\lib\net452\NServiceBus.Core.dll</HintPath>
     </Reference>
     <Reference Include="RestSharp, Version=106.4.2.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.106.4.2\lib\net452\RestSharp.dll</HintPath>
@@ -131,6 +131,8 @@
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.1\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
@@ -303,9 +305,9 @@
     </Compile>
     <Compile Include="Logging\Log.cs" />
     <Compile Include="Logging\LogLevel.cs" />
-    <Compile Include="ProspectSave\AsynchronousProspectSaveHandler.cs" />
+    <Compile Include="ProspectSave\NServiceBusProspectSave.cs" />
     <Compile Include="ProspectSave\IProspectSaveHandler.cs" />
-    <Compile Include="ProspectSave\SynchronousProspectSaveHandler.cs" />
+    <Compile Include="ProspectSave\SynchronousProspectSave.cs" />
     <Compile Include="ReferenceData\ApiReferenceDataLoader.cs" />
     <Compile Include="ReferenceData\DatabaseReferenceDataLoader.cs" />
     <Compile Include="ReferenceData\IReferenceDataLoader.cs" />
@@ -379,6 +381,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\NServiceBus.7.1.4\analyzers\dotnet\cs\NServiceBus.Core.Analyzer.dll" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -2,7 +2,7 @@
 
 namespace SignUp.Web.ProspectSave
 {
-    interface IProspectSaveHandler
+    interface IProspectSave
     {
         void SaveProspect(Prospect prospect);
     }

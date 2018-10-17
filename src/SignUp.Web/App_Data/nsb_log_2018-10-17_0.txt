@@ -1,0 +1,24 @@
+﻿2018-10-17 05:37:34.429 INFO  DefaultFactory Logging to 'C:\scm\github\sixeyed\docker-windows-workshop\src\SignUp.Web\App_Data\' with level Info
+2018-10-17 05:37:34.819 INFO  NServiceBus.LicenseManager No valid license could be found. Falling back to trial license with start date '2018-10-16'.
+
+2018-10-17 05:48:28.134 INFO  DefaultFactory Logging to 'C:\scm\github\sixeyed\docker-windows-workshop\src\SignUp.Web\App_Data\' with level Info
+2018-10-17 05:48:28.467 INFO  NServiceBus.LicenseManager No valid license could be found. Falling back to trial license with start date '2018-10-16'.
+
+2018-10-17 05:50:13.258 INFO  DefaultFactory Logging to 'C:\scm\github\sixeyed\docker-windows-workshop\src\SignUp.Web\App_Data\' with level Info
+2018-10-17 05:50:13.599 INFO  NServiceBus.LicenseManager No valid license could be found. Falling back to trial license with start date '2018-10-16'.
+
+2018-10-17 05:58:09.015 INFO  DefaultFactory Logging to 'C:\scm\github\sixeyed\docker-windows-workshop\src\SignUp.Web\App_Data\' with level Info
+2018-10-17 05:58:09.432 INFO  NServiceBus.LicenseManager No valid license could be found. Falling back to trial license with start date '2018-10-16'.
+
+2018-10-17 06:27:23.830 INFO  DefaultFactory Logging to 'C:\scm\github\sixeyed\docker-windows-workshop\src\SignUp.Web\App_Data\' with level Info
+2018-10-17 06:27:24.166 INFO  NServiceBus.LicenseManager No valid license could be found. Falling back to trial license with start date '2018-10-16'.
+
+2018-10-17 07:39:21.211 INFO  DefaultFactory Logging to 'C:\scm\github\sixeyed\docker-windows-workshop\src\SignUp.Web\App_Data\' with level Info
+2018-10-17 07:39:21.714 INFO  NServiceBus.LicenseManager No valid license could be found. Falling back to trial license with start date '2018-10-16'.
+
+2018-10-17 07:42:47.637 INFO  DefaultFactory Logging to 'C:\scm\github\sixeyed\docker-windows-workshop\src\SignUp.Web\App_Data\' with level Info
+2018-10-17 07:42:47.983 INFO  NServiceBus.LicenseManager No valid license could be found. Falling back to trial license with start date '2018-10-16'.
+
+2018-10-17 08:39:19.444 INFO  DefaultFactory Logging to 'C:\scm\github\sixeyed\docker-windows-workshop\src\SignUp.Web\App_Data\' with level Info
+2018-10-17 08:39:19.841 INFO  NServiceBus.LicenseManager No valid license could be found. Falling back to trial license with start date '2018-10-16'.
+

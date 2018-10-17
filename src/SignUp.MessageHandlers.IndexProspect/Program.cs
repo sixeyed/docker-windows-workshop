@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using SignUp.Core;
 using SignUp.MessageHandlers.IndexProspect.Indexer;
@@ -8,7 +8,7 @@ namespace SignUp.MessageHandlers.IndexProspect
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             var serviceProvider = new ServiceCollection()
                 .AddSingleton(Config.Current)
@@ -17,7 +17,7 @@ namespace SignUp.MessageHandlers.IndexProspect
                 .BuildServiceProvider();
 
             var worker = serviceProvider.GetService<QueueWorker>();
-            worker.Start();
+            await worker.Start();
         }
     }
 }
