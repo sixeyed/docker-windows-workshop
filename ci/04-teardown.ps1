@@ -1,5 +1,7 @@
-Write-Output 'Pushing images...'
+Write-Host "Tidying up..."
 docker-compose `
  -f ./ci/docker-compose.yml `
  -f ./ci/docker-compose-ci.yml `
-push --ignore-push-failures
+down
+
+rm -fo -re $env:TEST_STATE

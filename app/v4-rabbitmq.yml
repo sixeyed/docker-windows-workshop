@@ -23,9 +23,5 @@ services:
       - NServiceBus:Transport=RabbitMQTransport
 
   signup-reference-data-handler:
-    environment:       
-      - NServiceBus:Transport=RabbitMQTransport
-
-  signup-reference-data-handler:
     environment:      
       - NServiceBus:Transport=RabbitMQTransport
