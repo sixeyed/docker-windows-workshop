@@ -1,19 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using NServiceBus;
 
 namespace SignUp.Messaging.Endpoints
 {
     public static class TransportConfigurationFactory
     {
-        public static TransportExtensions SetTransport(EndpointConfiguration endpointConfiguration, string transport)
+        public static TransportExtensions Configure(EndpointConfiguration endpointConfiguration, string transport, string endpointName, bool usePubSub = false)
         {
-            //TODO - use DI
+            //TODO - use DI & config
             switch (transport)
             {
+                case nameof(RabbitMQTransport):
+                    return RabbitMQTransportConfiguration.Configure(endpointConfiguration, endpointName, usePubSub);
+
                 case nameof(LearningTransport):
-                    return LearningTransportConfiguration.SetTransport(endpointConfiguration);
+                    return LearningTransportConfiguration.Configure(endpointConfiguration);
 
                 default:
                     throw new ApplicationException("Missing config setting - NServiceBus:Transport");

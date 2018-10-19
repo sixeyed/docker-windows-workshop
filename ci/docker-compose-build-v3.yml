@@ -1,9 +1,0 @@
-version: '3.1'
-
-services:
-
-  signup-web:
-    image: dwwx/signup-web:v3
-    build:
-      context: ..
-      dockerfile: ./docker/metrics-runtime/signup-web/Dockerfile

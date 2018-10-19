@@ -1,0 +1,31 @@
+# v4 switching to RabbitMQ
+version: '3.1'
+
+services:
+  
+  rabbitmq:
+    image: sixeyed/rabbitmq:3.6.9-windowsservercore-ltsc2016
+    ports:
+      - "15672:15672"
+    networks:
+      - app-net
+
+  signup-web:
+    environment:
+      - NServiceBus:Transport=RabbitMQTransport
+
+  signup-save-handler:
+    environment: 
+      - NServiceBus:Transport=RabbitMQTransport
+
+  signup-index-handler:
+    environment:       
+      - NServiceBus:Transport=RabbitMQTransport
+
+  signup-reference-data-handler:
+    environment:       
+      - NServiceBus:Transport=RabbitMQTransport
+
+  signup-reference-data-handler:
+    environment:      
+      - NServiceBus:Transport=RabbitMQTransport

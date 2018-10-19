@@ -4,7 +4,7 @@
 	So that I can be updated with news
 
 Scenario Outline: Sign Up with Valid Details
-	Given I browse to the Sign Up Page at "http://signup-web/SignUp"
+	Given I browse to the Sign Up Page
 	And I enter details '<FirstName>' '<LastName>' '<EmailAddress>' '<CompanyName>' '<Country>' '<Role>'
 	When I press Go
 	Then I should see the Thank You page

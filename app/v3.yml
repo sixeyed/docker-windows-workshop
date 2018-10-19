@@ -1,4 +1,4 @@
-# v3 adds the reference data API
+# v3 adds self-service analytics with pub-sub
 version: '3.1'
 
 services:
@@ -12,38 +12,53 @@ services:
       - app-net
 
   signup-web:
-    image: dwwx/signup-web:v2
-    environment: 
-      - ConnectionStrings:SignUpDb=Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!
-      - Dependencies:IReferenceDataLoader=SignUp.Web.ReferenceData.ApiReferenceDataLoader
-      - ReferenceDataApi:Url=http://reference-data-api/api
-    depends_on:
-      - signup-db
-      - reference-data-api
-    networks:
-      - app-net
-
-  homepage:
-    image: dwwx/homepage
-    networks:
-      - app-net
-
-  proxy:
-    image: dwwx/reverse-proxy
+    image: dwwx/signup-web:nsb
     ports:
       - "8020:80"
+    environment: 
+      - ConnectionStrings:SignUpDb=Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!
+      - Dependencies:IProspectSave=SignUp.Web.ProspectSave.NServiceBusProspectSave
+      - NServiceBus:Transport=LearningTransport
+    volumes:
+      - C:\web-logs:C:\web-app\App_Data
+      - C:\nsb-data:C:\nsb
     depends_on:
-      - signup-web
-      - homepage
+      - signup-db
     networks:
       - app-net
 
-  reference-data-api:
-    image: dwwx/reference-data-api
+  signup-save-handler:
+    image: dwwx/save-handler:nsb
     environment: 
       - ConnectionStrings:SignUpDb=Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!
+      - NServiceBus:Transport=LearningTransport
+    volumes:
+      - C:\nsb-data:C:\nsb
     depends_on:
       - signup-db
+    networks:
+      - app-net
+
+  signup-index-handler:
+    image: dwwx/index-handler:nsb
+    environment:       
+      - NServiceBus:Transport=LearningTransport
+    volumes:
+      - C:\nsb-data:C:\nsb
+    depends_on:
+      - elasticsearch
+    networks:
+      - app-net
+
+  elasticsearch:
+    image: sixeyed/elasticsearch:5.6.11-nanoserver-sac2016
+    networks:
+      - app-net
+
+  kibana:
+    image: sixeyed/kibana:5.6.11-windowsservercore-ltsc2016
+    depends_on:
+      - elasticsearch
     networks:
       - app-net
 

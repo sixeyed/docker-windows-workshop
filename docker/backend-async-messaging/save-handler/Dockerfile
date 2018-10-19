@@ -21,4 +21,7 @@ FROM microsoft/dotnet-framework:4.7.2-runtime
 WORKDIR /save-prospect-handler
 CMD .\SignUp.MessageHandlers.SaveProspect.exe
 
+ENV SignUpPage:Url="http://signup-web/app/SignUp" `
+    ConnectionStrings:SignUpDb="Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!"
+
 COPY --from=builder C:\out\save-prospect\SaveProspectHandler .

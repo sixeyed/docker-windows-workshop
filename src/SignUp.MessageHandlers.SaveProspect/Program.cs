@@ -12,7 +12,8 @@ namespace SignUp.MessageHandlers.SaveProspect
     class Program
     {
         private static ManualResetEvent _ResetEvent = new ManualResetEvent(false);
-                
+        private static readonly string _EndpointName = "ProspectSave";
+
         static async Task Main(string[] args)
         {
             if (Config.Current.GetValue<bool>("Metrics:Enabled"))
@@ -23,8 +24,8 @@ namespace SignUp.MessageHandlers.SaveProspect
             var transportType = Config.Current["NServiceBus:Transport"];
             Console.WriteLine($"Connecting to NServiceBus, transport: {transportType}");
 
-            var endpointConfiguration = new EndpointConfiguration("ProspectSave");
-            var transport = TransportConfigurationFactory.SetTransport(endpointConfiguration, transportType);
+            var endpointConfiguration = new EndpointConfiguration(_EndpointName);
+            var transport = TransportConfigurationFactory.Configure(endpointConfiguration, transportType, _EndpointName);
             var endpointInstance = await Endpoint.Start(endpointConfiguration).ConfigureAwait(false);
 
             Console.WriteLine($"Listening.");

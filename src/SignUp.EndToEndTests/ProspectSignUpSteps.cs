@@ -1,10 +1,9 @@
-﻿using NUnit.Framework;
+﻿using System.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
+using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SimpleBrowser.WebDriver;
-using System;
-using System.Data.SqlClient;
-using System.Threading;
 using TechTalk.SpecFlow;
 
 namespace SignUp.EndToEndTests
@@ -14,11 +13,16 @@ namespace SignUp.EndToEndTests
     {
         private static IWebDriver _Driver;
         private string _emailAddress;
+        private static IConfiguration _Config;
 
         [BeforeFeature]
         public static void Setup()
         {
             _Driver = new SimpleBrowserDriver();
+            _Config = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json")
+                .AddEnvironmentVariables()
+                .Build();
         }
 
         [AfterFeature]
@@ -28,9 +32,10 @@ namespace SignUp.EndToEndTests
             _Driver.Dispose();
         }
 
-        [Given(@"I browse to the Sign Up Page at ""(.*)""")]
-        public void GivenIBrowseToTheSignUpPageAt(string url)
+        [Given(@"I browse to the Sign Up Page")]
+        public void GivenIBrowseToTheSignUpPageAt()
         {
+            var url = _Config["SignUpPage:Url"];
             _Driver.Navigate().GoToUrl(url);
         }
 
@@ -68,7 +73,7 @@ namespace SignUp.EndToEndTests
             AssertHelper.RetryAssert(50, 40, $"Email address: {_emailAddress} not found", () =>
             {
                 var count = 0;
-                var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+                var connectionString = _Config.GetConnectionString("SignUpDb");
                 using (var connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
@@ -78,7 +83,7 @@ namespace SignUp.EndToEndTests
                         count = (int)command.ExecuteScalar();
                     }
                 }
-                return count > 0;
+                return count == 1;
             });
          }
     }

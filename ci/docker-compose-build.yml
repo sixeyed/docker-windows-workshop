@@ -5,22 +5,7 @@ services:
   signup-web:
     build:
       context: ..
-      dockerfile: ./docker/frontend-web/Dockerfile
-
-  homepage:
-    build:
-      context: ..
-      dockerfile: ./docker/frontend-reverse-proxy/homepage/Dockerfile
-
-  proxy:
-    build:
-      context: ..
-      dockerfile: ./docker/frontend-reverse-proxy/reverse-proxy/Dockerfile
-
-  reference-data-api:
-    build:
-      context: ..
-      dockerfile: ./docker/backend-rest-api/reference-data-api/Dockerfile
+      dockerfile: ./docker/frontend-web/v2/Dockerfile
 
   signup-save-handler:
     build:
@@ -30,14 +15,15 @@ services:
   signup-index-handler:
     build:
       context: ..
-      dockerfile: ./docker/backend-analytics/index-handler/Dockerfile    
+      dockerfile: ./docker/backend-analytics/index-handler/Dockerfile
 
-  prometheus:
+  signup-reference-data-handler:
     build:
       context: ..
-      dockerfile: ./docker/metrics-dashboard/prometheus/Dockerfile
+      dockerfile: ./docker/backend-rest-api/reference-data-handler/Dockerfile
 
-  grafana:
+  e2e-tests:
+    image: dwwx/e2e-tests:nsb
     build:
       context: ..
-      dockerfile: ./docker/metrics-dashboard/grafana/Dockerfile  
+      dockerfile: ./docker/e2e-tests/Dockerfile

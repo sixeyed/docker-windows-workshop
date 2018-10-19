@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using NServiceBus;
+﻿using NServiceBus;
 
 namespace SignUp.Messaging.Endpoints
 {
-    class LearningTransportConfiguration
+    public class LearningTransportConfiguration
     {
-        public static TransportExtensions SetTransport(EndpointConfiguration endpointConfiguration)
+        //TODO - move to config
+        private static readonly string _StorageDirectory = "/nsb";
+
+        public static TransportExtensions Configure(EndpointConfiguration endpointConfiguration)
         {            
             var transport = endpointConfiguration.UseTransport<LearningTransport>();
-            transport.StorageDirectory("/nsb");
+            transport.StorageDirectory(_StorageDirectory);
             return transport;
         }
     }

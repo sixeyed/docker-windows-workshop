@@ -1,4 +1,5 @@
 src/.learningtransport/
+src/SignUp.Web/App_Data
 
 ## slide index file is generated
 slides/index.html

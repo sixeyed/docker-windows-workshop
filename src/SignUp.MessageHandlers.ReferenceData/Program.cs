@@ -6,16 +6,17 @@ using Microsoft.Extensions.DependencyInjection;
 using NServiceBus;
 using Prometheus;
 using SignUp.Core;
-using SignUp.MessageHandlers.IndexProspect.Indexer;
+using SignUp.Entities;
+using SignUp.MessageHandlers.ReferenceData.Repositories;
 using SignUp.Messaging.Endpoints;
 
-namespace SignUp.MessageHandlers.IndexProspect
+namespace SignUp.MessageHandlers.ReferenceData
 {
     class Program
     {
         private static IEndpointInstance _EndpointInstance;
         private static ManualResetEvent _ResetEvent = new ManualResetEvent(false);
-        private static readonly string _EndpointName = "ProspectIndex";
+        private static readonly string _EndpointName = "ReferenceData";
 
         static async Task Main(string[] args)
         {
@@ -27,7 +28,8 @@ namespace SignUp.MessageHandlers.IndexProspect
             var services = new ServiceCollection()
                 .AddSingleton(Config.Current)
                 .AddSingleton(sp => _EndpointInstance)
-                .AddSingleton<Index>();
+                .AddTransient<IRepository<Country>, CountryRepository>()
+                .AddTransient<IRepository<Role>, RoleRepository>();
 
             var transportType = Config.Current["NServiceBus:Transport"];
             var endpointConfiguration = new EndpointConfiguration(_EndpointName);

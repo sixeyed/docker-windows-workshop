@@ -12,11 +12,13 @@ services:
       - app-net
 
   signup-web:
-    image: dwwx/signup-web:v2
+    image: dwwx/signup-web:nsb
     ports:
       - "8020:80"
     environment: 
       - ConnectionStrings:SignUpDb=Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!
+    volumes:      
+      - C:\web-logs:C:\web-app\App_Data
     depends_on:
       - signup-db
     networks:

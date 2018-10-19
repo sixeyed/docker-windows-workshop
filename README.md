@@ -1,3 +1,7 @@
+# `nsb` branch
+
+> This is a branch of the workshop code with NServiceBus used to break down the original monolith
+
 # Docker Windows Workshop
 
 The latest release is published at https://dwwx.space

@@ -7,6 +7,7 @@ using System.Web.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NServiceBus;
+using NServiceBus.Logging;
 using SignUp.Core;
 using SignUp.Messaging.Endpoints;
 using SignUp.Messaging.Messages.Commands;
@@ -21,6 +22,7 @@ namespace SignUp.Web
     public class Global : HttpApplication
     {
         public static ServiceProvider ServiceProvider { get; private set; }
+        private static string _EndpointName = "SignUp.Web";
 
         static Global()
         {
@@ -29,7 +31,7 @@ namespace SignUp.Web
             ServiceProvider = new ServiceCollection()
                 .AddSingleton(endpointInstance)
                 .AddTransient<DatabaseReferenceDataLoader>()
-                .AddTransient<ApiReferenceDataLoader>()
+                .AddTransient<NServiceBusReferenceDataLoader>()
                 .AddTransient<SynchronousProspectSave>()
                 .AddTransient<NServiceBusProspectSave>()
                 .BuildServiceProvider();
@@ -68,9 +70,13 @@ namespace SignUp.Web
 
         private static IEndpointInstance InitializeEndpoint()
         {
-            var endpointConfiguration = new EndpointConfiguration("SignUp.Web");
-            var transport = TransportConfigurationFactory.SetTransport(endpointConfiguration, Config.Current["NServiceBus:Transport"]);
+            Log.Info("Initializing NServiceBus endpoint");
 
+            var endpointConfiguration = new EndpointConfiguration(_EndpointName);
+            endpointConfiguration.MakeInstanceUniquelyAddressable(Environment.MachineName);
+            endpointConfiguration.EnableCallbacks();
+
+            var transport = TransportConfigurationFactory.Configure(endpointConfiguration, Config.Current["NServiceBus:Transport"], _EndpointName, true);
             var routing = transport.Routing();
             routing.RouteToEndpoint(typeof(CreateNewProspect), "ProspectSave");
 
