@@ -15,12 +15,9 @@ services:
     image: dwwx/signup-web:v2
     environment: 
       - ConnectionStrings:SignUpDb=Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!
-      - Dependencies:IReferenceDataLoader=SignUp.Web.ReferenceData.ApiReferenceDataLoader
-      - ReferenceDataApi:Url=http://reference-data-api/api
       - Dependencies:IProspectSaveHandler=SignUp.Web.ProspectSave.AsynchronousProspectSaveHandler
     depends_on:
       - signup-db
-      - reference-data-api
       - message-queue
     networks:
       - app-net
@@ -37,15 +34,6 @@ services:
     depends_on:
       - signup-web
       - homepage
-    networks:
-      - app-net
-
-  reference-data-api:
-    image: dwwx/reference-data-api
-    environment: 
-      - ConnectionStrings:SignUpDb=Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!
-    depends_on:
-      - signup-db
     networks:
       - app-net
 
