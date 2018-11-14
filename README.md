@@ -33,6 +33,8 @@ This workshop is a living thing. There are tags or branches for previous version
 
 #### 2018
 
+- [winops18](https://github.com/sixeyed/docker-windows-workshop/tree/winops18) - WinOps 2018, hosted [here](https://winops18--dwwx.netlify.com) 
+
 - [techoramanl18](https://github.com/sixeyed/docker-windows-workshop/tree/techoramanl18) - Techorama NL 2018, hosted [here](https://techoramanl18--dwwx.netlify.com) 
 
 - [slcnet](https://github.com/sixeyed/docker-windows-workshop/tree/slcnet) - Salt Lake City .NET user group, hosted [here](https://slcnet--dwwx.netlify.com) 
