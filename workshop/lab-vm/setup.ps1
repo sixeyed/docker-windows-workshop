@@ -43,7 +43,7 @@ Write-Output '* Installing Chocolatey'
 Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 
 Write-Output '* Installing tools'
-choco install -y docker-compose
+choco install -y docker-compose --version 1.22.0
 choco install -y poshgit
 choco install -y visualstudiocode
 choco install -y firefox
