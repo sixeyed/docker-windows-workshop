@@ -54,7 +54,7 @@ services:
       - app-net
 
   signup-save-handler:
-    image: dwwx/save-handler:v2
+    image: dwwx/save-handler:v3
     depends_on:
       - signup-db
       - message-queue

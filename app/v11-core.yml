@@ -1,5 +1,5 @@
-# v9 defines core solution services
-version: '3.3'
+# v11 - core solution services
+version: '3.4'
 
 services:
   
@@ -9,9 +9,8 @@ services:
       - app-net
 
   signup-web:
-    image: dwwx/signup-web:v3
+    image: dwwx/signup-web:v7
     environment: 
-      - ConnectionStrings:SignUpDb=Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!
       - Dependencies:IReferenceDataLoader=SignUp.Web.ReferenceData.ApiReferenceDataLoader
       - ReferenceDataApi:Url=http://reference-data-api/api
       - Dependencies:IProspectSaveHandler=SignUp.Web.ProspectSave.AsynchronousProspectSaveHandler
@@ -30,8 +29,6 @@ services:
 
   reference-data-api:
     image: dwwx/reference-data-api
-    environment: 
-      - ConnectionStrings:SignUpDb=Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!
     networks:
       - app-net
 
@@ -41,9 +38,7 @@ services:
       - app-net
 
   signup-save-handler:
-    image: dwwx/save-handler:v2
-    environment: 
-      - ConnectionStrings:SignUpDb=Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!
+    image: dwwx/save-handler:v3
     networks:
       - app-net
 
@@ -71,6 +66,3 @@ services:
     image: dwwx/grafana
     networks:
       - app-net
-
-networks:
-  app-net:

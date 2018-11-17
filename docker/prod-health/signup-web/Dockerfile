@@ -61,7 +61,7 @@ COPY --from=dependency-check-builder C:\out ${APP_ROOT}
 
 COPY --from=health-check-builder C:\out ${APP_ROOT}
 RUN [Environment]::SetEnvironmentVariable('PATH', $env:PATH + ';' + $env:APP_ROOT, [EnvironmentVariableTarget]::Machine)
-HEALTHCHECK --interval=30s `
+HEALTHCHECK --interval=30s --start-period=45s `
   CMD ["Utilities.HealthCheck.exe"]
 
 COPY --from=builder C:\out\_PublishedWebsites\SignUp.Web ${APP_ROOT}

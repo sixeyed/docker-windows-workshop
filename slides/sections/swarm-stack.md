@@ -31,7 +31,7 @@ Your workshop VM is in the same virtual network as your neighbour's, so you can 
 - pick another person (or 2 or 3) to work with
 - choose who's going to be the manager and who will be the worker(s)
 
-> If you don't like the sound of this, it's no big deal. You can continue with the single-node swarm on your own VM.
+> If you don't like the sound of this, you can continue with the single-node swarm on your own VM, or join my swarm.
 
 ---
 
@@ -91,7 +91,7 @@ The output will list all the nodes in the swarm. You should have one manager and
 
 You deploy apps to swarm using Docker Compose files. There are some attributes which only apply to swarm mode (like the `deploy` section), and some which are ignored in swarm mode (like `depends_on`).
 
-You can combine multiple compose files together to make a single stack file. That's useful for keeping the core solution in one compose file like [v9-compose.yml](./app/v9-compose.yml), and adding environment-specific overrides in other files like [v9-prod.yml](./app/v9-prod.yml).
+You can combine multiple compose files to make a single file. That's useful for keeping the core solution in one compose file like [v11-core.yml](./app/v11-cose.yml), and adding environment-specific overrides in other files like [v11-dev.yml](./app/v11-dev.yml) and [v11-prod.yml](./app/v11-prod.yml).
 
 ---
 
@@ -107,7 +107,31 @@ docker-compose `
   -f .\app\v9-prod.yml config > docker-stack.yml
 ```
 
-> The generated `docker-stack.yml` file contains the merged contents, ready for deployment. In a real production app you would use [Docker secrets](https://docs.docker.com/engine/swarm/secrets/) and not plaintext passwords in environment variables.
+> The generated `docker-stack.yml` file contains the merged contents, ready for deployment. It also useds [Docker config objects]() and [Docker secrets](https://docs.docker.com/engine/swarm/secrets/) for confiuguration.
+
+---
+
+## Create the configs
+
+> This part is for the **manager**
+
+```
+docker config create `
+  netfx-log4net `
+  ./app/configs/log4net.config
+```
+
+---
+
+## Create the secrets
+
+> This part is for the **manager**
+
+```
+docker secret create `
+  netfx-connectionstrings `
+  ./app/secrets/connectionStrings.config
+```
 
 ---
 

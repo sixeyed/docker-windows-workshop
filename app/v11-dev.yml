@@ -1,0 +1,52 @@
+# v11 - overrides for running in dev with Compose
+version: '3.4'
+
+services:
+  
+  signup-db:
+    volumes:
+      - C:\mssql:C:\data
+
+  signup-web:
+    environment:
+      - DEPENDENCY_CHECK_ENABLED=0
+    volumes:
+      - C:\web-logs:C:\logs
+    depends_on:
+      - signup-db
+      - reference-data-api
+      - message-queue
+
+  proxy:
+    ports:
+      - "8020:80"
+    depends_on:
+      - signup-web
+      - homepage
+
+  signup-save-handler:
+    depends_on:
+      - signup-db
+      - message-queue
+
+  signup-index-handler:
+    depends_on:
+      - elasticsearch
+      - message-queue
+
+  kibana:
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+
+  grafana:
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+
+networks:
+  app-net:
+    external:
+      name: nat

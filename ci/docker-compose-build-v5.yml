@@ -7,3 +7,9 @@ services:
     build:
       context: ..
       dockerfile: ./docker/prod-config/signup-web/Dockerfile
+
+  signup-save-handler:
+    image: dwwx/save-handler:v3
+    build:
+      context: ..
+      dockerfile: ./docker/prod-config/save-handler/Dockerfile
