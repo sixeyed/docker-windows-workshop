@@ -2,6 +2,10 @@
 
 ---
 
+<section data-background-image="/img/backend/Slide3.png">
+
+---
+
 The app uses SQL Server for storage, which isn't very friendly for business users to get reports. Next we'll add self-service analytics, using enterprise-grade open-source software.
 
 We'll be running [Elasticsearch](https://www.elastic.co/products/elasticsearch) for storage and [Kibana](https://www.elastic.co/products/kibana) to provide an analytics front-end. 

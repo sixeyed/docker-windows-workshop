@@ -2,6 +2,10 @@
 
 ---
 
+<section data-background-image="/img/frontend/Slide2.png">
+
+---
+
 Monoliths can run in containers just fine. But they aren't modern apps - they're just old apps running in containers.
 
 You can rebuild a monolith into microservices, but that's a long-term project. 

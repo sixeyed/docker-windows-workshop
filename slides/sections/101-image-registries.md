@@ -2,6 +2,10 @@
 
 ---
 
+<section data-background-image="/img/101/Slide3.png">
+
+---
+
 Images are the portable package that contains your application - your binaries, all the dependencies and the default configuration.
 
 You share images by pushing them to a registry. Docker Hub is the most popular public registry. Most enterprises run their own private registry. You work with them in the same way.

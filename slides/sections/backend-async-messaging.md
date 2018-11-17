@@ -2,6 +2,10 @@
 
 ---
 
+<section data-background-image="/img/backend/Slide2.png">
+
+---
+
 Right now the app saves data by synchronously connecting to SQL Server. That's a bottleneck which will stop the app performing if there's a peak in traffic.
 
 We'll fix that by using a message queue instead - running in a Docker container. 

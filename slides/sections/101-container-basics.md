@@ -2,6 +2,10 @@
 
 ---
 
+<section data-background-image="/img/101/Slide1.png">
+
+---
+
 We'll start with the basics and get a feel for running Docker on Windows. 
 
 You'll see how to run task containers, interactive containers and background containers, and explore the filesystem and processes inside Docker containers.

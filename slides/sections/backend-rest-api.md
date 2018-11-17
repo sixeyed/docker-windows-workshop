@@ -2,6 +2,10 @@
 
 ---
 
+<section data-background-image="/img/backend/Slide1.png">
+
+---
+
 Docker makes it easy to run features in separate containers, and takes care of communication between containers.
 
 Right now the web application loads reference data direct from the database - that's the list of countries and roles in the dropdown boxes.

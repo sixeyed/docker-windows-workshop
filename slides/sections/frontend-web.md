@@ -2,6 +2,10 @@
 
 ---
 
+<section data-background-image="/img/frontend/Slide1.png">
+
+---
+
 Our demo app is a simple ASP.NET WebForms app which uses SQL Server for storage. It's a full .NET Framework app, which uses .NET version `4.7.2`.
 
 Right now the web app is a monolith. By the end of the workshop we'll have broken it down, but first we need to get it running.
