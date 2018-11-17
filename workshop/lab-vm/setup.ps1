@@ -4,6 +4,11 @@ param(
 
 $ErrorActionPreference = "SilentlyContinue"
 
+Write-Output 'Set Windows Updates to manual'
+Cscript $env:WinDir\System32\SCregEdit.wsf /AU 1
+Net stop wuauserv
+Net start wuauserv
+
 # turn off firewall and Defender *this is meant for short-lived lab VMs*
 Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
 Set-MpPreference -DisableRealtimeMonitoring $true
