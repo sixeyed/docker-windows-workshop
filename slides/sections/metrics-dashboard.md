@@ -10,6 +10,10 @@ We'll do that by running Promtheus and Grafana - the leading tools in this space
 
 ---
 
+<section data-background-image="/img/metrics/Slide1.png">
+
+---
+
 ## About Prometheus
 
 Prometheus is a metrics server. It runs a time-series database to store instrumentation data, polls configured endpoints to collect data, and provides an API (and a simple Web UI) to retrieve the raw or aggregated data.
@@ -158,4 +162,4 @@ Containerized apps run on dynamic container platforms. maybe with hundreds of co
 
 A metrics dashboard like this is essential to being ready for production - so when you go live you can be confident that your app is working correctly.
 
-> There's one missing piece from this dashboard - metrics from the Docker platform itself. I cover that in my Pluralsight course on [Monitoring Containerized Application Health](TODO).
+> There's one missing piece from this dashboard - metrics from the Docker platform itself. I cover that in [Monitoring Containerized Application Health](https://pluralsight.pxf.io/c/1197078/424552/7490?u=https%3A%2F%2Fwww.pluralsight.com%2Fcourses%2Fmonitoring-containerized-app-health-docker).

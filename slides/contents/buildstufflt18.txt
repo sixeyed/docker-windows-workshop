@@ -12,10 +12,10 @@ metrics-runtime.md
 metrics-application.md
 metrics-dashboard.md
 prod-intro.md
-#prod-logging.md
-#prod-config.md
-#prod-dependencies.md
-#prod-health.md
+prod-logging.md
+prod-config.md
+prod-dependencies.md
+prod-health.md
 swarm-setup.md
 swarm-services.md
 #swarm-config.md

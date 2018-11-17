@@ -1,5 +1,6 @@
 Write-Output 'STARTUP: Starting IIS with ServiceMonitor'
-Start-Process -NoNewWindow -FilePath C:\ServiceMonitor.exe -ArgumentList w3svc; `
+Start-Process -NoNewWindow -FilePath C:\ServiceMonitor.exe -ArgumentList w3svc
+Start-Sleep -Seconds 10
 
 Write-Output 'STARTUP: Running metrics exporter'
 Invoke-WebRequest http://localhost/app -UseBasicParsing | Out-Null
