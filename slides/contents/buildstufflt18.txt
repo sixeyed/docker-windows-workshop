@@ -18,6 +18,6 @@ prod-dependencies.md
 prod-health.md
 swarm-setup.md
 swarm-services.md
-#swarm-config.md
+swarm-config.md
 swarm-stack.md
 thankyou.md
