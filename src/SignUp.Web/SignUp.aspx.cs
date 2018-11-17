@@ -1,16 +1,13 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using SignUp.Core;
-using SignUp.Entities;
-using SignUp.Messaging;
-using SignUp.Messaging.Messages.Events;
-using SignUp.Model;
-using SignUp.Web.ProspectSave;
-using SignUp.Web.ReferenceData;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using SignUp.Core;
+using SignUp.Entities;
+using SignUp.Web.Logging;
+using SignUp.Web.ProspectSave;
+using SignUp.Web.ReferenceData;
 
 namespace SignUp.Web
 {
@@ -22,6 +19,8 @@ namespace SignUp.Web
         public static void PreloadStaticDataCache()
         {
             var loaderType = Config.Current["Dependencies:IReferenceDataLoader"];
+            Log.Debug($"Using IReferenceDataLoader implementation: {loaderType}");
+
             var type = Type.GetType(loaderType);
             var loader = (IReferenceDataLoader)Global.ServiceProvider.GetService(type);
 
@@ -38,6 +37,8 @@ namespace SignUp.Web
             {
                 _Roles[role.RoleCode] = role;
             }
+
+            Log.Info("Loaded reference data cache");
         }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -77,10 +78,13 @@ namespace SignUp.Web
             };
 
             var handlerType = Config.Current["Dependencies:IProspectSaveHandler"];
+            Log.Debug($"Using IProspectSaveHandler implementation: {handlerType}");
+
             var type = Type.GetType(handlerType);
             var handler = (IProspectSaveHandler)Global.ServiceProvider.GetService(type);
             handler.SaveProspect(prospect);
 
+            Log.Info($"Saved new prospect, email address: {prospect.EmailAddress}");
             Server.Transfer("ThankYou.aspx");
         }
     }

@@ -1,12 +1,15 @@
 param(    
-    [string] $version = 'v3'
+    [int] $from = 1,
+    [int] $to = 7
 )
 
-Write-Host "Building version: $version"
+for ($i=$from; $i -le $to; $i++) {
+    Write-Host "*** Building version: $i"
 
-docker-compose `
- -f ./ci/docker-compose.yml `
- -f ./ci/docker-compose-local.yml `
- -f ./ci/docker-compose-build.yml `
- -f "./ci/docker-compose-build-$version.yml" `
-build
+    docker-compose `
+    -f ./ci/docker-compose.yml `
+    -f ./ci/docker-compose-local.yml `
+    -f ./ci/docker-compose-build.yml `
+    -f "./ci/docker-compose-build-v$i.yml" `
+    build
+}

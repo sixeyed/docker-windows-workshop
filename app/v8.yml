@@ -1,34 +1,33 @@
-# v8 adds restart policies
+# v8 has the option to read config from the environment
 version: '3.1'
 
 services:
   
   signup-db:
-    image: dwwx/signup-db
-    volumes:
-      - C:\mssql:C:\data
-    restart: always
+    image: microsoft/mssql-server-windows-express:2016-sp1
+    environment: 
+      - ACCEPT_EULA=Y
+      - sa_password=DockerCon!!!
     networks:
       - app-net
 
   signup-web:
-    image: dwwx/signup-web:v3
+    image: dwwx/signup-web:v5
     environment: 
-      - ConnectionStrings:SignUpDb=Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!
       - Dependencies:IReferenceDataLoader=SignUp.Web.ReferenceData.ApiReferenceDataLoader
       - ReferenceDataApi:Url=http://reference-data-api/api
       - Dependencies:IProspectSaveHandler=SignUp.Web.ProspectSave.AsynchronousProspectSaveHandler
+    volumes:
+      - C:\web-logs:C:\logs
     depends_on:
       - signup-db
       - reference-data-api
       - message-queue
-    restart: always
     networks:
       - app-net
 
   homepage:
     image: dwwx/homepage
-    restart: always
     networks:
       - app-net
 
@@ -39,34 +38,26 @@ services:
     depends_on:
       - signup-web
       - homepage
-    restart: always
     networks:
       - app-net
 
   reference-data-api:
     image: dwwx/reference-data-api
-    environment: 
-      - ConnectionStrings:SignUpDb=Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!
     depends_on:
       - signup-db
-    restart: always
     networks:
       - app-net
 
   message-queue:
     image: nats:1.3.0-nanoserver
-    restart: always
     networks:
       - app-net
 
   signup-save-handler:
     image: dwwx/save-handler:v2
-    environment: 
-      - ConnectionStrings:SignUpDb=Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!      
     depends_on:
       - signup-db
       - message-queue
-    restart: always
     networks:
       - app-net
 
@@ -75,15 +66,11 @@ services:
     depends_on:
       - elasticsearch
       - message-queue
-    restart: always
     networks:
       - app-net
 
   elasticsearch:
     image: sixeyed/elasticsearch:5.6.11-nanoserver-sac2016
-    volumes:
-      - C:\es:C:\data
-    restart: always
     networks:
       - app-net
 
@@ -91,15 +78,11 @@ services:
     image: sixeyed/kibana:5.6.11-windowsservercore-ltsc2016
     depends_on:
       - elasticsearch
-    restart: always
     networks:
       - app-net
 
   prometheus:
     image: dwwx/prometheus
-    volumes:
-      - C:\prom:C:\prometheus
-    restart: unless-stopped
     networks:
       - app-net
 
@@ -107,7 +90,6 @@ services:
     image: dwwx/grafana
     depends_on:
       - prometheus
-    restart: unless-stopped
     networks:
       - app-net
 

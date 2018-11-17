@@ -13,8 +13,6 @@ services:
 
   signup-web:
     image: dwwx/signup-web:v2
-    environment: 
-      - ConnectionStrings:SignUpDb=Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!
     depends_on:
       - signup-db
     networks:

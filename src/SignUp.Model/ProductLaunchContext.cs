@@ -1,13 +1,11 @@
-﻿using Microsoft.Extensions.Configuration;
-using SignUp.Core;
+﻿using System.Data.Entity;
 using SignUp.Entities;
-using System.Data.Entity;
 
 namespace SignUp.Model
 {
     public class SignUpContext : DbContext
     {
-        public SignUpContext() : base(Config.Current.GetConnectionString("SignUpDb")) { }
+        public SignUpContext() : base("SignUpDb") { }
 
         public DbSet<Country> Countries { get; set; }
 

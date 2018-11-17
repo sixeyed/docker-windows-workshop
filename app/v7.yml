@@ -1,22 +1,24 @@
-# v7 uses volumes for data storage
+# v7 relays logging from the web app
 version: '3.1'
 
 services:
   
   signup-db:
-    image: dwwx/signup-db
-    volumes:
-      - C:\mssql:C:\data
+    image: microsoft/mssql-server-windows-express:2016-sp1
+    environment: 
+      - ACCEPT_EULA=Y
+      - sa_password=DockerCon!!!
     networks:
       - app-net
 
   signup-web:
-    image: dwwx/signup-web:v3
+    image: dwwx/signup-web:v4
     environment: 
-      - ConnectionStrings:SignUpDb=Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!
       - Dependencies:IReferenceDataLoader=SignUp.Web.ReferenceData.ApiReferenceDataLoader
       - ReferenceDataApi:Url=http://reference-data-api/api
       - Dependencies:IProspectSaveHandler=SignUp.Web.ProspectSave.AsynchronousProspectSaveHandler
+    volumes:
+      - C:\web-logs:C:\logs
     depends_on:
       - signup-db
       - reference-data-api
@@ -41,8 +43,6 @@ services:
 
   reference-data-api:
     image: dwwx/reference-data-api
-    environment: 
-      - ConnectionStrings:SignUpDb=Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!
     depends_on:
       - signup-db
     networks:
@@ -55,8 +55,6 @@ services:
 
   signup-save-handler:
     image: dwwx/save-handler:v2
-    environment: 
-      - ConnectionStrings:SignUpDb=Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!      
     depends_on:
       - signup-db
       - message-queue
@@ -73,8 +71,6 @@ services:
 
   elasticsearch:
     image: sixeyed/elasticsearch:5.6.11-nanoserver-sac2016
-    volumes:
-      - C:\es:C:\data
     networks:
       - app-net
 
@@ -87,8 +83,6 @@ services:
 
   prometheus:
     image: dwwx/prometheus
-    volumes:
-      - C:\prom:C:\prometheus
     networks:
       - app-net
 

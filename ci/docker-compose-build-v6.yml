@@ -1,0 +1,15 @@
+version: '3.1'
+
+services:
+
+  signup-db:
+    image: dwwx/signup-db
+    build:
+      context: ..
+      dockerfile: ./docker/prod-dependencies/signup-db/Dockerfile
+
+  signup-web:
+    image: dwwx/signup-web:v6
+    build:
+      context: ..
+      dockerfile: ./docker/prod-dependencies/signup-web/Dockerfile

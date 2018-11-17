@@ -7,15 +7,3 @@ services:
     build:
       context: ..
       dockerfile: ./docker/frontend-web/v2/Dockerfile
-
-  signup-save-handler:
-    image: dwwx/save-handler:v2
-    build:
-      context: ..
-      dockerfile: ./docker/metrics-application/save-handler/Dockerfile
-
-  signup-index-handler:
-    image: dwwx/index-handler:v2
-    build:
-      context: ..
-      dockerfile: ./docker/metrics-application/index-handler/Dockerfile

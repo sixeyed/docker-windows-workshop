@@ -1,0 +1,45 @@
+﻿2018-10-18 09:18:23.565 INFO  DefaultFactory Logging to 'C:\scm\github\sixeyed\docker-windows-workshop\src\SignUp.Web\App_Data\' with level Info
+2018-10-18 09:18:23.937 INFO  NServiceBus.LicenseManager No valid license could be found. Falling back to trial license with start date '2018-10-16'.
+
+2018-10-18 20:12:10.670 INFO  DefaultFactory Logging to 'C:\scm\github\sixeyed\docker-windows-workshop\src\SignUp.Web\App_Data\' with level Info
+2018-10-18 20:12:11.016 INFO  NServiceBus.LicenseManager No valid license could be found. Falling back to trial license with start date '2018-10-16'.
+
+2018-10-18 20:12:11.422 FATAL NServiceBus.ReceiveComponent Receiver Main failed to start.
+RabbitMQ.Client.Exceptions.OperationInterruptedException: The AMQP operation was interrupted: AMQP close-reason, initiated by Peer, code=404, text="NOT_FOUND - no queue 'SignUp.Web' in vhost '/'", classId=60, methodId=20, cause=
+   at RabbitMQ.Client.Impl.SimpleBlockingRpcContinuation.GetReply(TimeSpan timeout)
+   at RabbitMQ.Client.Impl.ModelBase.BasicConsume(String queue, Boolean autoAck, String consumerTag, Boolean noLocal, Boolean exclusive, IDictionary`2 arguments, IBasicConsumer consumer)
+   at RabbitMQ.Client.Impl.AutorecoveringModel.BasicConsume(String queue, Boolean autoAck, String consumerTag, Boolean noLocal, Boolean exclusive, IDictionary`2 arguments, IBasicConsumer consumer)
+   at NServiceBus.Transport.RabbitMQ.MessagePump.Start(PushRuntimeSettings limitations) in C:\BuildAgent\work\15dcdbe5f88af6ed\src\NServiceBus.Transport.RabbitMQ\Receiving\MessagePump.cs:line 111
+   at NServiceBus.TransportReceiver.Start() in C:\BuildAgent\work\b549d46003942065\src\NServiceBus.Core\Transports\TransportReceiver.cs:line 45
+   at NServiceBus.ReceiveComponent.Start() in C:\BuildAgent\work\b549d46003942065\src\NServiceBus.Core\Receiving\ReceiveComponent.cs:line 84
+2018-10-18 20:12:26.346 WARN  NServiceBus.Transport.RabbitMQ.ChannelProvider Connection to the broker lost: Unexpected Exception
+2018-10-18 20:12:26.467 WARN  NServiceBus.Transport.RabbitMQ.MessagePumpConnectionFailedCircuitBreaker The circuit breaker for 'SignUp.Web MessagePump' is now in the armed state
+2018-10-18 20:12:44.651 INFO  DefaultFactory Logging to 'C:\scm\github\sixeyed\docker-windows-workshop\src\SignUp.Web\App_Data\' with level Info
+2018-10-18 20:12:45.073 INFO  NServiceBus.LicenseManager No valid license could be found. Falling back to trial license with start date '2018-10-16'.
+
+2018-10-18 20:12:45.449 FATAL NServiceBus.ReceiveComponent Receiver Main failed to start.
+RabbitMQ.Client.Exceptions.OperationInterruptedException: The AMQP operation was interrupted: AMQP close-reason, initiated by Peer, code=404, text="NOT_FOUND - no queue 'SignUp.Web-WIN-V3VBGA0BBGR' in vhost '/'", classId=60, methodId=20, cause=
+   at RabbitMQ.Client.Impl.SimpleBlockingRpcContinuation.GetReply(TimeSpan timeout)
+   at RabbitMQ.Client.Impl.ModelBase.BasicConsume(String queue, Boolean autoAck, String consumerTag, Boolean noLocal, Boolean exclusive, IDictionary`2 arguments, IBasicConsumer consumer)
+   at RabbitMQ.Client.Impl.AutorecoveringModel.BasicConsume(String queue, Boolean autoAck, String consumerTag, Boolean noLocal, Boolean exclusive, IDictionary`2 arguments, IBasicConsumer consumer)
+   at NServiceBus.Transport.RabbitMQ.MessagePump.Start(PushRuntimeSettings limitations) in C:\BuildAgent\work\15dcdbe5f88af6ed\src\NServiceBus.Transport.RabbitMQ\Receiving\MessagePump.cs:line 111
+   at NServiceBus.TransportReceiver.Start() in C:\BuildAgent\work\b549d46003942065\src\NServiceBus.Core\Transports\TransportReceiver.cs:line 45
+   at NServiceBus.ReceiveComponent.Start() in C:\BuildAgent\work\b549d46003942065\src\NServiceBus.Core\Receiving\ReceiveComponent.cs:line 84
+2018-10-18 20:13:00.374 WARN  NServiceBus.Transport.RabbitMQ.ChannelProvider Connection to the broker lost: Unexpected Exception
+2018-10-18 20:13:00.453 WARN  NServiceBus.Transport.RabbitMQ.MessagePumpConnectionFailedCircuitBreaker The circuit breaker for 'SignUp.Web MessagePump' is now in the armed state
+2018-10-18 20:13:00.481 WARN  NServiceBus.Transport.RabbitMQ.MessagePumpConnectionFailedCircuitBreaker The circuit breaker for 'SignUp.Web-WIN-V3VBGA0BBGR MessagePump' is now in the armed state
+2018-10-18 20:13:17.472 INFO  DefaultFactory Logging to 'C:\scm\github\sixeyed\docker-windows-workshop\src\SignUp.Web\App_Data\' with level Info
+2018-10-18 20:13:17.892 INFO  NServiceBus.LicenseManager No valid license could be found. Falling back to trial license with start date '2018-10-16'.
+
+2018-10-18 20:14:45.832 INFO  DefaultFactory Logging to 'C:\scm\github\sixeyed\docker-windows-workshop\src\SignUp.Web\App_Data\' with level Info
+2018-10-18 20:14:46.206 INFO  NServiceBus.LicenseManager No valid license could be found. Falling back to trial license with start date '2018-10-16'.
+
+2018-10-18 20:15:38.660 INFO  DefaultFactory Logging to 'C:\scm\github\sixeyed\docker-windows-workshop\src\SignUp.Web\App_Data\' with level Info
+2018-10-18 20:15:39.004 INFO  NServiceBus.LicenseManager No valid license could be found. Falling back to trial license with start date '2018-10-16'.
+
+2018-10-18 20:16:18.179 INFO  DefaultFactory Logging to 'C:\scm\github\sixeyed\docker-windows-workshop\src\SignUp.Web\App_Data\' with level Info
+2018-10-18 20:16:18.551 INFO  NServiceBus.LicenseManager No valid license could be found. Falling back to trial license with start date '2018-10-16'.
+
+2018-10-18 20:17:14.817 INFO  DefaultFactory Logging to 'C:\scm\github\sixeyed\docker-windows-workshop\src\SignUp.Web\App_Data\' with level Info
+2018-10-18 20:17:15.271 INFO  NServiceBus.LicenseManager No valid license could be found. Falling back to trial license with start date '2018-10-16'.
+

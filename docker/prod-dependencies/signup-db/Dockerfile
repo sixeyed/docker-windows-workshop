@@ -9,5 +9,5 @@ ENV ACCEPT_EULA="Y" `
 VOLUME ${DATA_PATH}
 
 WORKDIR C:\init
-COPY .\docker\nfr-storage\signup-db\Initialize-Database.ps1 .
+COPY .\docker\prod-dependencies\signup-db\Initialize-Database.ps1 .
 ENTRYPOINT ["powershell", "./Initialize-Database.ps1"]

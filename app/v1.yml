@@ -15,8 +15,6 @@ services:
     image: dwwx/signup-web:v2
     ports:
       - "8020:80"
-    environment: 
-      - ConnectionStrings:SignUpDb=Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!
     depends_on:
       - signup-db
     networks:

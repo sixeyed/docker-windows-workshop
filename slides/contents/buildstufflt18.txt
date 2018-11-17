@@ -16,10 +16,8 @@ prod-intro.md
 #prod-config.md
 #prod-dependencies.md
 #prod-health.md
-#nfr-storage.md
-#nfr-restart.md
-#nfr-scale.md
 swarm-setup.md
 swarm-services.md
+#swarm-config.md
 swarm-stack.md
 thankyou.md

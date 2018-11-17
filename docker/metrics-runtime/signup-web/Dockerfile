@@ -24,12 +24,8 @@ ENV APP_ROOT=C:\web-app
 WORKDIR ${APP_ROOT}
 RUN New-WebApplication -Name 'app' -Site 'Default Web Site' -PhysicalPath $env:APP_ROOT
 
-ENTRYPOINT ["powershell"]
-CMD Start-Process -NoNewWindow -FilePath C:\ServiceMonitor.exe -ArgumentList w3svc; `
-    mkdir C:\logs; echo '--init' > C:\logs\SignUp.log; `
-    Invoke-WebRequest http://localhost/app -UseBasicParsing | Out-Null; `
-    Start-Process -NoNewWindow C:\aspnet-exporter\aspnet-exporter.exe; `
-    Get-Content -Path "C:\logs\SignUp.log" -Tail 1 -Wait 
+COPY .\docker\metrics-runtime\signup-web\startup.ps1 /
+ENTRYPOINT ["powershell", "/startup.ps1"]
 
 WORKDIR C:\aspnet-exporter
 COPY --from=dockersamples/aspnet-monitoring-exporter:4.7.2 C:\aspnet-exporter .

@@ -24,10 +24,4 @@ ENV APP_ROOT=C:\web-app
 WORKDIR ${APP_ROOT}
 RUN New-WebApplication -Name 'app' -Site 'Default Web Site' -PhysicalPath $env:APP_ROOT
 
-ENTRYPOINT ["powershell"]
-CMD Start-Process -NoNewWindow -FilePath C:\ServiceMonitor.exe -ArgumentList w3svc; `
-    mkdir C:\logs; echo '--init' > C:\logs\SignUp.log; `
-    Invoke-WebRequest http://localhost/app -UseBasicParsing | Out-Null; `
-    Get-Content -Path C:\logs\SignUp.log -Tail 1 -Wait 
-
 COPY --from=builder C:\out\_PublishedWebsites\SignUp.Web ${APP_ROOT}
