@@ -22,7 +22,7 @@ Here's a new version of the [web application Dockerfile](./docker/metrics-runtim
 
 The utility app reads from Windows Performance Counters and publishes them as an API on port `50505`.
 
-> The web code is unchanged. The exporter comes from the [dockersamples/aspnet-monitoring](TODO) sample app.
+> The web code is unchanged. The exporter comes from the [dockersamples/aspnet-monitoring](https://github.com/dockersamples/aspnet-monitoring) sample app.
 
 ---
 

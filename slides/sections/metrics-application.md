@@ -14,7 +14,7 @@ The message handlers already have code to record metrics when they handle messag
 
 You can see this in the [Program.cs](./src/SignUp.MessageHandlers.SaveProspect/Program.cs) file for the SQL Server handler, and the [QueueWorker.cs](./src/SignUp.MessageHandlers.IndexProspect/Workers/QueueWorker.cs) file for the Elasticsearch handler.
 
-> Both handlers use a community Prometheus package on NuGet, [prometheus-net](TODO). It's a .NET Standard library, so you can use it from .NET Framework and .NET Core apps.
+> Both handlers use a community Prometheus package on NuGet, [prometheus-net](https://github.com/prometheus-net/prometheus-net). It's a .NET Standard library, so you can use it from .NET Framework and .NET Core apps.
 
 ---
 
