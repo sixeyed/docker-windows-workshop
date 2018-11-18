@@ -14,7 +14,7 @@ We'll do this next, extending the web image to read external configuration.
 
 ---
 
-The app has a [Web.config]() file, which contains setup that will be the same in every environment, and a [log4net.config]() file and [connectionStgrings.config]() file which will change.
+The app has a [Web.config]() file, which contains setup that will be the same in every environment, and a [log4net.config]() file and [connectionStrings.config]() file which will change.
 
 The [updated Dockerfile](./docker/prod-config/signup-web/Dockerfile) sets that up using environment variables to inject a different source path for the config files.
 

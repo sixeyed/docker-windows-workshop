@@ -94,7 +94,7 @@ docker service ps pinger
 
 ## Inspecting swarm services
 
-The service definition is stored in the swarm, securely peristeted among the manager nodes. 
+The service definition is stored in the swarm, securely persisted among the manager nodes. 
 
 _ Check the service details: _
 
