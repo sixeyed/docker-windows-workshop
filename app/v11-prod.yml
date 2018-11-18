@@ -17,9 +17,9 @@ services:
     secrets:
      - source: netfx-connectionstrings
     healthcheck:
-      retries: 2
-      interval: 5s
-      start_period: 20s
+      retries: 3
+      interval: 10s
+      start_period: 40s
     deploy:
       endpoint_mode: dnsrr
 

@@ -103,8 +103,8 @@ You can combine multiple compose files to make a single file. That's useful for 
 cd $env:workshop
 
 docker-compose `
-  -f .\app\v9-compose.yml `
-  -f .\app\v9-prod.yml config > docker-stack.yml
+  -f .\app\v11-core.yml `
+  -f .\app\v11-prod.yml config > docker-stack.yml
 ```
 
 > The generated `docker-stack.yml` file contains the merged contents, ready for deployment. It also uses [Docker config objects]() and [Docker secrets](https://docs.docker.com/engine/swarm/secrets/).
@@ -147,7 +147,7 @@ _ Check the config object is stored: _
 docker config inspect --pretty netfx-log4net
 ```
 
-> This is an XMl config file. You can store any type of data in the swarm.
+> This is an XML config file. You can store any type of data in the swarm.
 
 ---
 

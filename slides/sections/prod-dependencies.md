@@ -137,7 +137,7 @@ Let's just check the app is still working:
 $ip = docker container inspect `
   --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_proxy_1
 
-firefox "http://$ip/app"
+firefox "http://$ip"
 ```
 
 ---

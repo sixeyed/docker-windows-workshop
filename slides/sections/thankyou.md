@@ -8,7 +8,7 @@ But before you go...
 
 ---
 
-## Continuing your Docker journey
+## Continuing your journey
 
 - Use [Play with Docker](https://labs.play-with-docker.com/) and the [Play with Docker labs](http://training.play-with-docker.com/)
 
@@ -24,4 +24,4 @@ And watch these Pluralsight training courses:
 
 - [Monitoring Containerized Application Health with Docker](https://pluralsight.pxf.io/c/1197078/424552/7490?u=https%3A%2F%2Fwww.pluralsight.com%2Fcourses%2Fmonitoring-containerized-app-health-docker)
 
-> Don't have Pluralsight? Ping @EltonStoneman and I'll send you a 1-month trial code.
+> Don't have Pluralsight? Ping @EltonStoneman and he'll send you a 1-month trial code.

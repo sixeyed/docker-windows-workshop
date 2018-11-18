@@ -69,7 +69,7 @@ Check out the app by browsing to the new container, and saving some data:
 $ip = docker container inspect `
   --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_proxy_1
 
-firefox "http://$ip/app"
+firefox "http://$ip"
 ```
 
 ---
