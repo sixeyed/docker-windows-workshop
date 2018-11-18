@@ -86,7 +86,7 @@ for ($i=0; $i -lt 5; $i++) {
 
 ## Check all the containers
 
-You now have multiple instances of the app running. The Docker image is the same, but each instance will show its own containr ID.
+You now have multiple instances of the app running. The Docker image is the same, but each instance will show its own container ID.
 
 _ Browse to all the new containers:_
 

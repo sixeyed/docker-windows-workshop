@@ -2,7 +2,7 @@
 
 ---
 
-Containerized applications give you new opportunities for monitoring. You export metrics from each container, collect them centrally and showyour whole application health in a dashboard.
+Containerized applications give you new opportunities for monitoring. You export metrics from each container, collect them centrally and show your whole application health in a dashboard.
 
 The metrics collector and dashboard run in containers too, so now you can run the exact same metrics stack in dev that you use in production.
 
