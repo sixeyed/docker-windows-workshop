@@ -24,7 +24,9 @@ In the [Program class](./src/Utilities.HealthCheck/Program.cs) the utility expec
 
 ## Packaging the health checker
 
-There's another new stage in the [updated Dockerfile](./docker/prod-health/signup-web/Dockerfile) - it builds the health check utiliuty from source. Then the output is copied into the final Docker image, alongside the original ASP.NET app and the dependency checker.
+There's another new stage in the [updated Dockerfile](./docker/prod-health/signup-web/Dockerfile) - it builds the health check utiliuty from source. 
+
+Then the output is copied into the final Docker image, alongside the original ASP.NET app and the dependency checker.
 
 There's also a `HEALTHCHECK` instruction, which tells Docker to run the utility every 30 seconds. Docker records the result of executing each healthcheck.
 
@@ -48,7 +50,7 @@ docker image build `
 
 The [v10 manifest](./app/v10.yml) uses the upgraded web app, and it specifies a different schedule for the healthcheck.
 
-_ CUpdate the application: _
+_ Update the application: _
 
 ```
 docker-compose -f .\app\v10.yml up -d
@@ -71,7 +73,7 @@ firefox "http://$ip/app"
 
 ## Check container health
 
-Containers with a healthcheck report their current status:
+Containers with a healthcheck report their current status.
 
 _ You should see that the web app is showing as `Up` and `healthy`: _
 
@@ -90,7 +92,7 @@ docker container inspect app_signup-web_1
 
 ## Self-healing applications
 
-Adding a healthcheck means the container platform can test if your application is working correctly. If it's not then then platform can kill an unhealthy container and start a replacement.
+A healthcheck lets the container platform test if your application is working correctly. If it's not the platform can kill an unhealthy container and start a replacement.
 
 This is perfect for old apps which have known issues - if they're known to crash and stop responding, the healthcheck means Docker will repair the app with minimal downtime and with no manual intervention.
 

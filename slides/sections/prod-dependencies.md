@@ -24,9 +24,9 @@ In the [Program class](./src/Utilities.DependencyCheck/Program.cs) the app uses 
 
 ## Packaging the dependency checker
 
-There's a new stage in the [updated Dockerfile](./docker/prod-dependencies/signup-web/Dockerfile) - it builds the dependency checker from source. Then the output is copied into the final Docker image, alongside the original ASP.NET app.
+A new stage in the [updated Dockerfile](./docker/prod-dependencies/signup-web/Dockerfile) builds the dependency checker from source. The output is copied into the final Docker image, alongside the original ASP.NET app.
 
-There's also a new environment variable `DEPENDENCY_CHECK_ENABLED`, used to turn the dependency check off - which can be useful in dev environments.
+There's also a new environment variable `DEPENDENCY_CHECK_ENABLED`, used to turn the dependency check off in dev environments.
 
 In the [startup script](./docker/prod-dependencies/signup-web/startup.ps1) that flag gets checked, and if it's set then the dependency checker gets run.
 
@@ -144,8 +144,8 @@ firefox "http://$ip/app"
 
 ## Making dependencies explicit
 
-This pattern makes your old apps ready to run in a dynamic environment. In a production cluster you can't have ordering depenencies, because it limits the platform's ability to manage the app.
+This pattern makes your old apps ready to run in a dynamic environment. In a production cluster you can't have ordering depenencies, it's too limiting for the platform.
 
-Explicit dependencies mean the container stops if the app's dependencies aren't available. The cluster then starts a replacement container - the dependencies may be available by then. If not, the new container stops and the cluster starts another one.
+Explicit dependencies mean the container stops if the app can't work. The cluster starts a replacement container - the dependencies may be available by then. If not, the new container stops and the cluster starts another one.
 
-It's important to keep this functionality optional though, so in dev and test environments you can run just part of the stack without the container constantly failing.
+It's important to keep this functionality optional, so in dev and test environments you can run just part of the stack without the container constantly failing.

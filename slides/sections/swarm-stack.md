@@ -107,13 +107,27 @@ docker-compose `
   -f .\app\v9-prod.yml config > docker-stack.yml
 ```
 
-> The generated `docker-stack.yml` file contains the merged contents, ready for deployment. It also useds [Docker config objects]() and [Docker secrets](https://docs.docker.com/engine/swarm/secrets/) for confiuguration.
+> The generated `docker-stack.yml` file contains the merged contents, ready for deployment. It also uses [Docker config objects]() and [Docker secrets](https://docs.docker.com/engine/swarm/secrets/).
 
 ---
 
-## Create the configs
+## Storing config in the swarm
+
+A Docker Swarm cluster does more than just manage containers. There's a resilient, encrypted data store in the cluster which you can use with your containers.
+
+Communication between swarm nodes is encrypted too, so you can safely store confidential data like passwords and keys in the swarm.
+
+Docker surfaces config data as files inside the container, so it's all transparent to your app.
+
+---
+
+## Create the config object
 
 > This part is for the **manager**
+
+There are two ways to store configuration data in Docker swarm. You use config objects for data which isn't confidential.
+
+_ Store the [log4net.config](./app/configs/log4net.config) file in the swarm: _
 
 ```
 docker config create `
@@ -123,15 +137,46 @@ docker config create `
 
 ---
 
-## Create the secrets
+## Check the config object
+
+Configs aren't secret, so you can read the values back out of the swarm.
+
+_ Check the config object is stored: _
+
+```
+docker config inspect --pretty netfx-log4net
+```
+
+> This is an XMl config file. You can store any type of data in the swarm.
+
+---
+
+## Create the secret
 
 > This part is for the **manager**
+
+_ Store the [connectionStrings.config](./app/secrets/connectionStrings.config) file in the swarm: _
+
 
 ```
 docker secret create `
   netfx-connectionstrings `
   ./app/secrets/connectionStrings.config
 ```
+
+---
+
+## Check the secret object
+
+Secrets aren't secret, you cannot read the original plain text.
+
+_ Check the secret object is stored: _
+
+```
+docker secret inspect --pretty netfx-connectionstrings
+```
+
+> It's still XML, but it's only delivered as plain text inside the container that needs it.
 
 ---
 
