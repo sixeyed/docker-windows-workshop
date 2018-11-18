@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
@@ -45,7 +46,7 @@ namespace SignUp.Web
             Log.Info("Ensuring database exists");
             try
             {
-                var connectionString = Config.Current.GetConnectionString("SignUpDb").ToLower();
+                var connectionString = ConfigurationManager.ConnectionStrings["SignUpDb"].ConnectionString;
                 var server = connectionString.Split(';').First(x => x.StartsWith("server=")).Split('=')[1];
                 Log.Debug($"Connecting to database server: {server}");
                 using (var context = new SignUpContext())

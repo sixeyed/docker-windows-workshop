@@ -22,7 +22,7 @@ The [startup script](./docker/prod-config/signup-web/startup.ps1) checks those v
 
 ---
 
-## Build the new image
+## Build the new web image
 
 _ Tag the image as `v5`, which includes variable configuration: _
 
@@ -36,11 +36,25 @@ docker image build `
 
 ---
 
+## Build the new handler image
+
+There's also an [updated Dockerfile for the save handler](), which adds the same config-loading logic.
+
+_ Tag this image as `v3`, which includes variable configuration: _
+
+```
+docker image build `
+  -t dwwx/save-handler:v3 `
+  -f ./docker/prod-config/save-handler/Dockerfile .
+```
+
+---
+
 ## Run the app with the default config
 
 We'll swap out the configuration files later when we run the app in a Docker swarm cluster. 
 
-For now we need to make sure we haven't broker the app, so we can run it with the default config in the image. The [v8 manifest](./app/v8.yml) just updates the web image to `v5`.
+For now we need to make sure we haven't broker the app, so we can run it with the default config in the image. The [v8 manifest](./app/v8.yml) just updates to the new images.
 
 _ Update the application: _
 
@@ -61,7 +75,7 @@ $ip = docker container inspect `
 firefox "http://$ip/app"
 ```
 
-> It all works as befor,e using the default config in the image
+> It all works as before, using the default config in the image
 
 ---
 
@@ -71,13 +85,14 @@ The logs will show that the startup script did run the config logic:
 
 ```
 docker container logs app_signup-web_1
+docker container logs app_signup-save-handler_1
 ```
 
 > You'll see `STARTUP: Loading config files` - but the source path isn't specified, so the default files are not overwritten
 
 ---
 
-## Overwriting default configuration
+## Overwriting default config
 
 Your containerized apps should have default configuration settings bundled in the image, so the team can use `docker container run` without needing any extra setup.
 
