@@ -18,7 +18,8 @@ RedirectConfigFile $env:LOG4NET_CONFIG_PATH "$env:APP_ROOT\log4net.config"
 RedirectConfigFile $env:CONNECTIONSTRINGS_CONFIG_PATH "$env:APP_ROOT\connectionStrings.config"
 
 Write-Output 'STARTUP: Starting IIS with ServiceMonitor'
-Start-Process -NoNewWindow -FilePath C:\ServiceMonitor.exe -ArgumentList w3svc; `
+Start-Process -NoNewWindow -FilePath C:\ServiceMonitor.exe -ArgumentList w3svc
+Start-Sleep -Seconds 10
 
 Write-Output 'STARTUP: Running metrics exporter'
 Invoke-WebRequest http://localhost/app -UseBasicParsing | Out-Null
