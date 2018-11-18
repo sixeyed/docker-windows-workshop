@@ -53,7 +53,7 @@ Grafana has an API you can use to automate setup, and we'll use that to build a 
 
 To make a custom Grafana image, you need to configure a data source, create users and deploy your own dashboard. The [Grafana Dockerfile](./docker/metrics-dashboard/grafana/Dockerfile) does that.
 
-It uses a [data source provisioning](TODO) and [dashboard provisioning](TODO), which is standard Grafana functionality, and the Grafana API to set up a read-only user.
+It uses a [data source provisioning](http://docs.grafana.org/administration/provisioning/#datasources) and [dashboard provisioning](http://docs.grafana.org/administration/provisioning/#dashboards), which is standard Grafana functionality, and the Grafana API to set up a read-only user.
 
 ---
 
