@@ -168,7 +168,7 @@ docker secret create `
 
 ## Check the secret object
 
-Secrets aren't secret, you cannot read the original plain text.
+Secrets are secret, you cannot read the original plain text.
 
 _ Check the secret object is stored: _
 
