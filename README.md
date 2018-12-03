@@ -33,6 +33,8 @@ This workshop is a living thing. There are tags or branches for previous version
 
 #### 2018
 
+- [dceu18](https://github.com/sixeyed/docker-windows-workshop/tree/dceu18) - DockerCon EU 2018, hosted [here](https://dceu18--dwwx.netlify.com) 
+
 - [buildstufflt18](https://github.com/sixeyed/docker-windows-workshop/tree/buildstufflt18) - BuildStuff Lithuania 2018, hosted [here](https://buildstufflt18--dwwx.netlify.com) 
 
 - [winops18](https://github.com/sixeyed/docker-windows-workshop/tree/winops18) - WinOps 2018, hosted [here](https://winops18--dwwx.netlify.com) 
