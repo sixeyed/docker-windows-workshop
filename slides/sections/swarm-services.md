@@ -88,13 +88,13 @@ Some containers will be using the original definition with Nano Server, and some
 docker service ps pinger
 ```
 
-> Docker ensures new tasks are healthy before carrying on with the rollout. You have [fine control](TODO) over how the rollout happens.
+> Docker ensures new tasks are healthy before carrying on with the rollout. You have [fine control](https://docs.docker.com/engine/swarm/swarm-tutorial/rolling-update/) over how the rollout happens.
 
 ---
 
 ## Inspecting swarm services
 
-The service definition is stored in the swarm, securely peristeted among the manager nodes. 
+The service definition is stored in the swarm, securely persisted among the manager nodes. 
 
 _ Check the service details: _
 

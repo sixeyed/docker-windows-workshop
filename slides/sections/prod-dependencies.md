@@ -18,7 +18,7 @@ We'll add that functionality to our old ASP.NET app by packaging a dependency ch
 
 The utility is just a .NET Framework console app. It uses the same configuration structure as the ASP.NET app, so it will use the same settings as the app.
 
-In the [Program class](./src/Utilities.DependencyCheck/Program.cs) the app uses [Polly](TODO) to wrap a SQL connection check. It retries three times to connect to SQL Server, and if the third attempt fails, the utility returns an exit code of `1`.
+In the [Program class](./src/Utilities.DependencyCheck/Program.cs) the app uses [Polly](https://github.com/App-vNext/Polly) to wrap a SQL connection check. It retries three times to connect to SQL Server, and if the third attempt fails, the utility returns an exit code of `1`.
 
 ---
 

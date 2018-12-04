@@ -24,7 +24,7 @@ In the [Program class](./src/Utilities.HealthCheck/Program.cs) the utility expec
 
 ## Packaging the health checker
 
-There's another new stage in the [updated Dockerfile](./docker/prod-health/signup-web/Dockerfile) - it builds the health check utiliuty from source. 
+There's another new stage in the [updated Dockerfile](./docker/prod-health/signup-web/Dockerfile) - it builds the health check utility from source. 
 
 Then the output is copied into the final Docker image, alongside the original ASP.NET app and the dependency checker.
 

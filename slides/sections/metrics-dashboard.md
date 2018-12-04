@@ -18,7 +18,7 @@ We'll do that by running Promtheus and Grafana - the leading tools in this space
 
 Prometheus is a metrics server. It runs a time-series database to store instrumentation data, polls configured endpoints to collect data, and provides an API (and a simple Web UI) to retrieve the raw or aggregated data.
 
-The Prometheus team maintain a Docker image for Linux, but we'll use a Windows Docker image from [dockersamples/aspnet-monitoring](TODO).
+The Prometheus team maintain a Docker image for Linux, but we'll use a Windows Docker image from [dockersamples/aspnet-monitoring](https://github.com/dockersamples/aspnet-monitoring).
 
 ---
 
@@ -43,7 +43,7 @@ docker image build -t dwwx/prometheus `
 
 Grafana is a dashboard server. It can connect to data sources and provide rich dashboards to show the overall health of your app. 
 
-There isn't an official Windows variant of the Grafana image, but we can use the one from [dockersamples/aspnet-monitoring](TODO). 
+There isn't an official Windows variant of the Grafana image, but we can use the one from [dockersamples/aspnet-monitoring](https://github.com/dockersamples/aspnet-monitoring). 
 
 Grafana has an API you can use to automate setup, and we'll use that to build a custom Docker image.
 
@@ -53,7 +53,7 @@ Grafana has an API you can use to automate setup, and we'll use that to build a 
 
 To make a custom Grafana image, you need to configure a data source, create users and deploy your own dashboard. The [Grafana Dockerfile](./docker/metrics-dashboard/grafana/Dockerfile) does that.
 
-It uses a [data source provisioning](TODO) and [dashboard provisioning](TODO), which is standard Grafana functionality, and the Grafana API to set up a read-only user.
+It uses a [data source provisioning](http://docs.grafana.org/administration/provisioning/#datasources) and [dashboard provisioning](http://docs.grafana.org/administration/provisioning/#dashboards), which is standard Grafana functionality, and the Grafana API to set up a read-only user.
 
 ---
 

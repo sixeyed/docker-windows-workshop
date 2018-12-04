@@ -29,7 +29,7 @@ docker image build -t dwwx/signup-web `
 
 ## Build a better image
 
-The v1 Dockerfile is simple, but inefficient. The [v2 Dockerfile](./docker/frontend-web/v2/Dockerfile) splits the NuGet restore and MSBuild parts - which makes repeated builds faser. And it relays the application log file.
+The v1 Dockerfile is simple, but inefficient. The [v2 Dockerfile](./docker/frontend-web/v2/Dockerfile) splits the NuGet restore and MSBuild parts - which makes repeated builds faster. And it relays the application log file.
 
 _Build the image:_
 

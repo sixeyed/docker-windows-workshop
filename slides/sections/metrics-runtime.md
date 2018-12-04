@@ -2,7 +2,7 @@
 
 ---
 
-Containerized applications give you new opportunities for monitoring. You export metrics from each container, collect them centrally and showyour whole application health in a dashboard.
+Containerized applications give you new opportunities for monitoring. You export metrics from each container, collect them centrally and show your whole application health in a dashboard.
 
 The metrics collector and dashboard run in containers too, so now you can run the exact same metrics stack in dev that you use in production.
 
@@ -22,7 +22,7 @@ Here's a new version of the [web application Dockerfile](./docker/metrics-runtim
 
 The utility app reads from Windows Performance Counters and publishes them as an API on port `50505`.
 
-> The web code is unchanged. The exporter comes from the [dockersamples/aspnet-monitoring](TODO) sample app.
+> The web code is unchanged. The exporter comes from the [dockersamples/aspnet-monitoring](https://github.com/dockersamples/aspnet-monitoring) sample app.
 
 ---
 
