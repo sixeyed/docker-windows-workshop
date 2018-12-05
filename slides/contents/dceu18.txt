@@ -1,6 +1,13 @@
 intro.md
+#101-container-basics.md
+#101-dockerfiles-and-images.md
+#101-image-registries.md
 frontend-web.md
 frontend-reverse-proxy.md
 backend-rest-api.md
 backend-async-messaging.md
+backend-analytics.md
+metrics-runtime.md
+metrics-application.md
+metrics-dashboard.md
 thankyou.md

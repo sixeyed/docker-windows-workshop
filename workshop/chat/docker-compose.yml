@@ -9,7 +9,7 @@ services:
 
   rocketchat:
     image: rocketchat/rocket.chat:0.65.2
-    publish:
+    ports:
       - "3000:3000"
     depends_on:
       - db

@@ -1,0 +1,37 @@
+version: "3.2"
+
+services:
+  vote:
+    image: dockersamples/examplevotingapp_vote:dotnet-alpine
+    environment:
+      - "Voting:OptionA=101"
+      - "Voting:OptionB=Metrics"
+    ports:
+      - "5000:80"
+    depends_on:
+      - message-queue
+
+  result:
+    image: dockersamples/examplevotingapp_result:dotnet-alpine
+    ports:
+      - "5001:80"
+    environment:
+      - "Voting:OptionA=101"
+      - "Voting:OptionB=Metrics"
+      - "ConnectionStrings:ResultData=Server=db;Port=4000;Database=votes;User=root;SslMode=None"
+    depends_on:
+      - db
+
+  worker:
+    image: dockersamples/examplevotingapp_worker:dotnet-alpine
+    environment:      
+      - "ConnectionStrings:VoteData=Server=db;Port=4000;Database=votes;User=root;SslMode=None"
+    depends_on:
+      - message-queue
+      - db
+
+  message-queue:
+    image: nats:1.3.0-linux
+
+  db:
+    image: pingcap/tidb:v2.1.0
