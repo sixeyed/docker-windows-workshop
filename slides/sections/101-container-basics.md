@@ -15,7 +15,7 @@ Task containers just do one thing and then exit. Useful for automation, but we'l
 _Print out the host name from a Windows container: _
 
 ```
-docker container run microsoft/nanoserver hostname
+docker container run mcr.microsoft.com/windows/nanoserver:1809 hostname
 ```
 
 ---
@@ -42,7 +42,7 @@ _Start a Windows Server Core container and connect to it:_
 
 ```
 docker container run --interactive --tty --rm `
-  microsoft/windowsservercore powershell
+  mcr.microsoft.com/windows/servercore:ltsc2019 powershell
 ```
 
 ---
@@ -71,9 +71,8 @@ _Run SQL Server as a detached container:_
 
 ```
 docker container run --detach --name sql `
-  --env ACCEPT_EULA=Y `
   --env sa_password=DockerCon!!! `
-  microsoft/mssql-server-windows-express:2016-sp1
+  dwwx/sql-server:2017
 ```
 
 ---
@@ -134,7 +133,7 @@ cd 'C:\Program Files\Microsoft SQL Server'
 ```
 
 ```
-ls .\MSSQL13.SQLEXPRESS\MSSQL\data
+ls .\MSSQL14.SQLEXPRESS\MSSQL\data
 ```
 
 ---
@@ -205,7 +204,7 @@ exit
 
 We don't need any of these containers, so you can remove them all
 
-_ The `-force` flag removes containers even if they;re still running: _
+_ The `-force` flag removes containers even if they're still running: _
 
 ```
 docker container rm --force `
