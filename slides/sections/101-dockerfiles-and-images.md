@@ -42,24 +42,24 @@ Now you can run a container from your image to run the app.
 _ Run a detached container with the HTTP port published:_
 
 ```
-docker container run --detach --publish 80:80 `
+docker container run --detach --publish 8081:80 `
   --name app hostname-app
 ```
 
-> Any traffic coming into the server on port 80 will be managed by Docker and processed by the container.
+> Any traffic coming into the server on port 8081 will be managed by Docker and processed by the container.
 
 ---
 
 ## Browse to the app
 
-When you're connected to the host, to browse the website you can use the local (virtual) IP address of the container.
+The app in the container is listening on port 80, but you could be using that port on your host. 
 
-_Get the container IP address and browse to it: _
+So we've published port 80 on the container to port 8081 on the host. It's access from the Docker host and to external clients.
+
+_Browse to the app: _
 
 ```
-$ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app
-
-firefox "http://$ip"
+firefox "http://localhost:8081"
 ```
 
 ---
@@ -82,18 +82,18 @@ for ($i=0; $i -lt 5; $i++) {
 
 ## Check all the containers
 
-You now have multiple instances of the app running. The Docker image is the same, but each instance will show its own containr ID.
+You now have multiple instances of the app running. The Docker image is the same, but each instance will show its own container ID.
 
-_ Browse to all the new containers:_
+_ Browse to all the new containers, using this script to find the random host port:_
 
 ```
 for ($i=0; $i -lt 5; $i++) {
-  $ip = & docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' "app-$i"
-  firefox "http://$ip"
+  $address = $(docker container port "app-$i" 80).Replace('0.0.0.0', 'localhost')  
+  firefox "http://$address"
 }
 ```
 
-> You'll see that each site displays a different hostname, which is the container ID Docker generates. 
+> You'll see that each site displays a different hostname, which is the ID of the container running the app. 
 
 ---
 
@@ -132,7 +132,7 @@ _ Check the logs from one of the app containers: _
 docker container logs app-0
 ```
 
-> The logs are locked inside the container filesystem, Docker doesn't know about them.
+> Nothing. The logs are locked inside the container filesystem, Docker doesn't know about them.
 
 ---
 
@@ -172,14 +172,12 @@ docker container run --detach --publish 8080:80 `
 
 ## Browse to the new app
 
-You can reach the site by browsing to your computer externally on port 8080, on on the computer by using the container IP address.
+You can reach the site by browsing to your `localhost` or to your computer externally on port `8080`
 
-_ Find the container IP address and browse to it:_
+_ Browse to the app:_
 
 ```
-$ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' tweet-app
-
-firefox "http://$ip"
+firefox http://localhost:8080
 ```
 
 > Feel free to hit the Tweet button, sign in and share your workshop progress :)
