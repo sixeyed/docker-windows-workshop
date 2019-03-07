@@ -4,9 +4,8 @@ version: '3.1'
 services:
   
   signup-db:
-    image: microsoft/mssql-server-windows-express:2016-sp1
-    environment: 
-      - ACCEPT_EULA=Y
+    image: dwwx/sql-server:2017
+    environment:
       - sa_password=DockerCon!!!
     networks:
       - app-net
