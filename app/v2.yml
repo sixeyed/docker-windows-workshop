@@ -32,7 +32,7 @@ services:
 
   proxy:
     image: dwwx/reverse-proxy
-    command: --docker --docker.endpoint=npipe:////./pipe/docker_engine --api
+    command: --docker --docker.endpoint=npipe:////./pipe/docker_engine --docker.watch --api
     ports:
       - "8020:80"
       - "8080:8080"

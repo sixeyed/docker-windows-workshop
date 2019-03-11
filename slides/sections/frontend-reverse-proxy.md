@@ -61,9 +61,9 @@ To use the new homepage **without changing the original app** we can run a rever
 
 ## The reverse proxy
 
-We're using [Traefik](http://traefik.io), which is really easy to integrate with docker. All requests come to Traefik, and it proxies content from the homepage container or the original app container, based on the requested route.
+We're using [Traefik](http://traefik.io), which is really easy to integrate with Docker. All requests come to Traefik, and it fetches content from the homepage container or the original app container, based on the requested route.
 
-Traefik can do a lot more than that - including SSL termination, load-balancing and sticky sessions. The [official Traefik image on Docker Hub](https://docs.traefik.io/#the-official-docker-image) doesn't have a Windows Server 2019 version, so we'll build our own.
+Traefik can do a lot more than that - SSL termination, load-balancing and sticky sessions. The [official Traefik image on Docker Hub](https://docs.traefik.io/#the-official-docker-image) doesn't have a Windows Server 2019 version, so we'll build our own.
 
 _Build the reverse proxy image:_
 
@@ -75,7 +75,7 @@ docker image build `
 
 ---
 
-## Upgrade to use the new homepage
+## Upgrade to the new homepage
 
 Check out the [v2 manifest](./app/v2.yml) - it adds services for the homepage and the proxy. The routing rules for the proxy are specified using [labels](https://docs.traefik.io/basics/#matchers).
 
@@ -93,7 +93,7 @@ docker-compose -f .\app\v2.yml up -d
 
 ## Check out the new integrated app
 
-The reverse proxy is published to port `8020`so you can just refresh your browser window, or run:
+The reverse proxy is published to port `8020` so you can just refresh your browser window, or run:
 
 ```
 firefox http://localhost:8020
