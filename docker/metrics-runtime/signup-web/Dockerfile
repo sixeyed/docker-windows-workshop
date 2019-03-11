@@ -1,5 +1,5 @@
 # escape=`
-FROM microsoft/dotnet-framework:4.7.2-sdk AS builder
+FROM microsoft/dotnet-framework:4.7.2-sdk-windowsservercore-ltsc2019 AS builder
 
 WORKDIR C:\src
 COPY src\SignUp.sln .
@@ -16,11 +16,12 @@ COPY src C:\src
 RUN msbuild SignUp.Web\SignUp.Web.csproj /p:OutputPath=c:\out /p:Configuration=Release
 
 # app image
-FROM microsoft/aspnet:4.7.2-windowsservercore-ltsc2016
+FROM mcr.microsoft.com/dotnet/framework/aspnet:4.7.2-windowsservercore-ltsc2019
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop';"]
 
 ENV APP_ROOT=C:\web-app
 
+EXPOSE 80 50505
 WORKDIR ${APP_ROOT}
 RUN New-WebApplication -Name 'app' -Site 'Default Web Site' -PhysicalPath $env:APP_ROOT
 
@@ -32,7 +33,7 @@ CMD Start-Process -NoNewWindow -FilePath C:\ServiceMonitor.exe -ArgumentList w3s
     Get-Content -Path "C:\logs\SignUp.log" -Tail 1 -Wait 
 
 WORKDIR C:\aspnet-exporter
-COPY --from=dockersamples/aspnet-monitoring-exporter:4.7.2 C:\aspnet-exporter .
+COPY --from=dockersamples/aspnet-monitoring-exporter:4.7.2-windowsservercore-ltsc2019 C:\aspnet-exporter .
 ENV COLLECTOR_CONFIG_PATH="w3svc-collectors.json"
 
 COPY --from=builder C:\out\_PublishedWebsites\SignUp.Web ${APP_ROOT}
