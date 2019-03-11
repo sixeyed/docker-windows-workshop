@@ -1,5 +1,5 @@
 # v1 is the original monolith with SQL Server
-version: '3.1'
+version: '3.7'
 
 services:
   
