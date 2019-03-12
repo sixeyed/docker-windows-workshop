@@ -1,5 +1,4 @@
 # v7 uses volumes for data storage
-# v6 adds metrics with Prometheus and Grafana
 version: '3.7'
 
 services:

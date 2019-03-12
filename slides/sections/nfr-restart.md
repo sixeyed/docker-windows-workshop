@@ -15,7 +15,7 @@ You use the `restart` option to specify how containers should behave when they s
 _ Start by running a simple example with IIS: _
 
 ```
-docker container run -d --name iis-restart `
+docker container run -d -P --name iis-restart `
  --restart always `
  microsoft/iis:windowsservercore
 ```
@@ -31,10 +31,9 @@ Check the application is actually running.
 _ Make an HTTP request to the container: _
 
 ```
-$ip = docker inspect `
- --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' iis-restart
+$port = $(docker container port iis-restart 80).Replace('0.0.0.0:', '')
 
-iwr -useb http://$ip
+Invoke-WebRequest "http://localhost:$port" -UseBasicParsing
 ```
 
 > You should get status code 200, so the web server is working.
@@ -65,7 +64,7 @@ docker container ls --last 1
 
 The `restart` option comes into action when the container stops, or when the Docker service is restarted or the machine is rebooted.
 
-Containers aren't removed when they stop, and Docker just restarts them by running the container startup command again.
+Containers aren't removed when they stop. Docker just restarts them by running the container startup command again.
 
 **It's the same container**, but it's been rebooted.
 
@@ -89,8 +88,6 @@ All the service definitions have changed, so when you redeploy you'll get all ne
 _ Run the new stack: _
 
 ```
-cd $env:workshop
-
 docker-compose -f ./app/v8.yml up -d
 ```
 
@@ -98,15 +95,29 @@ docker-compose -f ./app/v8.yml up -d
 
 ## Try out the app
 
-There's a new proxy container, so you'll need to get the IP address and browse to open the app.
+There's a new proxy container, but the same port `8020` is published.
+
+_Browse to the app:_
 
 ```
-$ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_proxy_1
-
-firefox "http://$ip"
+firefox http://localhost:8020
 ```
 
-> It's the same app, but the containers will all come back online when Azure reboots your VM :)
+> You can add some data, query SQL Server and see the data in Kibana
+
+---
+
+## Restart Docker
+
+Containers are all managed by the Docker Engine, which runs as a Windows Service. Restart the service and all containers stop - but any with a restart policy will be started again when the service starts.
+
+_Restart the Docker Engine Windows Service:_
+
+```
+Restart-Service docker
+```
+
+> The service starts all the stopped containers. Refresh your browser and see the app is still up.
 
 ---
 
