@@ -15,7 +15,7 @@ _Create a simple service which pings itself:_
 ```
 docker service create `
   --entrypoint "ping -t localhost" `
-  --name pinger microsoft/nanoserver
+  --name pinger mcr.microsoft.com/windows/nanoserver:1809
 ```
 
 > The declarative approach is better. We'll use that for the final app.
@@ -38,7 +38,7 @@ docker service logs pinger
 
 ## Scaling services
 
-Services are an abstraction over containers. You don't care which node is running the containers, you just specify a service level, and the swarm maintains it. 
+Services are an abstraction over containers. You could have a swarm with 100 nodes, and you don't care which node is running which containers. You just specify a service level, and the swarm maintains it. 
 
 _Scale up the service by running more replicas:_
 
@@ -60,6 +60,8 @@ docker service ps pinger
 docker service logs pinger
 ```
 
+> Tasks are just the name for containers in a service. You'll see the logs listed with the task ID, prefixed with the number - `pinger.1...`
+
 ---
 
 ## Updating services
@@ -71,10 +73,11 @@ This is a zero-downtime update for services with multiple replicas, because Dock
 _ Update the image for the `pinger` service: _
 
 ```
-docker service update --image microsoft/windowsservercore pinger
+docker service update --detach `
+  --image  mcr.microsoft.com/windows/servercore:ltsc2019 pinger
 ```
 
-> This replaces the container image. The start command is still the same, so when new tasks start, they will run the original command. 
+> This updates the container image. The start command is still the same, so when new tasks start, they will run the original command. 
 
 ---
 
@@ -94,13 +97,15 @@ docker service ps pinger
 
 ## Inspecting swarm services
 
-The service definition is stored in the swarm, securely peristeted among the manager nodes. 
+The service definition is stored in the swarm, securely persisted among the manager nodes. 
 
 _ Check the service details: _
 
 ```
 docker service inspect pinger
 ```
+
+> Docker Swarm is built from the open-source SwarmKit project - [docker/swarmkit]()
 
 ---
 
@@ -134,11 +139,13 @@ docker service logs pinger
 
 ## Removing the service
 
-You can stop and remove all the task containers just by removing the service:
+The service is the unit you manage. When you don't need it any more, you remove the service and Docker stops all the containers:
 
 ```
 docker service rm pinger
 ```
+
+> This also removes the service configuration from the swarm, so there's no going back.
 
 ---
 
@@ -146,6 +153,6 @@ docker service rm pinger
 
 Production swarm clusters typically have 3 manager nodes for high availability, and as many worker nodes as you need for your workloads.
 
-One swarm can be a cluster of hundreds of worker nodes, and you manage your services in exactly the same way for any size of swarm.
+One swarm can be a cluster of hundreds of worker nodes, and you manage your services in exactly the same way for any size of swarm. You can even mix Linux and Windows, Intel and ARM processors in the same swarm.
 
 Docker takes care of service levels, so if a server goes down and takes containers with it, Docker spins up replacements on other nodes.
