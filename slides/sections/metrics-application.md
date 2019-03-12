@@ -31,8 +31,6 @@ You should record metrics at a fairly coarse level - "Event count" in this examp
 There's a new [Dockerfile for the save handler](./docker/metrics-application/save-handler/Dockerfile) and a new [Dockerfile for the index handler](./docker/metrics-application/index-handler/Dockerfile). They package the same code, but they set default config values to enable the metrics API.
 
 ```
-cd $env:workshop; `
-
 docker image build -t dwwx/save-handler:v2 `
   -f .\docker\metrics-application\save-handler\Dockerfile . ; `
 
@@ -62,7 +60,9 @@ docker container run -d  `
 
 The save message handler is a .NET Framework console app. The Prometheus NuGet package adds a self-hosted HTTP server for the metrics API.
 
-_ Check out the metrics: _
+The run command didn't publish any ports, but you can still browse to the metrics endpoint using the container's IP address.
+
+_Check out the metrics:_
 
 ```
 $ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' save-v2; `
@@ -78,10 +78,10 @@ firefox "http://$($ip):50505/metrics"
 
 The index message handler records similar metrics about messages handled, and the processing status.
 
-_ Run the new version of the Elasticsearch handler:_
+_Run the new version of the Elasticsearch handler:_
 
 ```
-docker container run -d -P --name index-v2 dwwx/index-handler:v2
+docker container run -d --name index-v2 dwwx/index-handler:v2
 ```
 
 ---
@@ -90,7 +90,7 @@ docker container run -d -P --name index-v2 dwwx/index-handler:v2
 
 The save message handler is a .NET Core console app. The same Prometheus NuGet package publishes the metrics API with a self-hosted web server.
 
-_ Check out the metrics: _
+_Check out the metrics using the container's IP address:_
 
 ```
 $ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' index-v2; `
@@ -110,10 +110,12 @@ Now we know how the metrics look, let's remove the new containers:
 @('save-v2', 'index-v2') | foreach { docker container rm -f $_ }
 ```
 
+> This is just some fancy PowerShell to loop over a list of container names and remove them.
+
 ---
 
 ## Application metrics
 
 Metrics about what your application is actually doing give you useful insight into your application health, and how work is being distribuited among containers.
 
-You need to change code to get this level of detail, but all the major languages have Prometheus client libraries which make it very easy to capture and export metrics.
+You need to write code to get this level of detail, but all the major languages have Prometheus client libraries which make it very easy to capture and export metrics.
