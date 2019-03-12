@@ -6,7 +6,7 @@ Exposing metrics endpoints from all your app containers is the first step to get
 
 Next you need to run two other components - a metrics server, which grabs and stores all the metrics from your containers, and a dashboard which presents the data in a usable way.
 
-We'll do that by running Promtheus and Grafana - the leading tools in this space - in containers alongside our app.
+We'll do that by running [Promtheus]() and [Grafana]() - the leading tools in this space - in containers alongside our app.
 
 ---
 
@@ -22,16 +22,14 @@ The Prometheus team maintain a Docker image for Linux, but we'll use a Windows D
 
 Prometheus uses a simple configuration file, listing the endpoints to scrape for metrics. 
 
-We'll use [this Dockerfile](./docker/metrics-dashboard/prometheus/Dockerfile) to bundle a custom [prometheus.yml](./docker/metrics-dashboard/prometheus/prometheus.yml) file on top of the existing Prometheus image..
+[This Dockerfile](./docker/metrics-dashboard/prometheus/Dockerfile) to bundle a custom [prometheus.yml](./docker/metrics-dashboard/prometheus/prometheus.yml) file on top of the existing Prometheus image.
 
 ```
-cd $env:workshop; `
-
 docker image build -t dwwx/prometheus `
   -f ./docker/metrics-dashboard/prometheus/Dockerfile .
 ```
 
-> Now you have a Docker image that will run Prometheus with your custom config.
+> Now you have a Docker image that will run Prometheus packaged with custom configuration for the application.
 
 ---
 
@@ -49,20 +47,20 @@ Grafana has an API you can use to automate setup, and we'll use that to build a 
 
 To make a custom Grafana image, you need to configure a data source, create users and deploy your own dashboard. The [Grafana Dockerfile](./docker/metrics-dashboard/grafana/Dockerfile) does that.
 
-It uses a [data source provisioning](TODO) and [dashboard provisioning](TODO), which is standard Grafana functionality, and the Grafana API to set up a read-only user.
+It uses a [data source provisioning](TODO) and [dashboard provisioning](TODO), which is standard Grafana functionality, and the Grafana API to set up a read-only user in the [init script](TODO).
 
 ---
 
 ## Build the Grafana image
 
-_ Build the custom Grafana image: _
+_Build the custom Grafana image:_
 
 ```
-cd $env:workshop; `
-
 docker image build -t dwwx/grafana `
   -f ./docker/metrics-dashboard/grafana/Dockerfile .
 ```
+
+> This image is fully configured with a Grafana dashboard to drop into the application.
 
 ---
 
@@ -85,10 +83,7 @@ docker-compose -f .\app\v6.yml up -d
 Browse to the new proxy container, and send some load - refresh the sign up page a few times, and then submit the form:
 
 ```
-$ip = docker container inspect `
-  --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_proxy_1
-
-firefox "http://$ip"
+firefox http://localhost:8020
 ```
 
 ---
@@ -100,10 +95,7 @@ The web application and the message handlers are collecting metrics now, and Pro
 _ Browse to the Prometheus UI to see the metrics:_
 
 ```
-$ip = docker container inspect `
-  --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_prometheus_1
-
-firefox "http://$($ip):9090"
+firefox http://localhost:9090
 ```
 
 ---
@@ -125,10 +117,7 @@ The Grafana container is already running with a custom dashboard, reading the ap
 _ Browse to the Grafana container: _
 
 ```
-$ip = docker container inspect `
-  --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_grafana_1
-
-firefox "http://$($ip):3000"
+firefox http://localhost:3000
 ```
 
 ---
@@ -158,4 +147,4 @@ Containerized apps run on dynamic container platforms. maybe with hundreds of co
 
 A metrics dashboard like this is essential to being ready for production - so when you go live you can be confident that your app is working correctly.
 
-> There's one missing piece from this dashboard - metrics from the Docker platform itself. I cover that in my Pluralsight course on [Monitoring Containerized Application Health](TODO).
+> There's one missing piece from this dashboard - metrics from the Docker platform itself. I cover that in my Pluralsight course on [Monitoring Containerized Application Health](https://pluralsight.pxf.io/c/1197078/424552/7490?u=https%3A%2F%2Fwww.pluralsight.com%2Fcourses%2Fmonitoring-containerized-app-health-docker).
