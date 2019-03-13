@@ -11,27 +11,21 @@ Set-MpPreference -DisableRealtimeMonitoring $true
 Write-Output '-VM setup script starting-'
 
 $images = 
-'microsoft/windowsservercore:ltsc2016',
-'microsoft/windowsservercore',
-'microsoft/nanoserver:sac2016',
-'microsoft/nanoserver',
-'microsoft/iis:nanoserver-sac2016',
-'microsoft/iis:nanoserver',
-'microsoft/dotnet-framework:4.7.2-runtime',
-'microsoft/dotnet-framework:4.7.2-sdk',
-'microsoft/aspnet:4.7.2-windowsservercore-ltsc2016',
-'microsoft/aspnet',
-'microsoft/iis:windowsservercore',
-'microsoft/dotnet:2.1-runtime-nanoserver-sac2016',
-'microsoft/dotnet:2.1-sdk-nanoserver-sac2016',
-'microsoft/dotnet:2.1-aspnetcore-runtime-nanoserver-sac2016',
-'microsoft/mssql-server-windows-express:2016-sp1',
-'nats:1.3.0-nanoserver',
-'dockersamples/aspnet-monitoring-exporter:4.7.2',
-'dockersamples/aspnet-monitoring-grafana:5.2.1',
-'dockersamples/aspnet-monitoring-prometheus:2.3.1',
-'sixeyed/elasticsearch:5.6.11-nanoserver-sac2016',
-'sixeyed/kibana:5.6.11-windowsservercore-ltsc2016'
+'mcr.microsoft.com/windows/servercore:ltsc2019',
+'mcr.microsoft.com/windows/nanoserver:1809',
+'mcr.microsoft.com/windows/servercore/iis:windowsservercore-ltsc2019',
+'microsoft/dotnet-framework:4.7.2-sdk-windowsservercore-ltsc2019',
+'mcr.microsoft.com/dotnet/framework/aspnet:4.7.2-windowsservercore-ltsc2019',
+'microsoft/dotnet:2.1-runtime-nanoserver-1809',
+'microsoft/dotnet:2.1-sdk-nanoserver-1809',
+'microsoft/dotnet:2.1-aspnetcore-runtime-nanoserver-1809',
+'dwwx/sql-server:2017',
+'dwwx/message-queue',
+'dockersamples/aspnet-monitoring-exporter:4.7.2-windowsservercore-ltsc2019',
+'dockersamples/aspnet-monitoring-grafana:5.2.1-windowsservercore-ltsc2019',
+'dockersamples/aspnet-monitoring-prometheus:2.3.1-windowsservercore-ltsc2019',
+'sixeyed/elasticsearch:5.6.11-windowsservercore-ltsc2019',
+'sixeyed/kibana:5.6.11-windowsservercore-ltsc2019'
 
 Write-Output '* Pulling images'
 foreach ($tag in $images) {
@@ -47,7 +41,6 @@ choco install -y docker-compose
 choco install -y poshgit
 choco install -y visualstudiocode
 choco install -y firefox
-
 
 Write-Output '* Configuring environment'
 refreshenv
