@@ -25,7 +25,9 @@ $images =
 'dockersamples/aspnet-monitoring-grafana:5.2.1-windowsservercore-ltsc2019',
 'dockersamples/aspnet-monitoring-prometheus:2.3.1-windowsservercore-ltsc2019',
 'sixeyed/elasticsearch:5.6.11-windowsservercore-ltsc2019',
-'sixeyed/kibana:5.6.11-windowsservercore-ltsc2019'
+'sixeyed/kibana:5.6.11-windowsservercore-ltsc2019',
+'traefik:v1.7.8-nanoserver-sac2016',
+'nats:1.4.1-nanoserver'
 
 Write-Output '* Pulling images'
 foreach ($tag in $images) {

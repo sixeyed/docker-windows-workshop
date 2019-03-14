@@ -63,6 +63,18 @@ docker-compose -f .\app\v5.yml up -d
 
 ---
 
+## Check the index handler
+
+The index handler is a different stack from the save handler, but it connects to the message queue in the same way and subscribes to the same events.
+
+_Check the logs and you'll see the connection:_
+
+```
+docker container logs app_signup-index-handler_1
+```
+
+---
+
 ## Refresh your browser
 
 Go back to the sign-up page in your browser. **It's the same set of containers** serving the response, because the app definitions haven't changed.
@@ -77,9 +89,9 @@ And the logs in the message handlers:
 
  ```
 docker container exec app_signup-db_1 powershell `
-  "Invoke-SqlCmd -Query 'SELECT * FROM Prospects' -Database SignUp"; `
+  "Invoke-SqlCmd -Query 'SELECT * FROM Prospects' -Database SignUp"
 
-docker container logs app_signup-save-handler_1; `
+docker container logs app_signup-save-handler_1
 
 docker container logs app_signup-index-handler_1
 ```

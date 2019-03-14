@@ -85,7 +85,7 @@ _Upgrade to v3:_
 docker-compose -f .\app\v3.yml up -d
 ```
 
-> [Global.asax.cs]() configured Dependency Injection using the .NET Standard library
+> [Global.asax.cs]() configures Dependency Injection using the .NET Standard library
 
 ---
 

@@ -30,8 +30,6 @@ The v1 Dockerfile is simple, but inefficient. The [v2 Dockerfile](./docker/front
 _Build the image:_
 
 ```
-cd $env:workshop
-
 docker image build -t dwwx/signup-web:v2 `
   -f .\docker\frontend-web\v2\Dockerfile .
 ```
@@ -61,7 +59,7 @@ You can browse to port `8020` on the external domain name your Docker host (that
 _Browse to the v2 app:_
 
 ```
-firefox "http://localhost:8020/app"
+firefox http://localhost:8020/app
 ```
 
 ---

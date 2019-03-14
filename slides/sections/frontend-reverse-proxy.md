@@ -122,11 +122,7 @@ docker container exec app_signup-db_1 powershell `
 
 The Docker Engine has an API you can use to manage and query containers. Traefik uses that to find containers with Traefik labels, and it uses the label values to build the routing table.
 
-Traefik is running inside a container, talking to the Docker Engine it is running on to find out about other containers. The [command]() option in the [v2.yml]() compose file sets up the connection:
-
-```
- command: --docker --docker.endpoint=npipe:////./pipe/docker_engine --api
-```
+Traefik is running inside a container, talking to the Docker Engine it is running on to find out about other containers. The [command]() option in the [v2.yml]() compose file sets up that connection.
 
 > That endpoint is a [named pipe]() for private communication on the machine
 
