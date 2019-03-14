@@ -1,6 +1,6 @@
 # start Grafana and give it time to spin up
 Start-Process grafana-server -NoNewWindow 
-Start-Sleep 20
+Start-Sleep 45
 
 # create new user
 $auth = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes('admin:admin'))

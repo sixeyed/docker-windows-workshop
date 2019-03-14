@@ -7,8 +7,8 @@
         <p class="lead">A simple, interactive and fun playground to learn Docker.</p>
         <div style="text-align: right">
             <!-- v2 -->
-            <a href="https://europe-2018.dockercon.com" target="_blank">
-                <img src="img/dockercon-eu-2018.png"/>
+            <a href="https://www.docker.com/products/docker-enterprise" target="_blank">
+                <img src="img/docker-enterprise.png"/>
             </a>
         </div>
     </div>

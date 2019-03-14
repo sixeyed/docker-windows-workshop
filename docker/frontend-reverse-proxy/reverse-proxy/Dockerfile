@@ -1,23 +1,9 @@
-# escape=`
-FROM microsoft/windowsservercore:ltsc2016 AS installer
-SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
+# uses Server Core at netapi32.dll not in Nano Server 1809
+# usage
+#  docker container run -d -p 80 -p 8080 -v \\.\pipe\docker_engine:\\.\pipe\docker_engine sixeyed/traefik:v1.7.8-windowsservercore-ltsc2019 --api --docker --docker.endpoint=npipe:////./pipe/docker_engine --logLevel=DEBUG
+FROM mcr.microsoft.com/windows/servercore:ltsc2019
 
-ARG NGINX_VERSION="1.15.0"
-
-RUN Write-Host "Downloading Nginx version: $env:NGINX_VERSION"; `
-    Invoke-WebRequest -OutFile nginx.zip -UseBasicParsing "http://nginx.org/download/nginx-$($env:NGINX_VERSION).zip"; `
-    Expand-Archive nginx.zip -DestinationPath C:\ ; `
-    Rename-Item "C:\nginx-$($env:NGINX_VERSION)" C:\nginx;
-
-# NGINX
-FROM microsoft/windowsservercore:ltsc2016
-
-ARG NGINX_VERSION="1.15.0"
-ENV NGINX_VERSION ${NGINX_VERSION}
+COPY --from=traefik:v1.7.8-nanoserver-sac2016 /traefik.exe /traefik.exe
 
 EXPOSE 80 443
-WORKDIR C:\nginx
-CMD "C:\nginx\nginx.exe"
-
-COPY --from=installer C:\nginx\ .
-COPY .\docker\frontend-reverse-proxy\reverse-proxy\conf .\conf
+ENTRYPOINT ["/traefik"]

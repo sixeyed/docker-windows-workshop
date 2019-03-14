@@ -20,8 +20,8 @@ The new component is a simple REST API. You can browse the [source for the Refer
 
 The API uses a new technology stack:
 
-- [ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/?view=aspnetcore-2.1) as a fast, cross-platform alternative to full ASP.NET
-- [Dapper](https://github.com/StackExchange/Dapper) as a fast, lightweight ORM
+- [ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/?view=aspnetcore-2.1), a fast cross-platform alternative to full ASP.NET
+- [Dapper](https://github.com/StackExchange/Dapper), a fast lightweight ORM
 
 We can use new technologies without impacting the monolith, because this component runs in a separate container.
 
@@ -61,18 +61,19 @@ docker container run -d -p 8060:80 --name api `
 
 ## Try it out
 
-The API is available on port `8060` on your Docker host, so you can browse there or direct to the container:
+The API is available on port `8060` on your Docker host. It's a REST API so you can interact with the browser or PowerShell.
 
-_Get the API container's IP and launch the browser:_
+_Fetch the list of roles & countries:_
 
 ```
-$ip = docker container inspect `
-  --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' api
-
-firefox "http://$ip/api/countries"
+Invoke-RestMethod -Method GET http://localhost:8060/api/roles
 ```
 
-> Replace `/countries` with `/roles` to see the other dataset
+```
+Invoke-RestMethod -Method GET http://localhost:8060/api/countries
+```
+
+> The response is JSON but PowerShell formats it neatly as a table
 
 ---
 
@@ -80,13 +81,15 @@ firefox "http://$ip/api/countries"
 
 Now we can run the app and have the reference data served by the API. Check out the [v3 manifest](./app/v3.yml) - it adds a service for the REST API.
 
-The manifest also configures the web app to use the API - using Dependency Injection to load a different implementation of the reference data loader.
+The manifest also configures the web app to use the API, using Dependency Injection to load a different implementation of the reference data loader.
 
 _Upgrade to v3:_
 
 ```
 docker-compose -f .\app\v3.yml up -d
 ```
+
+> [Global.asax.cs]() configures Dependency Injection using the .NET Standard library
 
 ---
 
@@ -104,16 +107,15 @@ docker container ls
 
 ## Try the new distributed app
 
-The entrypoint is still the proxy listening on port `8020`, so you can browse there or to the container:
+Now when you click through to the original _Sign Up_ page, the dropdowns are loaded from the API.
+
+The entrypoint is still the proxy listening on port `8020`, so you can refresh the browser or open a new one:
 
 ```
-$ip = docker container inspect `
-  --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_proxy_1
-
-firefox "http://$ip"
+firefox http://localhost:8020
 ```
 
-> Now when you click through to the original _Sign Up_ page, the dropdowns are loaded from the API.
+> The API service also adds labels for Traefik, so you can get to the API at http://localhost:8020/api/roles
 
 ---
 
@@ -148,10 +150,10 @@ docker container exec app_signup-db_1 powershell `
 
 ## All good
 
-Now we've got a small, fast REST API providing a reference data service. It's only available to the web app right now, but we could easily make it publicly accessible.
+We're using Dependency Injection with a feature toggle for our legacy app to use the new API, so we can enable it in different environments using the same Docker image.
 
-How? Just by adding a new routing rule in the reverse proxy that's already part of our app. It could direct `/api` requests into the API container.
+Now we've got a small, fast REST API providing a reference data service. It's used internally by the web application, and it's publicly available through the proxy.
 
-That's something you can try out yourself.
+This a pattern we can repeat to break out more back-end services - designing nice new APIs and implementing them in new technologies, without breaking the existing legacy app.
 
-> Hint: the `location` blocks in `nginx.conf` are where you need to start
+

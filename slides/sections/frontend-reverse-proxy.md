@@ -44,22 +44,18 @@ docker container run -d -p 8040:80 --name home dwwx/homepage
 
 ## Try it out
 
-The homepage is available on port `8040` on your Docker host, so you can browse there or direct to the container:
+The homepage is available on port `8040` on your Docker host, so you can browse there or direct to `localhost`:
 
-_Get the homepage container's IP and launch the browser:_
 
 ```
-$ip = docker container inspect `
-  --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' home
-
-firefox "http://$ip"
+firefox http://localhost:8040
 ```
 
 ---
 
 ## Almost there
 
-The new homepage looks good, starts quickly and is packaged in a small Nano Server image.
+The new homepage looks good, starts quickly and is packaged in a small Windows Server Core image.
 
 It doesn't work on its own though - click _Sign Up_ and you'll get an error.
 
@@ -69,9 +65,9 @@ To use the new homepage **without changing the original app** we can run a rever
 
 ## The reverse proxy
 
-We're using [Nginx](http://nginx.org/en/). All requests come to Nginx, and it proxies content from the homepage container or the original app container, based on the requested route.
+We're using [Traefik](http://traefik.io), which is really easy to integrate with Docker. All requests come to Traefik, and it fetches content from the homepage container or the original app container, based on the requested route.
 
-Nginx can do a lot more than that - in the [nginx.conf configuration file](./docker/frontend-reverse-proxy/reverse-proxy/conf/nginx.conf) we're setting up caching, and you can also use Nginx for SSL termination.
+Traefik can do a lot more than that - SSL termination, load-balancing and sticky sessions. The [official Traefik image on Docker Hub](https://docs.traefik.io/#the-official-docker-image) doesn't have a Windows Server 2019 version, so we'll build our own.
 
 _Build the reverse proxy image:_
 
@@ -83,9 +79,9 @@ docker image build `
 
 ---
 
-## Upgrade to use the new homepage
+## Upgrade to the new homepage
 
-Check out the [v2 manifest](./app/v2.yml) - it adds services for the homepage and the proxy. 
+Check out the [v2 manifest](./app/v2.yml) - it adds services for the homepage and the proxy. The routing rules for the proxy are specified using [labels](https://docs.traefik.io/basics/#matchers).
 
 Only the proxy has `ports` specified. It's the public entrypoint to the app, the other containers can access each other, but the outside world can't get to them.
 
@@ -101,13 +97,10 @@ docker-compose -f .\app\v2.yml up -d
 
 ## Check out the new integrated app
 
-The reverse proxy is published to port `8020`, so you can browse there or to the new Nginx container:
+The reverse proxy is published to port `8020` so you can just refresh your browser window, or run:
 
 ```
-$ip = docker container inspect `
-  --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_proxy_1
-
-firefox "http://$ip"
+firefox http://localhost:8020
 ```
 
 > Now you can click through to the original _Sign Up_ page.
@@ -126,6 +119,16 @@ _Check the new data is there in the SQL container:_
 docker container exec app_signup-db_1 powershell `
   "Invoke-SqlCmd -Query 'SELECT * FROM Prospects' -Database SignUp"
 ```
+
+---
+
+## How does Traefik know where to route requests?
+
+The Docker Engine has an API you can use to manage and query containers. Traefik uses that to find containers with Traefik labels, and it uses the label values to build the routing table.
+
+Traefik is running inside a container, talking to the Docker Engine it is running on to find out about other containers. The [command]() option in the [v2.yml]() compose file sets up that connection.
+
+> That endpoint is a [named pipe]() for private communication on the machine
 
 ---
 

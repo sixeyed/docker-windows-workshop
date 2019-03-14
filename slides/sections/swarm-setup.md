@@ -2,7 +2,7 @@
 
 ---
 
-In production environments, you will run multiple Docker engines in a cluster and manage services rather than individual containers.
+In production environments you will run multiple Docker engines in a cluster and manage services rather than individual containers.
 
 The clustering technology built into Docker is called [swarm mode](https://docs.docker.com/engine/swarm/) - you can easily create a swarm across dozens of machines just by running one command on each.
 
@@ -22,18 +22,20 @@ Kubernetes has many more integration points than swarm which makes it easier for
 
 ## Clean up all containers
 
-We don't need any of these containers, so we'll remove them all.
+We don't need any of the running containers, so we'll remove them all.
 
 ```
 docker container rm --force `
   $(docker container ls --quiet --all)
 ```
 
+> The `$()` syntax joins commands together. PowerShell uses the pipe `|` but this syntax also works in Linux shells.
+
 ---
 
 ## Switch to swarm mode
 
-You can run a single node swarm, which gives you all the functionality of swarm mode but without high availability or the opportunity to scale horizontally.
+You can run a single node swarm, which gives you all the functionality of swarm mode but without high availability or the opportunity to scale and use more compute.
 
 _ Switching to swarm mode is easy:_ 
 

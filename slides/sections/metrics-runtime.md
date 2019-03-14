@@ -10,9 +10,11 @@ The metrics collector and dashboard run in containers too, so now you can run th
 
 ## Application runtime metrics
 
-Apps running in Windows containers already collect metrics. Windows Performance Counters run in containers in the same way that they do on Windows Server.
+Apps running in Windows containers already have metrics. Windows Performance Counters get collected in containers in the same way that they are on Windows Server.
 
-You can export IIS Performance Counters from web containers to get key metrics without having to change your code - you package an exporter utility alongside your web application.
+You can export IIS Performance Counters from web containers to get key  metrics about the runtime without having to change your code. 
+
+You do that by packaging an exporter utility alongside your web application.
 
 ---
 
@@ -28,11 +30,11 @@ The utility app reads from Windows Performance Counters and publishes them as an
 
 ## Build the new web app image
 
-The new version includes the metrics exporter:
+The new version includes the metrics exporter utility. It's configured to run in the background, making the container's IIS and ASP.NET Performance Counter values available in Prometheus format.
+
+_Build the updated web app:_
 
 ```
-cd $env:workshop; `
-
 docker image build --tag dwwx/signup-web:v3 `
  --file ./docker/metrics-runtime/signup-web/Dockerfile .
 ```
@@ -41,51 +43,63 @@ docker image build --tag dwwx/signup-web:v3 `
 
 ## Run the new web app
 
-You can run the new version in a container just to check the metrics you get out.
+You can run the new version in a container just to check the metrics it exposes.
+
+_Run the new web app, connecting to the existing database:_
 
 ```
-docker container run -d -P `
+docker container run -d --publish-all `
   -e ConnectionStrings:SignUpDb='Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!' `
   --name web-v3 dwwx/signup-web:v3
 ```
 
-> Windows containers connect to the same default Docker network, so this container will use the existing database and message queue.
+> `publish-all` publishes the container port to a random port on the host
 
 ---
 
 ## Generate some load
 
-Browse to the app and refresh the page a few times:
+HTTP requests to the new container will start the ASP.NET worker process, and the Windows Performance Counters will be collected.
+
+_Grab the port of the container and send in some requests:_
 
 ```
-$ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' web-v3; `
+$port = $(docker container port web-v3 80).Replace('0.0.0.0:', '')
 
-firefox "http://$ip/app/SignUp"
+for ($i=0; $i -le 10; $i++) { Invoke-WebRequest "http://localhost:$port/app" -UseBasicParsing | Out-Null}
 ```
 
-> This starts the `w3wp` worker process, which will start recording metrics in IIS and .NET Performance Counters.
+> This snippet just finds the container port and makes some GET requests
 
 ---
 
 ## Check out the runtime metrics
 
-Now you can look at the metrics which the exporter utility makes available:
+Now you can look at the metrics which the exporter utility makes available. You'll see stats in there from the IIS and .NET Performance Counters.
+
+_Fetch the metrics port and browse to the exporter endpoint:_
 
 ```
-firefox "http://$($ip):50505/metrics"
+$metricsPort = $(docker container port web-v3 50505).Replace('0.0.0.0:', '')
+
+firefox "http://localhost:$metricsPort/metrics"
 ```
 
-> The metrics API uses the Prometheus format. Prometheus is the most popular metrics server for cloud-native apps, and the format is widely used.
+> This is Prometheus format. Prometheus is the most popular metrics server for cloud-native apps, and the format is widely used.
 
 ---
 
 ## Tidy up
 
+The metrics endpoint isn't meant for humans to read, it's an API for Prometheus to consume. 
+
 Now we know how the metrics look, let's remove the new container:
 
 ```
-docker rm -f web-v3
+docker rm --force web-v3
 ```
+
+> `force` removes a container even if it's still running
 
 ---
 
@@ -98,4 +112,4 @@ Runtime metrics can tell you how hard your app is working. In this case there ar
 - amount of CPU used
 - number of active threads
 
-> Using the exporter utility gives you all this without changing code - perfect for legacy apps. 
+> Using an exporter utility gives you all this without changing code - perfect for legacy apps. 

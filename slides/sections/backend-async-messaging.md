@@ -18,7 +18,7 @@ When you sign up the web app will publish an event message on the queue, which a
 
 The new component is a simple .NET Console app. You can browse the [source for the save message handler](./src/SignUp.MessageHandlers.SaveProspect) - the work is all done in the `Program` class.
 
-This is a full .NET Framework app, so it can continue to use the original Entity Framework logic from the monolith. It's a low-risk approach to updating the architecture.
+This is a full .NET Framework app, so it can continue to use the original Entity Framework model from the monolith. It's a low-risk approach to updating the architecture.
 
 ---
 
@@ -45,6 +45,24 @@ Check out the [v4 manifest](./app/v4.yml) - it adds services for the message han
 The message queue is [NATS](https://nats.io), a high-performance in-memory queue which is ideal for communication between containers.
 
 The manifest also configures the web app to use messaging - using Dependency Injection to load a different implementation of the prospect save handler.
+
+---
+
+## Build the message queue
+
+Right now the [official NATS image on Docker Hub]() doesn't have a Windows Server 2019 variant, so we'll build our own.
+
+The [message-queue Dockerfile]() is based on Nano Server 1809 and it just copies the NATS binaries from the official Nano Server 2016 image.
+
+_Build the message queue:_
+
+```
+docker image build `
+  -t dwwx/message-queue `
+  -f .\docker\backend-async-messaging\message-queue\Dockerfile .
+```
+
+> When the NATS team release their own Nano Server 1809 image, we can use theirs.
 
 ---
 
@@ -76,13 +94,10 @@ docker container logs app_signup-save-handler_1
 
 ## Try the new distributed app
 
-The entrypoint is still the proxy listening on port `8020`, so you can browse there or to the container:
+The entrypoint is still the proxy listening on port `8020`, so you can refresh your page or open a new browser window:
 
 ```
-$ip = docker container inspect `
-  --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_proxy_1
-
-firefox "http://$ip"
+firefox http:/localhost:8020
 ```
 
 > Now when you submit data, the web app publishes an event and the handler makes the database save
@@ -124,4 +139,4 @@ Now we've got an event driven architecture! Well, not completely - but for one k
 
 You can easily extend the app now by adding new message handlers which subscribe to the same event.
 
-A new message handler could insert data into Elasticsearch and let users run their own analytics with Kibana.
+A new message handler could insert data into Elasticsearch and let users run their own analytics with Kibana...

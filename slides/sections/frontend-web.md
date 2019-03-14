@@ -34,8 +34,6 @@ The v1 Dockerfile is simple, but inefficient. The [v2 Dockerfile](./docker/front
 _Build the image:_
 
 ```
-cd $env:workshop
-
 docker image build -t dwwx/signup-web:v2 `
   -f .\docker\frontend-web\v2\Dockerfile .
 ```
@@ -60,15 +58,12 @@ docker container run `
 
 ## Try it out
 
-You can browse to port `8020` on your Docker host (that's your Windows Server 2016 VM). Or you can browse direct to the container:
+You can browse to port `8020` on the external domain name your Docker host (that's your Windows Server VM). Or you can browse direct on `localhost`:
 
-_Get the container's IP address and launch the browser:_
+_Browse to the v2 app:_
 
 ```
-$ip = docker container inspect `
-  --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app
-
-firefox "http://$ip/app"
+firefox http://localhost:8020/app
 ```
 
 ---
@@ -101,7 +96,7 @@ docker-compose -f .\app\v1.yml up -d
 
 ## Check what's running
 
-You now have two containers running. One is the web app image you've just built from source, and the other is SQL Server from Microsoft's public image.
+You now have two containers running. One is the web app image you've just built from source, and the other is SQL Server from the workshop's public image.
 
 _List all the running containers:_
 
@@ -113,13 +108,10 @@ docker container ls
 
 ## Try the app again
 
-As before, browse to port `8020` on your Docker host or browse direct to the container:
+As before, browse to port `8020` on your Docker VM's domain name, or direct on the VM:
 
 ```
-$ip = docker container inspect `
-  --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_signup-web_1
-
-firefox "http://$ip/app"
+firefox "http://localhost:8020/app"
 ```
 
 ---

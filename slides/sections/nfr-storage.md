@@ -12,17 +12,17 @@ Next you'll learn how to keep data outside of a container using a [Docker volume
 
 ## Docker volumes for log files
 
-As a simple example, create a new IIS container with a volume which maps the log directory in the container to a directory on the host:
+As a simple example, create a new IIS container with a volume mount which maps the log directory in the container to a directory on the host:
 
 ```
 mkdir C:\iis-logs; `
 
 docker container run --detach --name iis --publish-all `
  --volume "C:\iis-logs:C:\inetpub\logs" `
- microsoft/iis:nanoserver
+ mcr.microsoft.com/windows/servercore/iis:windowsservercore-ltsc2019
 ```
 
-> When the container reads or writes data at `C:\inetpub\logs` it is actually using `C:\iis-logs` on the server.
+> When the container reads or writes data at `C:\inetpub\logs` Docker is actually redirecting it to `C:\iis-logs` on the server.
 
 ---
 
@@ -30,18 +30,17 @@ docker container run --detach --name iis --publish-all `
 
 When you browse to IIS on the container, it will write log entries - and you will see the files on the server.
 
-_ This script makes a web request and then checks the logs: _
+_ This script makes a few web requests and then checks the logs: _
 
 ```
-$ip = docker inspect `
-  --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' iis; `
+$port = $(docker container port iis 80).Replace('0.0.0.0:', '')
 
-iwr -useb http://$ip; `
+for ($i=0; $i -le 10; $i++) { Invoke-WebRequest "http://localhost:$port" -UseBasicParsing | Out-Null}
 
 ls C:\iis-logs\LogFiles\W3SVC1
 ```
 
-> IIS running inside the container has created a log file in the `LogFiles` directory, which is actually mapped to the host. 
+> IIS running inside the container has created a log file in the `LogFiles` directory, which is actually mounted from the host. 
 
 ---
 
@@ -49,7 +48,7 @@ ls C:\iis-logs\LogFiles\W3SVC1
 
 You can do the same with SQL Server to store the data and log files on the host.
 
-> It's slightly more complicated with SQL Server because you can't mount a directory from the host if the directory on the image already contains data - which is true with the SQL data directory.
+> It's slightly more complicated with SQL Server because the container image already has a folder containing data files for the system databases. If you mount a volume to the same location, it hides any existing files, so SQL Server wouldn't start.
 
 You can't override the existing SQL Server data directory, so instead we'll make a custom SQL Server image.
 
@@ -62,8 +61,6 @@ The [Dockerfile](./docker/nfr-storage/signup-db/Dockerfile) adds a volume and an
 _ Build the image: _
 
 ```
-cd $env:workshop
-
 docker image build --tag dwwx/signup-db `
   -f ./docker/nfr-storage/signup-db/Dockerfile .
 ```
@@ -72,7 +69,7 @@ docker image build --tag dwwx/signup-db `
 
 ## Run the database with a volume
 
-Try running the database container on its own. Because the image has a volume defined, Docker will create a volume for the container.
+Try running the database container on its own. Because the **image** has a volume defined, Docker will create a volume for the **container**.
 
 _ Run the container with no extra configuration: _
 
@@ -105,10 +102,10 @@ Docker creates the volume with a generated ID. You can get details about volumes
 _ This shows details about the SQL container's volume: _
 
 ```
-docker container inspect --format '{{ .Mounts }}' db-1
+docker container inspect --format '{{ json .Mounts }}' db-1 | ConvertFrom-Json
 ```
 
-> One output field will be the physical path of the volume, starting `C:\ProgramData\Docker...`. List the contents and you'll see the database files.
+> The `Source` field is the physical path of the volume, starting `C:\ProgramData\Docker...`. List the contents and you'll see the database files.
 
 ---
 
@@ -124,6 +121,8 @@ mkdir C:\mssql; `
 docker container run -d -v C:\mssql:C:\data `
   --name db-2 dwwx/signup-db
 ```
+
+> This is great for high-availability, you can mount RAID storage or a network share.
 
 ---
 
@@ -151,11 +150,12 @@ Now we've seen how volumes work, we'll remove the database containers and use vo
 @('db-1', 'db-2') | foreach { docker container rm -f $_ }
 ```
 
+> More fancy PowerShell, forcibly removing the containers by name
 ---
 
 ## Run the app with volumes for storage
 
-The [v7 manifest](./app/v7.yml) includes two `volume` specifications - using `C:\mssql` on the host for SQL Server data files, `C:\prom` for Prometheus data and `C:\es` for Elasticsearch.
+The [v7 manifest](./app/v7.yml) includes the `volume` specifications - using `C:\mssql` on the host for SQL Server data files, `C:\prom` for Prometheus data and `C:\es` for Elasticsearch.
 
 _ Create the new directories and run the app:_
 
@@ -171,21 +171,21 @@ docker-compose -f .\app\v7.yml up -d
 
 ## Try out the app
 
-There's a new proxy container, so you'll need to get the IP address and browse to open the app.
+The underlying storage has changed for the three stateful containers - but it's all transparent to the apps, and everything works in the same way.
+
+_Browse to the site via the reverse proxy:_
 
 ```
-$ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_proxy_1
-
-firefox "http://$ip"
+firefox http://localhost:8020
 ```
 
-> Add a new prospect, and the databases will all write files on the server.
+> Add a new prospect, and the databases will all write to the mounted folders.
 
 ---
 
 ## Check the data files
 
-When the message handlers have processed the event, and the metrics have been scraped, there will be data from SQL Server, Elasticsearch and Prometheus.
+When the message handlers have processed the event and the metrics have been scraped, there will be data from SQL Server, Elasticsearch and Prometheus.
 
 _ Check the data files on the server: _
 

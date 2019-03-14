@@ -1,4 +1,4 @@
-# Adding Self-service analytics
+# Adding Self-Service Analytics
 
 ---
 
@@ -14,7 +14,7 @@ We'll be running [Elasticsearch](https://www.elastic.co/products/elasticsearch) 
 
 ## Pub-sub messaging
 
-To get data into Elasticsearch when a user signs up, we just need another message handler, which will listen to the same messages published by the web app.
+To get data into Elasticsearch when a user signs up, we just need another message handler, which will listen for the same messages published by the web app.
 
 The new handler is a .NET Core console application. The code is in [QueueWorker.cs](./src/SignUp.MessageHandlers.IndexProspect/Workers/QueueWorker.cs) - it subscribes to the same event messages, then enriches the data and stores it in Elasticsearch.
 
@@ -26,13 +26,9 @@ The new message handler only uses the message library from the original app, so 
 
 The [Dockerfile](./docker/backend-analytics/index-handler/Dockerfile) follows a similar pattern - stage 1 compiles the app, stage 2 packages it.
 
-
-_ Build the image in the usual way: _
-
+_Build the image in the usual way:_
 
 ```
-cd $env:workshop; `
-
 docker image build --tag dwwx/index-handler `
   --file .\docker\backend-analytics\index-handler\Dockerfile .
 ```
@@ -45,7 +41,7 @@ The Elasticsearch team maintain their own Docker image for Linux containers, but
 
 It's easy to package your own image to run Elasticsearch in Windows containers, but we'll use one I've already built: `sixeyed/elasticsearch`.
 
-The [Dockerfile](https://github.com/sixeyed/dockerfiles-windows/blob/master/elasticsearch/nanoserver/sac2016/Dockerfile) downloads Elasticsearch and installs it on top of the official OpenJDK image.
+The [Dockerfile](https://github.com/sixeyed/dockerfiles-windows/blob/master/elasticsearch/windowsservercore/ltsc2019/Dockerfile) downloads Elasticsearch and installs it on top of the official OpenJDK image.
 
 ---
 
@@ -55,25 +51,37 @@ Same story with Kibana, which is the analytics UI that reads from Elasticsearch.
 
 We'll use `sixeyed/kibana`. 
 
-The [Dockerfile](https://github.com/sixeyed/dockerfiles-windows/blob/master/kibana/windowsservercore/ltsc2016/Dockerfile) downloads and installs Kibana, and it packages a [startup script](https://github.com/sixeyed/dockerfiles-windows/blob/master/kibana/windowsservercore/ltsc2016/init.ps1) with some default configuration.
+The [Dockerfile](https://github.com/sixeyed/dockerfiles-windows/blob/master/kibana/windowsservercore/ltsc2019/Dockerfile) downloads and installs Kibana, and it packages a [startup script](https://github.com/sixeyed/dockerfiles-windows/blob/master/kibana/windowsservercore/ltsc2019/init.ps1) with some default configuration.
 
 ---
 
 ## Run the app with analytics
 
-In the [v5 manifest](./app/v5.yml), none of the existing containers get replaced - their configuration hasn't changed. Only the new containers get created:
+In the [v5 manifest](./app/v5.yml), none of the existing containers get replaced - their configuration hasn't changed. Only the new containers get created.
+
+_Upgrade to v5:_
 
 ```
-cd "$env:workshop"; `
-
 docker-compose -f .\app\v5.yml up -d
+```
+
+---
+
+## Check the index handler
+
+The index handler is a different stack from the save handler, but it connects to the message queue in the same way and subscribes to the same events.
+
+_Check the logs and you'll see the connection:_
+
+```
+docker container logs app_signup-index-handler_1
 ```
 
 ---
 
 ## Refresh your browser
 
-Go back to the sign-up page in your browser. **It's the same IP address** because the app container hasn't been replaced here. 
+Go back to the sign-up page in your browser. **It's the same set of containers** serving the response, because the app definitions haven't changed.
 
 Add another user and you'll see the data still gets added to SQL Server, but now both message handlers have log entries showing they handled the event message.
 
@@ -85,9 +93,9 @@ And the logs in the message handlers:
 
  ```
 docker container exec app_signup-db_1 powershell `
-  "Invoke-SqlCmd -Query 'SELECT * FROM Prospects' -Database SignUp"; `
+  "Invoke-SqlCmd -Query 'SELECT * FROM Prospects' -Database SignUp"
 
-docker container logs app_signup-save-handler_1; `
+docker container logs app_signup-save-handler_1
 
 docker container logs app_signup-index-handler_1
 ```
@@ -98,14 +106,12 @@ docker container logs app_signup-index-handler_1
 
 ## Explore the data in Kibana
 
-Kibana is also a web app running in a container, listening on port 5601.
+Kibana is also a web app running in a container, publishing to port `5601` on the Docker host. I'm not proxying Kibana through Traefik - it's not a public component.
 
-_Get the Kibana container's IP address and browse:_
+_Browse to Kibana:_
 
 ```
-$ip = docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_kibana_1; `
-
-firefox "http://$($ip):5601"
+firefox http://localhost:5601
 ```
 
 > The Elasticsearch index is called `prospects`, and you can navigate around the data in Kibana. 

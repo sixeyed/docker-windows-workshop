@@ -1,18 +1,22 @@
 # v2 adds the reverse proxy and new homepage
-version: '3.1'
+version: '3.7'
 
 services:
   
   signup-db:
-    image: microsoft/mssql-server-windows-express:2016-sp1
-    environment: 
-      - ACCEPT_EULA=Y
+    image: dwwx/sql-server:2017
+    environment:
       - sa_password=DockerCon!!!
     networks:
       - app-net
 
   signup-web:
     image: dwwx/signup-web:v2
+    environment: 
+      - ConnectionStrings:SignUpDb=Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!
+    labels:
+      - "traefik.frontend.rule=PathPrefix:/app"
+      - "traefik.frontend.priority=10"
     depends_on:
       - signup-db
     networks:
@@ -20,16 +24,22 @@ services:
 
   homepage:
     image: dwwx/homepage
+    labels:
+      - "traefik.frontend.rule=PathPrefix:/"
+      - "traefik.frontend.priority=1"
     networks:
       - app-net
 
   proxy:
     image: dwwx/reverse-proxy
+    command: --docker --docker.endpoint=npipe:////./pipe/docker_engine --docker.watch --api
     ports:
       - "8020:80"
-    depends_on:
-      - signup-web
-      - homepage
+      - "8080:8080"
+    volumes:
+      - type: npipe
+        source: \\.\pipe\docker_engine
+        target: \\.\pipe\docker_engine      
     networks:
       - app-net
 

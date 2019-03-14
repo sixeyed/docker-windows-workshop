@@ -8,7 +8,7 @@
 
 Images are the portable package that contains your application - your binaries, all the dependencies and the default configuration.
 
-You share images by pushing them to a registry. Docker Hub is the most popular public registry. Most enterprises run their own private registry. You work with them in the same way.
+You share images by pushing them to a registry. Docker Hub is the most popular public registry. Most enterprises run their own private registry. You work with all registries in the same way.
 
 ---
 
@@ -28,7 +28,7 @@ $env:dockerId='<insert-your-docker-id-here>'
 
 ## Image tags
 
-Now you can tag your images. This is like giving them an alias - Docker doesn't copy the image, it just links a new tag to the existing image.
+Now you can tag your images. This is like giving them an alias - Docker doesn't copy the image, it just adds a new tag to the existing image.
 
 _ Add a new tag for your images which includes your Docker ID: _
 
@@ -47,7 +47,7 @@ You can list all your local images tagged with your Docker ID. You'll see the im
 docker image ls -f reference="$env:dockerId/*"
 ```
 
-> The image tags start with your Docker ID, so these can be pushed to Docker Hub.
+> These image tags contain your Docker ID, so you can push them to Docker Hub.
 
 ---
 
@@ -92,11 +92,41 @@ firefox "https://hub.docker.com/r/$env:dockerId/hostname-app"
 
 ---
 
+## Using tags for versioning
+
+You've used simple tags so far. You can store many versions of the same app in a single repository by adding a version number to the tag.
+
+_ Build a new version of the hostname app, tagged as `v2`:_
+
+```
+cd "$env:workshop\docker\101-image-registries\hostname-app-v2"
+
+docker image build --tag "$env:dockerId/hostname-app:v2" .
+```
+
+> You can use any versioning scheme you like in the image tag.
+
+---
+
+## Push a new version of the app
+
+A repository on Docker Hub can store a collection of Docker images, typically different versions of the same application.
+
+_ Push the `v2` tagged image:_
+
+```
+docker image push "$env:dockerId/hostname-app:v2"
+```
+
+> If you look at the _Tags_ section of your Docker Hub repo, you'll see two versions listed.
+
+---
+
 ## What exactly gets uploaded?
 
-The logical size of those images is over 10GB each, but the bulk of that is in the Windows Server Core base image.
+The logical size of those images is over 4GB each, but the bulk of that is in the Windows Server Core base image.
 
-Those layers are already stored in Docker Hub, so they don't get uploaded - only the new parts of the image get pushed. 
+Those layers are already known by Docker Hub, so they don't get uploaded - only the new parts of the image get pushed. 
 
 Docker shares layers between images, so every image that uses Windows Server Core will share the cached layers for that image.
 

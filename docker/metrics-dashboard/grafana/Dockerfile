@@ -1,5 +1,5 @@
 # escape=`
-FROM dockersamples/aspnet-monitoring-grafana:5.2.1
+FROM dockersamples/aspnet-monitoring-grafana:5.2.1-windowsservercore-ltsc2019
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop';"]
 
 COPY .\docker\metrics-dashboard\grafana\datasource-prometheus.yaml \grafana\conf\provisioning\datasources\

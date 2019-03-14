@@ -1,12 +1,11 @@
 # v4 uses asynchronous messaging with NATS
-version: '3.1'
+version: '3.7'
 
 services:
   
   signup-db:
-    image: microsoft/mssql-server-windows-express:2016-sp1
-    environment: 
-      - ACCEPT_EULA=Y
+    image: dwwx/sql-server:2017
+    environment:
       - sa_password=DockerCon!!!
     networks:
       - app-net
@@ -17,37 +16,51 @@ services:
       - Dependencies:IReferenceDataLoader=SignUp.Web.ReferenceData.ApiReferenceDataLoader
       - ReferenceDataApi:Url=http://reference-data-api/api
       - Dependencies:IProspectSaveHandler=SignUp.Web.ProspectSave.AsynchronousProspectSaveHandler
+    
+    labels:
+      - "traefik.frontend.rule=PathPrefix:/app"
+      - "traefik.frontend.priority=30"
     depends_on:
       - signup-db
       - reference-data-api
-      - message-queue
     networks:
       - app-net
 
   homepage:
     image: dwwx/homepage
+    labels:
+      - "traefik.frontend.rule=PathPrefix:/"
+      - "traefik.frontend.priority=10"
     networks:
       - app-net
 
   proxy:
     image: dwwx/reverse-proxy
+    command: --docker --docker.endpoint=npipe:////./pipe/docker_engine --docker.watch --api
     ports:
       - "8020:80"
-    depends_on:
-      - signup-web
-      - homepage
+      - "8080:8080"
+    volumes:
+      - type: npipe
+        source: \\.\pipe\docker_engine
+        target: \\.\pipe\docker_engine      
     networks:
       - app-net
 
   reference-data-api:
     image: dwwx/reference-data-api
+    environment: 
+      - ConnectionStrings:SignUpDb=Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!
+    labels:
+      - "traefik.frontend.rule=PathPrefix:/api"
+      - "traefik.frontend.priority=20"
     depends_on:
       - signup-db
     networks:
       - app-net
 
   message-queue:
-    image: nats:1.3.0-nanoserver
+    image: dwwx/message-queue
     networks:
       - app-net
 
