@@ -2,7 +2,7 @@
 
 Thanks for coming to the workshop. We hope it was useful and we'll be glad to have your feedback.
 
-The content for this workshop will stay online and you don't need a Windows Server VM to follow along - you can do everything with [Docker Desktop](https://www.docker.com/docker-windows) on Windows 10.
+The content for this workshop will stay online and you don't need a Windows Server VM to follow along - you can do everything with [Docker Desktop](https://www.docker.com/docker-windows) on Windows 10 with update 1809.
 
 But before you go...
 
@@ -14,7 +14,7 @@ But before you go...
 
 - Follow [@EltonStoneman](https://twitter.com/EltonStoneman) and [@stefscherer](https://twitter.com/stefscherer) on Twitter
 
-- Read [Docker on Windows](https://www.amazon.co.uk/Docker-Windows-Elton-Stoneman/dp/1785281658), the book
+- Read [Docker on Windows - Second Edition](https://www.amazon.com/gp/product/1789617375), the book
 
 And watch these Pluralsight training courses:
 
