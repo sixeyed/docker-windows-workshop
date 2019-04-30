@@ -10,11 +10,9 @@ But before you go...
 
 ## Continuing your journey
 
-- Use [Play with Docker](https://labs.play-with-docker.com/) and the [Play with Docker labs](http://training.play-with-docker.com/)
-
 - Follow [@EltonStoneman](https://twitter.com/EltonStoneman) and [@stefscherer](https://twitter.com/stefscherer) on Twitter
 
-- Read [Docker on Windows](https://www.amazon.co.uk/Docker-Windows-Elton-Stoneman/dp/1785281658), the book
+- Read [Docker on Windows](https://www.amazon.co.uk/Docker-Windows-101-production-2nd/dp/1789617375), the book
 
 And watch these Pluralsight training courses:
 
