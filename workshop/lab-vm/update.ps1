@@ -4,7 +4,7 @@ Get-ChildItem $env:Public\Desktop\*.lnk | ForEach-Object { Remove-Item $_ }
 $WshShell = New-Object -comObject WScript.Shell
 $Shortcut = $WshShell.CreateShortcut("$Home\Desktop\Firefox.lnk")
 $Shortcut.TargetPath = "C:\Program Files\Mozilla Firefox\firefox.exe"
-$shortcut.Arguments = "https://dwwx.space"
+$shortcut.Arguments = "https://dcus19.dwwx.space"
 $Shortcut.Save()
 
 $Shortcut = $WshShell.CreateShortcut("$Home\Desktop\PowerShell.lnk")
