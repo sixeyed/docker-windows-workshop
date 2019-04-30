@@ -19,7 +19,7 @@ $images =
 'mcr.microsoft.com/windows/servercore:ltsc2019',
 'mcr.microsoft.com/windows/nanoserver:1809',
 'mcr.microsoft.com/windows/servercore/iis:windowsservercore-ltsc2019',
-'microsoft/dotnet-framework:4.7.2-sdk-windowsservercore-ltsc2019',
+'mcr.microsoft.com/dotnet/framework/sdk:4.7.2-20190312-windowsservercore-ltsc2019',
 'mcr.microsoft.com/dotnet/framework/aspnet:4.7.2-windowsservercore-ltsc2019',
 'microsoft/dotnet:2.1-runtime-nanoserver-1809',
 'microsoft/dotnet:2.1-sdk-nanoserver-1809',
