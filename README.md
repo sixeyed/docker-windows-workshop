@@ -31,9 +31,12 @@ _* - you don't need your own Windows Server machine, you'll be provided with a V
 
 This workshop is a living thing. There are tags or branches for previous versions.
 
+#### 2019
+- [dcus19](https://github.com/sixeyed/docker-windows-workshop/tree/dcus19) - DockerCon US 2019, hosted [here](https://dcus19.dwwx.space) 
+
 #### 2018
 
-- [dceu18](https://github.com/sixeyed/docker-windows-workshop/tree/dceu18) - DockerCon EU 2018, hosted [here](https://dceu18--dwwx.netlify.com) 
+- [dceu18](https://github.com/sixeyed/docker-windows-workshop/tree/dceu18) - DockerCon EU 2018, hosted [here](https://dceu18.dwwx.space) 
 
 - [buildstufflt18](https://github.com/sixeyed/docker-windows-workshop/tree/buildstufflt18) - BuildStuff Lithuania 2018, hosted [here](https://buildstufflt18--dwwx.netlify.com) 
 
