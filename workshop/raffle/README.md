@@ -7,7 +7,7 @@ Randomly selects one entry from a list, e.g. to choose swag winners.
 Pass a comma-separated list of entries:
 
 ```
-docker container run sixeyed/raffle "'John,Paul,George,Ringo'"
+docker container run --isolation=process sixeyed/raffle "'John,Paul,George,Ringo'"
 ```
 
 > You need to escape the list with double- **and** single-quotes.
