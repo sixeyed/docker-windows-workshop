@@ -124,7 +124,11 @@ docker container exec app_signup-db_1 powershell `
 
 ## How does Traefik know where to route requests?
 
-The Docker Engine has an API you can use to manage and query containers. Traefik uses that to find containers with Traefik labels, and it uses the label values to build the routing table.
+The Docker Engine has an API for managing and querying containers. Traefik uses that to find containers with Traefik labels, and it uses the label values to build the routing table. You can see the routes:
+
+```
+firefox http://localhost:8080
+```
 
 Traefik is running inside a container, talking to the Docker Engine it is running on to find out about other containers. The [command]() option in the [v2.yml]() compose file sets up that connection.
 

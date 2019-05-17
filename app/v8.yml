@@ -5,8 +5,6 @@ services:
   
   signup-db:
     image: dwwx/signup-db
-    volumes:
-      - C:\mssql:C:\data
     environment:
       - sa_password=DockerCon!!!
     networks:
