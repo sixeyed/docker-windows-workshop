@@ -1,10 +1,12 @@
 # create shortcuts
 Get-ChildItem $env:Public\Desktop\*.lnk | ForEach-Object { Remove-Item $_ }
 
+$branch = Get-Content C:\branch.txt
+
 $WshShell = New-Object -comObject WScript.Shell
 $Shortcut = $WshShell.CreateShortcut("$Home\Desktop\Firefox.lnk")
 $Shortcut.TargetPath = "C:\Program Files\Mozilla Firefox\firefox.exe"
-$shortcut.Arguments = "https://dcus19.dwwx.space"
+$shortcut.Arguments = "https://$branch.dwwx.space"
 $Shortcut.Save()
 
 $Shortcut = $WshShell.CreateShortcut("$Home\Desktop\PowerShell.lnk")
@@ -18,7 +20,6 @@ $shortcut.Arguments = "C:\scm\docker-windows-workshop"
 $Shortcut.Save()
 
 # update lab repo
-$branch = Get-Content C:\branch.txt
 cd $env:workshop
 git checkout $branch
 git pull
