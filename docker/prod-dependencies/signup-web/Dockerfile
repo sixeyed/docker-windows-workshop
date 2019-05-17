@@ -1,5 +1,5 @@
 # escape=`
-FROM microsoft/dotnet-framework:4.7.2-sdk AS builder
+FROM mcr.microsoft.com/dotnet/framework/sdk:4.7.2-20190312-windowsservercore-ltsc2019 AS builder
 
 WORKDIR C:\src
 COPY src\SignUp.sln .
@@ -16,7 +16,7 @@ COPY src C:\src
 RUN msbuild SignUp.Web\SignUp.Web.csproj /p:OutputPath=c:\out /p:Configuration=Release
 
 # Dependency check utility
-FROM microsoft/dotnet-framework:4.7.2-sdk AS dependency-check-builder
+FROM mcr.microsoft.com/dotnet/framework/sdk:4.7.2-20190312-windowsservercore-ltsc2019 AS dependency-check-builder
 
 WORKDIR C:\src
 COPY src\Utilities.sln .
@@ -28,7 +28,7 @@ COPY src\Utilities.DependencyCheck C:\src\Utilities.DependencyCheck
 RUN msbuild Utilities.DependencyCheck\Utilities.DependencyCheck.csproj /p:OutputPath=c:\out /p:Configuration=Release
 
 # app image
-FROM microsoft/aspnet:4.7.2-windowsservercore-ltsc2016
+FROM mcr.microsoft.com/dotnet/framework/aspnet:4.7.2-windowsservercore-ltsc2019
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop';"]
 
 ENV APP_ROOT=C:\web-app `
@@ -44,7 +44,7 @@ RUN Import-Module WebAdministration; `
     New-WebApplication -Name 'app' -Site 'Default Web Site' -PhysicalPath $env:APP_ROOT
 
 WORKDIR C:\aspnet-exporter
-COPY --from=dockersamples/aspnet-monitoring-exporter:4.7.2 C:\aspnet-exporter .
+COPY --from=dockersamples/aspnet-monitoring-exporter:4.7.2-windowsservercore-ltsc2019 C:\aspnet-exporter .
 
 VOLUME ${APP_LOGS}
 COPY .\docker\prod-dependencies\signup-web\startup.ps1 /

@@ -2,6 +2,10 @@ version: '3.1'
 
 services:
 
+  signup-db:
+    build:
+      context: ../docker/sql-server
+
   signup-web:
     build:
       context: ..
@@ -16,6 +20,11 @@ services:
     build:
       context: ..
       dockerfile: ./docker/frontend-reverse-proxy/reverse-proxy/Dockerfile
+
+  message-queue:
+    build:
+      context: ..
+      dockerfile: ./docker/backend-async-messaging/message-queue/Dockerfile
 
   reference-data-api:
     build:

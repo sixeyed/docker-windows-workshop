@@ -27,7 +27,7 @@ WORKDIR ${APP_ROOT}
 RUN New-WebApplication -Name 'app' -Site 'Default Web Site' -PhysicalPath $env:APP_ROOT
 
 WORKDIR C:\aspnet-exporter
-COPY --from=dockersamples/aspnet-monitoring-exporter:4.7.2 C:\aspnet-exporter .
+COPY --from=dockersamples/aspnet-monitoring-exporter:4.7.2-windowsservercore-ltsc2019 C:\aspnet-exporter .
 
 VOLUME ${APP_LOGS}
 COPY .\docker\prod-logging\signup-web\startup.ps1 /

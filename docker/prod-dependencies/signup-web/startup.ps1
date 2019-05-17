@@ -28,12 +28,11 @@ else {
     Write-Output 'STARTUP: Skipping dependency check'
 }
 
-Write-Output 'STARTUP: Starting IIS with ServiceMonitor'
-Start-Process -NoNewWindow -FilePath C:\ServiceMonitor.exe -ArgumentList w3svc
-Start-Sleep -Seconds 10
-    
-Write-Output 'STARTUP: Running metrics exporter'
+Write-Output 'STARTUP: Starting IIS with HTTP GET'
+mkdir $env:APP_LOGS; echo '--init' > "$env:APP_LOGS\SignUp.log"
 Invoke-WebRequest http://localhost/app -UseBasicParsing | Out-Null
+
+Write-Output 'STARTUP: Running metrics exporter'
 Start-Process -NoNewWindow C:\aspnet-exporter\aspnet-exporter.exe
 
 Write-Output 'STARTUP: Tailing log'
