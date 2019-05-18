@@ -25,14 +25,11 @@ EXPOSE 80 50505
 WORKDIR ${APP_ROOT}
 RUN New-WebApplication -Name 'app' -Site 'Default Web Site' -PhysicalPath $env:APP_ROOT
 
-ENTRYPOINT ["powershell"]
-CMD mkdir C:\logs; echo '--init' > C:\logs\SignUp.log; `
-    Invoke-WebRequest http://localhost/app -UseBasicParsing | Out-Null; `
-    Start-Process -NoNewWindow C:\aspnet-exporter\aspnet-exporter.exe; `
-    Get-Content -Path "C:\logs\SignUp.log" -Tail 1 -Wait 
-
 WORKDIR C:\aspnet-exporter
 COPY --from=dockersamples/aspnet-monitoring-exporter:4.7.2-windowsservercore-ltsc2019 C:\aspnet-exporter .
 ENV COLLECTOR_CONFIG_PATH="w3svc-collectors.json"
+
+COPY .\docker\prod-logging\signup-web\startup.ps1 /
+ENTRYPOINT ["powershell", "/startup.ps1"]
 
 COPY --from=builder C:\out\_PublishedWebsites\SignUp.Web ${APP_ROOT}

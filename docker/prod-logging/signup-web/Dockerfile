@@ -23,6 +23,7 @@ ENV APP_ROOT=C:\web-app `
     APP_LOGS=C:\logs `
     COLLECTOR_CONFIG_PATH="w3svc-collectors.json"
 
+EXPOSE 80 50505
 WORKDIR ${APP_ROOT}
 RUN New-WebApplication -Name 'app' -Site 'Default Web Site' -PhysicalPath $env:APP_ROOT
 

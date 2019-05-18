@@ -63,13 +63,10 @@ docker container logs app_signup-web_1
 
 When the app is running, there are additional log entries written by `log4net`.
 
-Check out the app by browsing to the new container, and saving some data:
+Check out the app by browsing to the sign up page, and saving some data:
 
 ```
-$ip = docker container inspect `
-  --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_proxy_1
-
-firefox "http://$ip"
+firefox http://localhost:8020
 ```
 
 ---
