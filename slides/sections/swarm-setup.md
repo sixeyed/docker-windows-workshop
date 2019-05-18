@@ -40,7 +40,7 @@ You can run a single node swarm, which gives you all the functionality of swarm 
 _ Switching to swarm mode is easy:_ 
 
 ```
-docker swarm init
+docker swarm init --advertise-addr 127.0.0.1
 ```
 
 > Your RDP session will flicker here. That's to do with a network shift Windows does to support networking in swarm mode.
