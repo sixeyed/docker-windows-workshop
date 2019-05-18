@@ -37,8 +37,6 @@ There's also a `HEALTHCHECK` instruction, which tells Docker to run the utility 
 _ Tag the image as `v7`, which includes the health check: _
 
 ```
-cd $env:workshop; `
-
 docker image build `
   -t dwwx/signup-web:v7 `
   -f ./docker/prod-health/signup-web/Dockerfile .
@@ -63,10 +61,7 @@ docker-compose -f .\app\v10.yml up -d
 The app still works in the same way:
 
 ```
-$ip = docker container inspect `
-  --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_proxy_1
-
-firefox "http://$ip/app"
+firefox "http://localhost:8020/app"
 ```
 
 ---
