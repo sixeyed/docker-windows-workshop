@@ -37,8 +37,6 @@ In the [startup script](./docker/prod-dependencies/signup-web/startup.ps1) that 
 _ Tag the image as `v6`, which includes the depencency check: _
 
 ```
-cd $env:workshop; `
-
 docker image build `
   -t dwwx/signup-web:v6 `
   -f ./docker/prod-dependencies/signup-web/Dockerfile .
@@ -78,9 +76,9 @@ docker container run -it `
 
 Ah. It was stored in the filesystem of that container we've just destroyed, so it's gone forever.
 
-Let's make sure that doesn't happen again. This [Dockerfile for the database](./docker/prod-dependencies/signup-db/Dockerfile) is based on Microsoft's SQL Server image, but it adds a Docker volume for data storage.
+Let's make sure that doesn't happen again. This [Dockerfile for the database](./docker/prod-dependencies/signup-db/Dockerfile) is based on the same SQL Server image, but it adds a Docker volume for data storage.
 
-The [initialization script](./docker/prod-dependencies/signup-db/Initialize-Database.ps1) checks that storage location, and it will eiother create a new database, or attach existing database files if they exist.
+The [initialization script](./docker/prod-dependencies/signup-db/Initialize-Database.ps1) checks that storage location, and it will either create a new database, or attach existing database files if they exist.
 
 ---
 
@@ -91,8 +89,6 @@ We can run persistent database containers from this image by mapping the volume,
 _ Build the image from the Dockerfile: _
 
 ```
-cd $env:workshop; `
-
 docker image build `
   -t dwwx/signup-db `
   -f ./docker/prod-dependencies/signup-db/Dockerfile .
@@ -131,14 +127,41 @@ docker container logs app_signup-web_1
 
 ## Browse to the app
 
-Let's just check the app is still working:
+Let's just check the app is still working. Browse and add a new sign up:
 
 ```
-$ip = docker container inspect `
-  --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_proxy_1
-
-firefox "http://$ip"
+firefox "http://localhost:8020"
 ```
+
+---
+
+## Is the data there? 
+
+We have a new SQL Server database container.
+
+_Check the new data has been saved:_
+
+```
+docker container exec app_signup-db_1 `
+  powershell `
+  "Invoke-SqlCmd -Query 'SELECT * FROM Prospects' -Database SignUp"
+```
+
+---
+
+## Check the database files
+
+The database is writing file at the path `C:\data` inside the container, but that's a volume which is being mapped fo `C:\mssql` on the VM.
+
+The SQL Server `.mdf` and `.ldf` files actually exists on the VM.
+
+_ You can see the same data from the host: _
+
+```
+ls C:\mssql
+```
+
+> You could use a RAID array on the server to get redundant storage for container data.
 
 ---
 
