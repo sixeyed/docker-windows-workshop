@@ -27,8 +27,6 @@ The [startup script](./docker/prod-config/signup-web/startup.ps1) checks those v
 _ Tag the image as `v5`, which includes variable configuration: _
 
 ```
-cd $env:workshop; `
-
 docker image build `
   -t dwwx/signup-web:v5 `
   -f ./docker/prod-config/signup-web/Dockerfile .
@@ -54,7 +52,7 @@ docker image build `
 
 We'll swap out the configuration files later when we run the app in a Docker swarm cluster. 
 
-For now we need to make sure we haven't broker the app, so we can run it with the default config in the image. The [v8 manifest](./app/v8.yml) just updates to the new images.
+For now we need to make sure we haven't broken the app, so we can run it with the default config in the image. The [v8 manifest](./app/v8.yml) just updates to the new images.
 
 _ Update the application: _
 
@@ -66,13 +64,10 @@ docker-compose -f .\app\v8.yml up -d
 
 ## Everything should be the same
 
-Check out the app by browsing to the new container, and saving some data:
+Check out the app by browsing to the sign up page, and saving some data:
 
 ```
-$ip = docker container inspect `
-  --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' app_proxy_1
-
-firefox "http://$ip"
+firefox "http://localhost:8020/app"
 ```
 
 > It all works as before, using the default config in the image

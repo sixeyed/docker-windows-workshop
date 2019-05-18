@@ -1,15 +1,14 @@
-# v8 adds restart policies
+# v8 has the option to read config from the environment
 version: '3.7'
 
 services:
   
   signup-db:
-    image: dwwx/signup-db
+    image: dwwx/sql-server:2017
     environment:
       - sa_password=DockerCon!!!
     networks:
       - app-net
-    restart: always
 
   signup-web:
     image: dwwx/signup-web:v5
@@ -17,6 +16,8 @@ services:
       - Dependencies:IReferenceDataLoader=SignUp.Web.ReferenceData.ApiReferenceDataLoader
       - ReferenceDataApi:Url=http://reference-data-api/api
       - Dependencies:IProspectSaveHandler=SignUp.Web.ProspectSave.AsynchronousProspectSaveHandler
+    volumes:
+      - C:\web-logs:C:\logs
     labels:
       - "traefik.frontend.rule=PathPrefix:/app"
       - "traefik.frontend.priority=30"
@@ -25,7 +26,6 @@ services:
       - reference-data-api
     networks:
       - app-net
-    restart: always
 
   homepage:
     image: dwwx/homepage
@@ -34,7 +34,6 @@ services:
       - "traefik.frontend.priority=10"
     networks:
       - app-net
-    restart: always
 
   proxy:
     image: dwwx/reverse-proxy
@@ -48,7 +47,6 @@ services:
         target: \\.\pipe\docker_engine      
     networks:
       - app-net
-    restart: always
 
   reference-data-api:
     image: dwwx/reference-data-api
@@ -61,16 +59,14 @@ services:
       - signup-db
     networks:
       - app-net
-    restart: always
 
   message-queue:
     image: dwwx/message-queue
     networks:
       - app-net
-    restart: always
 
   signup-save-handler:
-    image: dwwx/save-handler:v2
+    image: dwwx/save-handler:v3
     environment: 
       - ConnectionStrings:SignUpDb=Server=signup-db;Database=SignUp;User Id=sa;Password=DockerCon!!!
     depends_on:
@@ -78,7 +74,6 @@ services:
       - message-queue
     networks:
       - app-net
-    restart: always
 
   signup-index-handler:
     image: dwwx/index-handler:v2
@@ -87,15 +82,11 @@ services:
       - message-queue
     networks:
       - app-net
-    restart: always
 
   elasticsearch:
     image: sixeyed/elasticsearch:5.6.11-windowsservercore-ltsc2019
-    volumes:
-      - C:\es:C:\data
     networks:
       - app-net
-    restart: unless-stopped
 
   kibana:
     image: sixeyed/kibana:5.6.11-windowsservercore-ltsc2019
@@ -105,17 +96,13 @@ services:
       - elasticsearch
     networks:
       - app-net
-    restart: unless-stopped
 
   prometheus:
     image: dwwx/prometheus
-    volumes:
-      - C:\prom:C:\prometheus
     ports:
       - "9090:9090"
     networks:
       - app-net
-    restart: unless-stopped
 
   grafana:
     image: dwwx/grafana
@@ -125,7 +112,6 @@ services:
       - prometheus
     networks:
       - app-net
-    restart: unless-stopped
 
 networks:
   app-net:

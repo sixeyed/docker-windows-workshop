@@ -34,10 +34,7 @@ WORKDIR C:\aspnet-exporter
 COPY --from=dockersamples/aspnet-monitoring-exporter:4.7.2-windowsservercore-ltsc2019 C:\aspnet-exporter .
 
 VOLUME ${APP_LOGS}
-ENTRYPOINT ["powershell"]
-CMD mkdir C:\logs; echo '--init' > C:\logs\SignUp.log; `
-    Invoke-WebRequest http://localhost/app -UseBasicParsing | Out-Null; `
-    Start-Process -NoNewWindow C:\aspnet-exporter\aspnet-exporter.exe; `
-    Get-Content -Path "C:\logs\SignUp.log" -Tail 1 -Wait 
+COPY .\docker\prod-config\signup-web\startup.ps1 /
+ENTRYPOINT ["powershell", "/startup.ps1"]
 
 COPY --from=builder C:\out\_PublishedWebsites\SignUp.Web ${APP_ROOT}
