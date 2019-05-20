@@ -18,8 +18,10 @@ services:
       - message-queue
 
   proxy:
+    command: --docker --docker.endpoint=npipe:////./pipe/docker_engine --docker.watch --api
     ports:
       - "8020:80"
+      - "8080:8080"
     depends_on:
       - signup-web
       - homepage

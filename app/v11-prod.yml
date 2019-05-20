@@ -2,10 +2,6 @@
 version: '3.4'
 
 services:
-  
-  signup-db:
-    deploy:
-      endpoint_mode: dnsrr
 
   signup-web:
     environment:
@@ -21,28 +17,18 @@ services:
       interval: 10s
       start_period: 40s
     deploy:
-      endpoint_mode: dnsrr
-
-  homepage:
-    deploy:
-      endpoint_mode: dnsrr
+      replicas: 2
 
   proxy:
+    command: --docker --docker.swarmMode --docker.watch --docker.endpoint=npipe:////./pipe/docker_engine  --api
     ports:
-      - mode: host
-        target: 80
-        published: 80
+      - "8020:80"
+      - "8080:8080"
     deploy:
       mode: global
-      endpoint_mode: dnsrr  
-
-  reference-data-api:
-    deploy:
-      endpoint_mode: dnsrr 
-
-  message-queue:
-    deploy:
-      endpoint_mode: dnsrr 
+      placement:
+        constraints:
+          - node.role == manager
 
   signup-save-handler:
     environment:
@@ -51,38 +37,19 @@ services:
      - source: netfx-connectionstrings
     deploy:
       endpoint_mode: dnsrr
-      replicas: 3
+      replicas: 2
 
   signup-index-handler:
     deploy:
-      endpoint_mode: dnsrr
-      replicas: 4
-
-  elasticsearch:
-    deploy:
-      endpoint_mode: dnsrr
+      replicas: 3
 
   kibana:
     ports:
-      - mode: host
-        target: 5601
-        published: 5601
-    deploy:
-      mode: global
-      endpoint_mode: dnsrr
-
-  prometheus:
-    deploy:
-      endpoint_mode: dnsrr
+      - "5601:5601"
 
   grafana:
     ports:
-      - mode: host
-        target: 3000
-        published: 3000
-    deploy:
-      mode: global
-      endpoint_mode: dnsrr
+      - "3000:3000"
 
 networks:
   app-net:

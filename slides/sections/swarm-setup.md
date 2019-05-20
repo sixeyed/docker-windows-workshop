@@ -16,7 +16,7 @@ The two most popular container orchestrators are Docker swarm and [Kubernetes](h
 
 Kubernetes has many more integration points than swarm which makes it easier for cloud providers to offer managed Kubernetes services, like [AKS on Azure](https://docs.microsoft.com/en-us/azure/aks/).
 
-** But Kubernetes doesn't support Windows containers**. Yet. Windows support came in beta in 2018 and is [expected to GA in Q1 of 2019](https://twitter.com/EltonStoneman/status/1063408843923836928).
+Kubernetes released GA support for Windows containers in version 1.14.
 
 ---
 

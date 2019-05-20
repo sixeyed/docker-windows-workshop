@@ -31,7 +31,7 @@ Your workshop VM is in the same virtual network as your neighbour's, so you can 
 - pick another person (or 2 or 3) to work with
 - choose who's going to be the manager and who will be the worker(s)
 
-> If you don't like the sound of this, you can continue with the single-node swarm on your own VM, or join my swarm.
+> Or you can continue with the single-node swarm on your own VM, or join my swarm.
 
 ---
 
