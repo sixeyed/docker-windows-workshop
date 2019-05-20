@@ -1,5 +1,5 @@
 # v11 - overrides for running in prod with Swarm
-version: '3.4'
+version: '3.7'
 
 services:
 
@@ -9,7 +9,7 @@ services:
       - LOG4NET_CONFIG_PATH=C:\netfx-log4net
       - CONNECTIONSTRINGS_CONFIG_PATH=C:\ProgramData\Docker\secrets\netfx-connectionstrings
     configs:
-      - netfx-log4net
+      - netfx-log4net 
     secrets:
      - source: netfx-connectionstrings
     healthcheck:
@@ -36,7 +36,6 @@ services:
     secrets:
      - source: netfx-connectionstrings
     deploy:
-      endpoint_mode: dnsrr
       replicas: 2
 
   signup-index-handler:

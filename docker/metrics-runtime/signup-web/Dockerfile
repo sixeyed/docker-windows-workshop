@@ -29,7 +29,7 @@ WORKDIR C:\aspnet-exporter
 COPY --from=dockersamples/aspnet-monitoring-exporter:4.7.2-windowsservercore-ltsc2019 C:\aspnet-exporter .
 ENV COLLECTOR_CONFIG_PATH="w3svc-collectors.json"
 
-COPY .\docker\prod-logging\signup-web\startup.ps1 /
+COPY .\docker\metrics-runtime\signup-web\startup.ps1 /
 ENTRYPOINT ["powershell", "/startup.ps1"]
 
 COPY --from=builder C:\out\_PublishedWebsites\SignUp.Web ${APP_ROOT}
