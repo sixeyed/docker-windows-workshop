@@ -1,8 +1,10 @@
-# THIS CONTENT IS IN TRANSITION
+# Docker Windows Workshop
 
-The latest release is published at https://dwwx.space
+This is the Windows Server 2016 version of the workshop.
 
-> Currently there are four sections to the workshop, it will be extended with additional sections covering CI/CD, monitoring and Docker Swarm.
+This repo contains all the code samples. The slides for the workshop are live at https://win2016.dwwx.space.
+
+> The current version of the workshop is built for Windows Server 2019 The latest release is published at https://dwwx.space
 
 ## Repo Structure
 
