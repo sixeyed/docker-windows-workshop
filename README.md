@@ -32,6 +32,11 @@ _* - you don't need your own Windows Server machine, you'll be provided with a V
 This workshop is a living thing. There are tags or branches for previous versions.
 
 #### 2019
+
+- [devsum19](https://github.com/sixeyed/docker-windows-workshop/tree/devsum19) - DevSum 2019, hosted [here](https://devsum19.dwwx.space) 
+
+- [sdd19](https://github.com/sixeyed/docker-windows-workshop/tree/sdd19) - SDD London 2019, hosted [here](https://sdd19.dwwx.space) 
+
 - [dcus19](https://github.com/sixeyed/docker-windows-workshop/tree/dcus19) - DockerCon US 2019, hosted [here](https://dcus19.dwwx.space) 
 
 #### 2018
@@ -40,7 +45,7 @@ This workshop is a living thing. There are tags or branches for previous version
 
 - [buildstufflt18](https://github.com/sixeyed/docker-windows-workshop/tree/buildstufflt18) - BuildStuff Lithuania 2018, hosted [here](https://buildstufflt18--dwwx.netlify.com) 
 
-- [winops18](https://github.com/sixeyed/docker-windows-workshop/tree/winops18) - WinOps 2018, hosted [here](https://winops18--dwwx.netlify.com) 
+- [winops18](https://github.com/sixeyed/docker-windows-workshop/tree/winops18) - WinOps 2018, hosted [here](https://winops18--dwwx.netlify.com)
 
 - [techoramanl18](https://github.com/sixeyed/docker-windows-workshop/tree/techoramanl18) - Techorama NL 2018, hosted [here](https://techoramanl18--dwwx.netlify.com) 
 
@@ -49,7 +54,6 @@ This workshop is a living thing. There are tags or branches for previous version
 - [dcus18](https://github.com/sixeyed/docker-windows-workshop/tree/dcus18) - DockerCon 2018, hosted [here](https://dcus18--dwwx.netlify.com) 
 
 - [devsum18](https://github.com/sixeyed/docker-windows-workshop/tree/devsum18) - DevSum 2018, hosted [here](https://devsum18--dwwx.netlify.com) 
-
 - [docker-bangalore-18](https://github.com/sixeyed/docker-windows-workshop/tree/docker-bangalore-18) - From the [Docker Bangalore MeetUp](https://www.meetup.com/Docker-Bangalore/events/249634763/), April
 
 - [winops-feb18](https://github.com/sixeyed/docker-windows-workshop/tree/winops-feb18) - From the [London WinOps MeetUp #19](https://www.meetup.com/WinOps/events/247873979/), February
