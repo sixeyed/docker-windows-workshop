@@ -33,6 +33,8 @@ This workshop is a living thing. There are tags or branches for previous version
 
 #### 2019
 
+- [gbe19](https://github.com/sixeyed/docker-windows-workshop/tree/gbe19) - GBE 2019, hosted [here](https://gbe19.dwwx.space) 
+
 - [devsum19](https://github.com/sixeyed/docker-windows-workshop/tree/devsum19) - DevSum 2019, hosted [here](https://devsum19.dwwx.space) 
 
 - [sdd19](https://github.com/sixeyed/docker-windows-workshop/tree/sdd19) - SDD London 2019, hosted [here](https://sdd19.dwwx.space) 
