@@ -33,6 +33,8 @@ This workshop is a living thing. There are tags or branches for previous version
 
 #### 2019
 
+- [dvla19](https://github.com/sixeyed/docker-windows-workshop/tree/dvla19) - DVLA 2019, hosted [here](https://dvla19.dwwx.space) 
+
 - [gbe19](https://github.com/sixeyed/docker-windows-workshop/tree/gbe19) - GBE 2019, hosted [here](https://gbe19.dwwx.space) 
 
 - [devsum19](https://github.com/sixeyed/docker-windows-workshop/tree/devsum19) - DevSum 2019, hosted [here](https://devsum19.dwwx.space) 
