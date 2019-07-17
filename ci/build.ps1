@@ -11,5 +11,5 @@ for ($i=$from; $i -le $to; $i++) {
     -f ./ci/docker-compose-local.yml `
     -f ./ci/docker-compose-build.yml `
     -f "./ci/docker-compose-build-v$i.yml" `
-    build
+    build --pull
 }
