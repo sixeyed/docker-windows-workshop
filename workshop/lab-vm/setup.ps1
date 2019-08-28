@@ -50,13 +50,6 @@ choco install -y poshgit
 choco install -y visualstudiocode
 choco install -y firefox
 
-Write-Output '* Upgrading Docker'
-Stop-Service docker
-Invoke-WebRequest -UseBasicParsing -OutFile C:\Docker.zip https://download.docker.com/components/engine/windows-server/19.03/docker-19.03.0-beta4.zip
-cp $env:ProgramFiles\Docker $env:ProgramFiles\Docker.bak
-Expand-Archive C:\Docker.zip -DestinationPath $env:ProgramFiles -Force
-Start-Service docker
-
 Write-Output '* Configuring environment'
 refreshenv
 $env:PATH=$env:PATH + ';C:\Program Files\Mozilla Firefox;C:\Program Files\Git\bin'
