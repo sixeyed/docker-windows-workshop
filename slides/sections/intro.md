@@ -28,7 +28,7 @@ copy and paste this code
 
 ## Now - connect to your VM 
 
-You'll be given the connection details for your Windows Server 2016 VM during the workshop.
+You'll be given the connection details for your Windows Server 2019 VM during the workshop.
 
 You can connect to the VM using RDP on Windows, [Microsoft Remote Desktop](https://itunes.apple.com/us/app/microsoft-remote-desktop-8-0/id715768417) from the Mac App Store or [Remmina](https://github.com/FreeRDP/Remmina/wiki#for-end-users) on Linux.
 

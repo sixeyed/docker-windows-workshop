@@ -60,7 +60,7 @@ docker container run `
 
 You can browse to port `8020` on the external domain name your Docker host (that's your Windows Server VM). Or you can browse direct on `localhost`:
 
-_Browse to the v2 app:_
+_[Browse to the v2 app](http://localhost:8020/app):_
 
 ```
 firefox http://localhost:8020/app
@@ -108,7 +108,9 @@ docker container ls
 
 ## Try the app again
 
-As before, browse to port `8020` on your Docker VM's domain name, or direct on the VM:
+Now there's a new web application container listening on port `8020`. 
+
+You can browse to your Docker VM's domain name, or to [localhost](http://localhost:8020/app) on the VM:
 
 ```
 firefox "http://localhost:8020/app"

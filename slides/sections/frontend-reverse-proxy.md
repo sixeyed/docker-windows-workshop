@@ -44,8 +44,7 @@ docker container run -d -p 8040:80 --name home dwwx/homepage
 
 ## Try it out
 
-The homepage is available on port `8040` on your Docker host, so you can browse there or direct to `localhost`:
-
+The homepage is available on port `8040` on your Docker host, so you can browse there or direct to [localhost](http://localhost:8040):
 
 ```
 firefox http://localhost:8040
@@ -65,7 +64,7 @@ To use the new homepage **without changing the original app** we can run a rever
 
 ## The reverse proxy
 
-We're using [Traefik](http://traefik.io), which is really easy to integrate with Docker. All requests come to Traefik, and it fetches content from the homepage container or the original app container, based on the requested route.
+We're using [Traefik](http://traefik.io) which integrates nicely with Docker. All requests come to Traefik, and it fetches content from the homepage container or the original app container.
 
 Traefik can do a lot more than that - SSL termination, load-balancing and sticky sessions. The [official Traefik image on Docker Hub](https://docs.traefik.io/#the-official-docker-image) doesn't have a Windows Server 2019 version, so we'll build our own.
 
@@ -85,8 +84,6 @@ Check out the [v2 manifest](./app/v2.yml) - it adds services for the homepage an
 
 Only the proxy has `ports` specified. It's the public entrypoint to the app, the other containers can access each other, but the outside world can't get to them.
 
-_Upgrade to v2:_
-
 ```
 docker-compose -f .\app\v2.yml up -d
 ```
@@ -97,7 +94,7 @@ docker-compose -f .\app\v2.yml up -d
 
 ## Check out the new integrated app
 
-The reverse proxy is published to port `8020` so you can just refresh your browser window, or run:
+The reverse proxy is published to port `8020` so you can just refresh your browser at [localhost](http://localhost:8020), or run:
 
 ```
 firefox http://localhost:8020
@@ -122,17 +119,27 @@ docker container exec app_signup-db_1 powershell `
 
 ---
 
-## How does Traefik know where to route requests?
+## How does Traefik route requests?
 
-The Docker Engine has an API for managing and querying containers. Traefik uses that to find containers with Traefik labels, and it uses the label values to build the routing table. You can see the routes:
+The Docker Engine has an API for managing and querying containers. 
+
+Traefik uses that to find containers with Traefik labels, and it uses the label values to build the routing table. 
+
+_[You can see the routes](http://localhost:8080)_:
 
 ```
 firefox http://localhost:8080
 ```
 
-Traefik is running inside a container, talking to the Docker Engine it is running on to find out about other containers. The [command]() option in the [v2.yml]() compose file sets up that connection.
+---
 
-> That endpoint is a [named pipe]() for private communication on the machine
+## How does Traefik use the Docker API?
+
+Traefik is running inside a container, talking to the Docker Engine it is running on to find out about other containers. 
+
+The [command](https://docs.docker.com/compose/compose-file/#command) option in the [v2.yml](./app/v2.yml) compose file sets up that connection.
+
+> That endpoint is a [named pipe](https://blog.sixeyed.com/what-you-can-do-with-docker-in-windows-server-2019-that-you-couldnt-do-in-windows-server-2016/) for private communication on the machine
 
 ---
 

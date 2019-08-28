@@ -48,24 +48,6 @@ The manifest also configures the web app to use messaging - using Dependency Inj
 
 ---
 
-## Build the message queue
-
-Right now the [official NATS image on Docker Hub]() doesn't have a Windows Server 2019 variant, so we'll build our own.
-
-The [message-queue Dockerfile]() is based on Nano Server 1809 and it just copies the NATS binaries from the official Nano Server 2016 image.
-
-_Build the message queue:_
-
-```
-docker image build `
-  -t dwwx/message-queue `
-  -f .\docker\backend-async-messaging\message-queue\Dockerfile .
-```
-
-> When the NATS team release their own Nano Server 1809 image, we can use theirs.
-
----
-
 ## Upgrade to use the message handler
 
 _Upgrade to v4:_
@@ -94,7 +76,7 @@ docker container logs app_signup-save-handler_1
 
 ## Try the new distributed app
 
-The entrypoint is still the proxy listening on port `8020`, so you can refresh your page or open a new browser window:
+The entrypoint is still the proxy listening on port `8020`, so you can refresh your page or [open a new browser window](http:/localhost:8020):
 
 ```
 firefox http:/localhost:8020

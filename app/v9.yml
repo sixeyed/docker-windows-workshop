@@ -62,7 +62,7 @@ services:
       - app-net
 
   message-queue:
-    image: dwwx/message-queue
+    image: nats:2.0.4-nanoserver-1809
     networks:
       - app-net
 
