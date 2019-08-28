@@ -12,9 +12,11 @@ But before you go...
 
 - Follow [@EltonStoneman](https://twitter.com/EltonStoneman) and [@stefscherer](https://twitter.com/stefscherer) on Twitter
 
+- Bookmark [Elton's blog](https://blog.sixeyed.com)
+
 - Read [Docker on Windows](https://www.amazon.co.uk/Docker-Windows-101-production-2nd/dp/1789617375), the book
 
-And watch these Pluralsight training courses:
+And watch these [Pluralsight](https://pluralsight.com) training courses:
 
 - [Modernizing .NET Apps with Docker](https://pluralsight.pxf.io/c/1197078/424552/7490?u=https%3A%2F%2Fwww.pluralsight.com%2Fcourses%2Fmodernizing-dotnet-framework-apps-docker)
 
@@ -22,4 +24,4 @@ And watch these Pluralsight training courses:
 
 - [Monitoring Containerized Application Health with Docker](https://pluralsight.pxf.io/c/1197078/424552/7490?u=https%3A%2F%2Fwww.pluralsight.com%2Fcourses%2Fmonitoring-containerized-app-health-docker)
 
-> Don't have Pluralsight? Ping @EltonStoneman and he'll send you a 1-month trial code.
+> Don't have Pluralsight? Ping @EltonStoneman.

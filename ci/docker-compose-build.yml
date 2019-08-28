@@ -21,11 +21,6 @@ services:
       context: ..
       dockerfile: ./docker/frontend-reverse-proxy/reverse-proxy/Dockerfile
 
-  message-queue:
-    build:
-      context: ..
-      dockerfile: ./docker/backend-async-messaging/message-queue/Dockerfile
-
   reference-data-api:
     build:
       context: ..
